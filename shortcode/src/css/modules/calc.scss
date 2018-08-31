@@ -12,10 +12,17 @@
   pointer-events: auto;
   min-height: 470px;
   padding: 15px 15px 0;
+  display: flex;
 }
 
 .calc__one {
   max-width: 380px;
+  padding-right: 33px;
+}
+
+.calc__two {
+  max-width: 480px;
+  padding-right: 20px;
 }
 
 .calc__block {
@@ -31,7 +38,6 @@
 
 .calc__stage {
   position: relative;
-  padding-bottom: 65px;
   &:after {
     position: absolute;
     content: '';
@@ -41,6 +47,14 @@
     right: 0;
     top: 5px;
   }
+}
+
+.calc__stage--one {
+  padding-bottom: 65px;
+}
+
+.calc__stage--two {
+  margin-top: 66px;
 }
 
 .calc__row--one {
@@ -93,6 +107,10 @@
 
 .calc__caption--one:before {
   content: '1';
+}
+
+.calc__caption--two:before {
+  content: '2';
 }
 
 .calc__wide {
@@ -250,4 +268,49 @@ button {
   outline: none;
   box-shadow: 0 0 0 3px rgba(129, 170, 33, 0.5),
   0 0 0 1.5px rgba(129, 170, 33, 0.5);
+}
+
+.calc__container {
+  display: flex;
+  padding-top: 66px;
+}
+
+.calc__picture {
+  width: 150px;
+  margin: 0 20px 0 50px;
+  position: relative;
+}
+
+.calc__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.calc__heading {
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 700;
+}
+
+.calc__wrapper {
+  position: relative;
+}
+
+.calc__info-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.calc__desc {
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.calc__inner{
+  display: flex;
 }

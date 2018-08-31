@@ -9,14 +9,14 @@
 </head>
 <body>
 <div class="page">
-    <div class="calc">
-        <form method="POST" class="calc__form">
+    <form method="POST" class="calc__form">
+        <div class="calc">
             <div class="calc__one">
                 <div class="calc__head">
                     <div class="calc__title">Заказ грузового такси</div>
                 </div>
                 <div class="calc__block">
-                    <div class="calc__stage">
+                    <div class="calc__stage calc__stage--one">
                         <div class="calc__caption calc__caption--one"><span class="calc__wide">Шаг 1:</span> Маршрут и
                             контакты
                         </div>
@@ -61,8 +61,48 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="calc__two">
+                <div class="calc__block">
+                    <div class="calc__stage calc__stage--two">
+                        <div class="calc__caption calc__caption--two"><span class="calc__wide">Шаг 2:</span> Подбор
+                            машины
+                        </div>
+                    </div>
+                    <div class="calc__box">
+                        <div class="calc__container">
+                            <div class="calc__wrapper">
+                                <a href="#" class="calc__info-link">
+                                    <i class="fas fa-info-circle calc__icon"></i>
+                                </a>
+                                <div class="calc__picture">
+                                    <img src="assets/img/car/car01.jpg" alt="car01" class="calc__img">
+                                </div>
+                            </div>
+                            <div class="calc__holder">
+                                <div class="calc__heading">Ларгус/пикап</div>
+                                <div class="calc__inner">
+                                    <div class="calc__desc">Грузчики</div>
+                                    <select class="calc__dropdown calc__dropdown--loaders">
+                                        <option value="none">Нет</option>
+                                        <option value="one">1</option>
+                                        <option value="two">2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <select class="calc__dropdown calc__dropdown--selectbox" size="4">
+                            <option value="largus" selected>Ларгус/пикап</option>
+                            <option value="gazel-3">Газель 3 метра</option>
+                            <option value="gazel-4">Газель 4 метра</option>
+                            <option value="isuzu-6">Isuzu 6 метров</option>
+                            <option value="man-6-7">Man 6-7 метров</option>
+                            <option value="man-7-8">Man 7-8 метров</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 </body>
 </html>
