@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     $('.calc__dropdown--loaders').select2({
-        width: '180px'
+        width: '196px'
     });
 
     function formatState(state) {
