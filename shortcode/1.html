@@ -8,6 +8,8 @@
     <script src="https://yastatic.net/jquery/3.1.1/jquery.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <link href="assets/css/datepicker.min.css" rel="stylesheet" type="text/css">
+    <script src="assets/js/datepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/main.min.css">
     <script src="assets/js/main.min.js"></script>
 </head>
@@ -27,8 +29,26 @@
                     </div>
                     <div class="calc__row calc__row--one">
                         <div class="calc__item calc__item--one">
-                            <div class="calc__pre calc__pre--from">
+                            <div class="calc__box-select">
+                                <div class="calc__desc">Откуда</div>
+                                <select class="calc__dropdown calc__dropdown--from">
+                                    <optgroup label="г. Тольятти">
+                                        <option value="area01">Автозаводский р-н</option>
+                                        <option value="area02" selected>Центральный р-н</option>
+                                        <option value="area03">Комсомольский р-н</option>
+                                        <option value="area04">Жиг.море\Шлюзовый</option>
+                                    </optgroup>
+                                    <optgroup label="Пригород">
+                                        <option value="area05">Ягодное</option>
+                                        <option value="area06">Тимофеевка</option>
+                                        <option value="area07">Русская Борковка</option>
+                                        <option value="area08">Ниж. Санчелеево</option>
+                                        <option value="area09">Верх. Санчелеево</option>
+                                    </optgroup>
+                                </select>
                             </div>
+                            <!--<div class="calc__pre calc__pre&#45;&#45;from">
+                            </div>-->
                             <div class="calc__address">
                                 <input type="text" value="" class="calc__input calc__input--street" placeholder="Улица">
                                 <input type="text" value="" class="calc__input calc__input--house" placeholder="Дом">
@@ -38,7 +58,25 @@
                             </div>
                         </div>
                         <div class="calc__item calc__item--two">
-                            <div class="calc__pre calc__pre--to"></div>
+                            <div class="calc__box-select">
+                                <div class="calc__desc">Куда</div>
+                                <select class="calc__dropdown calc__dropdown--to">
+                                    <optgroup label="г. Тольятти">
+                                        <option value="area01">Автозаводский р-н</option>
+                                        <option value="area02" selected>Центральный р-н</option>
+                                        <option value="area03">Комсомольский р-н</option>
+                                        <option value="area04">Жиг.море\Шлюзовый</option>
+                                    </optgroup>
+                                    <optgroup label="Пригород">
+                                        <option value="area05">Ягодное</option>
+                                        <option value="area06">Тимофеевка</option>
+                                        <option value="area07">Русская Борковка</option>
+                                        <option value="area08">Ниж. Санчелеево</option>
+                                        <option value="area09">Верх. Санчелеево</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <!--<div class="calc__pre calc__pre&#45;&#45;to"></div>-->
                             <div class="calc__address">
                                 <input type="text" value="" class="calc__input calc__input--street" placeholder="Улица">
                                 <input type="text" value="" class="calc__input calc__input--house" placeholder="Дом">
@@ -72,7 +110,7 @@
                             машины
                         </div>
                     </div>
-                    <div class="calc__box">
+                    <div class="calc__box calc__box--car">
                         <div class="calc__container">
                             <div class="calc__wrapper">
                                 <a href="#" class="calc__info-link">
@@ -85,7 +123,7 @@
                             <div class="calc__holder">
                                 <div class="calc__heading">Ларгус/пикап</div>
                                 <div class="calc__inner">
-                                    <div class="calc__desc">Грузчики</div>
+                                    <div class="calc__desc calc__desc--cargo">Грузчики</div>
                                     <select class="calc__dropdown calc__dropdown--loaders">
                                         <option value="none">Нет</option>
                                         <option value="1">1</option>
@@ -105,6 +143,70 @@
                                 <option value="car04">Man 6-7 метров</option>
                                 <option value="car04">Man 7-8 метров</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="calc__stage calc__stage--three">
+                        <div class="calc__caption calc__caption--three"><span class="calc__wide">Шаг 3:</span> получения
+                            скидки
+                        </div>
+                    </div>
+                    <div class="calc__box calc__box--client">
+                        <div class="calc__desc calc__desc--client">Номер карты постоянного клиента</div>
+                        <input class="calc__input calc__input--number">
+                        <button type="button" class="btn btn--client">Проверить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="calc__three">
+                <div class="calc__head">
+                    <div class="calc__title">
+                        <a href="#" class="calc__link--undo">
+                            <i class="fas fa-undo"></i>
+                            Очистить
+                        </a>
+                        <a href="#" class="calc__link--close">
+                            <i class="fas fa-times-circle"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="calc__block">
+                    <div class="calc__stage calc__stage--four">
+                        <div class="calc__caption calc__caption--four"><span class="calc__wide">Шаг 4:</span> Время и
+                            длительность
+                        </div>
+                    </div>
+                    <div class="calc__row">
+                        <div class="calc__item calc__item--five">
+                            <div class="calc__desc calc__desc--time">Время подачи</div>
+                            <select class="calc__dropdown calc__dropdown--time">
+                                <option value="1">Срочная (в течении 30 минут)</option>
+                                <option value="2">Плановая</option>
+                            </select>
+                        </div>
+                        <div class="calc__item calc__item--six">
+                            <i class="far fa-calendar-alt"></i>
+                            <input type='text' class='calc__input calc__input--datepicker datepicker-here'
+                                   data-timepicker="true"/>
+                        </div>
+                        <div class="calc__item calc__item--seven">
+                            <div class="calc__desc calc__desc--durability">Длительность заказа</div>
+                            <select class="calc__dropdown calc__dropdown--durability">
+                                <option value="1">1 час</option>
+                                <option value="2">2 часа</option>
+                                <option value="3">3 часа</option>
+                                <option value="4">4 часа</option>
+                                <option value="5">5 часов</option>
+                                <option value="6">6 часов</option>
+                                <option value="7">7 часов</option>
+                                <option value="8">8 часов</option>
+                            </select>
+                        </div>
+                        <div class="calc__item calc__item--eight">
+                            <a href="#" class="">
+                                <i class="fas fa-plus"></i>
+                                <span class="calc__desc calc__desc--plus">Примечание к заказу</span>
+                            </a>
+                            <textarea class='calc__input calc__input--note'/></textarea>
                         </div>
                     </div>
                 </div>
