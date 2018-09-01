@@ -33,6 +33,7 @@ body {
 .calc__two {
   max-width: 480px;
   padding-right: 20px;
+  width: 480px;
 }
 
 .calc__block {
@@ -293,12 +294,12 @@ button {
 
 .calc__container {
   display: flex;
-  padding-top: 66px;
+  padding-top: 51px;
 }
 
 .calc__picture {
-  width: 150px;
-  margin: 0 20px 0 50px;
+  width: 130px;
+  margin: 0 10px 0 50px;
   position: relative;
 }
 
@@ -314,6 +315,8 @@ button {
   white-space: nowrap;
   overflow: hidden;
   font-weight: 700;
+  padding-top: 2px;
+  padding-bottom: 13px;
 }
 
 .calc__wrapper {
@@ -322,8 +325,8 @@ button {
 
 .calc__info-link {
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 10px;
+  top: 13px;
 }
 
 .calc__desc {
@@ -331,8 +334,42 @@ button {
   font-family: Arial, sans-serif;
   font-size: 12px;
   vertical-align: middle;
+  padding-top: 12px;
+  padding-right: 17px;
 }
 
 .calc__inner {
   display: flex;
+}
+
+.calc__selectbox {
+  padding-top: 20px;
+  text-align: center;
+}
+
+.select2-container .select2-selection--single {
+  height: 35px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 33px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 5px;
+}
+
+.item-down {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.item-down--img {
+  padding-right: 10px;
+}
+
+.item-down--text {
+  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
 }

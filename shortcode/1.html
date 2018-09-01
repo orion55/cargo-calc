@@ -5,7 +5,11 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script src="https://yastatic.net/jquery/3.1.1/jquery.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/main.min.css">
+    <script src="assets/js/main.min.js"></script>
 </head>
 <body>
 <div class="page">
@@ -90,14 +94,16 @@
                                 </div>
                             </div>
                         </div>
-                        <select class="calc__dropdown calc__dropdown--selectbox" size="4">
-                            <option value="largus" selected>Ларгус/пикап</option>
-                            <option value="gazel-3">Газель 3 метра</option>
-                            <option value="gazel-4">Газель 4 метра</option>
-                            <option value="isuzu-6">Isuzu 6 метров</option>
-                            <option value="man-6-7">Man 6-7 метров</option>
-                            <option value="man-7-8">Man 7-8 метров</option>
-                        </select>
+                        <div class="calc__selectbox">
+                            <select class="calc__dropdown calc__dropdown--selectbox" size="4">
+                                <option value="car01" selected>Ларгус/пикап</option>
+                                <option value="car02">Газель 3 метра</option>
+                                <option value="car02">Газель 4 метра</option>
+                                <option value="car03">Isuzu 6 метров</option>
+                                <option value="car04">Man 6-7 метров</option>
+                                <option value="car04">Man 7-8 метров</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
