@@ -41,7 +41,7 @@
   font-weight: 700;
   font-size: 30px;
   margin: 0;
-  padding: 3px 0 24px 15px;
+  //padding: 3px 0 24px 15px;
 }
 
 .calc__stage {
@@ -374,6 +374,14 @@ button {
   object-fit: cover;
 }
 
+.calc__head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 25px;
+}
+
 .calc__heading {
   font-size: 18px;
   white-space: nowrap;
@@ -490,7 +498,7 @@ button {
   justify-content: flex-end;
   align-items: center;
   padding-top: 0;
-  padding-bottom: 29px;
+  //padding-bottom: 29px;
 }
 
 @keyframes hvr-pop {
@@ -645,10 +653,6 @@ button {
   background-color: $color-invert;
   color: #4c4c4c;
   height: 50px;
-  &:hover {
-    background-color: $color-main;
-    color: white;
-  }
 }
 
 .calc__block--three {
@@ -661,4 +665,39 @@ button {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.hvr-radial-out {
+  display: inline-block;
+  vertical-align: middle;
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  overflow: hidden;
+  transition-property: color;
+  transition-duration: 0.3s;
+}
+
+.hvr-radial-out:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color-main;
+  border-radius: 100%;
+  transform: scale(0);
+  transition-property: transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
+}
+
+.hvr-radial-out:hover, .hvr-radial-out:focus, .hvr-radial-out:active {
+  color: white;
+}
+
+.hvr-radial-out:hover:before, .hvr-radial-out:focus:before, .hvr-radial-out:active:before {
+  transform: scale(2);
 }
