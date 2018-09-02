@@ -201,10 +201,16 @@
 
 .calc__item--three {
   padding-bottom: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .calc__item--four {
   padding-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .calc__ic {
