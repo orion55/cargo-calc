@@ -19,8 +19,6 @@ $(document).ready(function () {
         {
             width: '90%',
             templateResult: formatState
-            // closeOnSelect: false,
-            // selectOnClose: false
         }
     );
 
@@ -29,13 +27,22 @@ $(document).ready(function () {
             width: '85%'
         }
     );
+
     $('.calc__dropdown--to').select2(
         {
             width: '85%'
         }
     );
+
     $('.calc__dropdown--time').select2(
+        {
+            width: '70%'
+        }
     );
+
     $('.calc__dropdown--durability').select2(
+        {
+            width: '55%'
+        }
     );
 });
