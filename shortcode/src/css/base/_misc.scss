@@ -11,14 +11,21 @@ body {
   padding-top: 50px;
 }
 
-@media only screen and (min-device-width: 768px) and (max-width: 1280px) {
-
+@media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {
+  .page {
+    width: 100%;
+  }
 }
 
-@media only screen and (max-width: 959px) {
-
+@media only screen and (max-device-width: 959px) {
+  .page {
+    width: 100%;
+  }
 }
 
-@media only screen and (max-width: 767px) {
-
+@media only screen and (max-device-width: 767px) {
+  .page {
+    width: 100%;
+    min-width: 320px;
+  }
 }

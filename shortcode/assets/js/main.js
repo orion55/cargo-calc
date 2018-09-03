@@ -14,7 +14,7 @@ $(document).ready(function () {
     }
 
     $('.calc__dropdown--selectbox').select2({
-        width: '90%',
+        width: '100%',
         templateResult: formatState
     });
 
