@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <script src="https://yastatic.net/jquery/3.1.1/jquery.js"></script>
@@ -132,30 +133,42 @@
                                     <div class="calc__picture">
                                         <img src="assets/img/car/car01.jpg" alt="car01" class="calc__img">
                                     </div>
-                                </div>
-                                <div class="calc__holder">
                                     <div class="calc__heading">Ларгус/пикап</div>
-                                    <div class="calc__inner">
-                                        <div class="calc__desc calc__desc--cargo">Грузчики</div>
-                                        <select class="calc__dropdown calc__dropdown--loaders">
-                                            <option value="none">Нет</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                        </select>
-                                    </div>
+                                </div>
+                                <div class="calc__selectbox">
+                                    <select class="calc__dropdown calc__dropdown--selectbox" size="4">
+                                        <option value="car01" selected>Ларгус/пикап</option>
+                                        <option value="car02">Газель 3 метра</option>
+                                        <option value="car02">Газель 4 метра</option>
+                                        <option value="car03">Isuzu 6 метров</option>
+                                        <option value="car04">Man 6-7 метров</option>
+                                        <option value="car04">Man 7-8 метров</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="calc__selectbox">
-                                <select class="calc__dropdown calc__dropdown--selectbox" size="4">
-                                    <option value="car01" selected>Ларгус/пикап</option>
-                                    <option value="car02">Газель 3 метра</option>
-                                    <option value="car02">Газель 4 метра</option>
-                                    <option value="car03">Isuzu 6 метров</option>
-                                    <option value="car04">Man 6-7 метров</option>
-                                    <option value="car04">Man 7-8 метров</option>
-                                </select>
+                            <div class="calc__holder">
+                                <div class="calc__inner">
+                                    <div class="calc__desc calc__desc--cargo">Грузчики</div>
+                                    <select class="calc__dropdown calc__dropdown--loaders">
+                                        <option value="none">Нет</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                    <div class="calc__desc calc__desc--cargo-time">Время работы</div>
+                                    <select class="calc__dropdown calc__dropdown--cargo-time">
+                                        <option value="none">нет</option>
+                                        <option value="1">1 час</option>
+                                        <option value="2">2 часа</option>
+                                        <option value="3">3 часа</option>
+                                        <option value="4">4 часа</option>
+                                        <option value="5">5 часов</option>
+                                        <option value="6">6 часов</option>
+                                        <option value="7">7 часов</option>
+                                        <option value="8">8 часов</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="calc__stage calc__stage--three">

@@ -1,7 +1,12 @@
 $(document).ready(function () {
     $('.calc__dropdown--loaders').select2(
         {
-            width: '196px'
+            width: '100%'
+        }
+    );
+    $('.calc__dropdown--cargo-time').select2(
+        {
+            width: '100%'
         }
     );
 

@@ -194,7 +194,7 @@
 }
 
 .calc__box--car {
-  margin-bottom: 54px;
+  margin-bottom: 32px;
 }
 
 .calc__box-select {
@@ -359,8 +359,9 @@ button {
 
 .calc__container {
   display: flex;
-  padding-top: 61px;
+  padding-top: 45px;
   padding-bottom: 20px;
+  flex-direction: column;
 }
 
 .calc__picture {
@@ -389,11 +390,14 @@ button {
   overflow: hidden;
   font-weight: 700;
   padding-top: 2px;
-  padding-bottom: 13px;
+  margin: 0 auto;
 }
 
 .calc__wrapper {
   position: relative;
+  display: flex;
+  padding-bottom: 15px;
+  align-items: center;
 }
 
 .calc__info-link {
@@ -410,12 +414,17 @@ button {
 }
 
 .calc__desc--cargo {
-  padding-top: 12px;
-  padding-right: 17px;
+  padding-right: 10px;
+}
+
+.calc__desc--cargo-time {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .calc__inner {
   display: flex;
+  align-items: center;
 }
 
 .calc__selectbox {
@@ -469,7 +478,7 @@ button {
 }
 
 .calc__input--number {
-  margin-bottom: 11px;
+  margin-bottom: 9px;
   width: 75%;
 }
 
@@ -733,7 +742,7 @@ button {
     padding-bottom: 10px;
   }
   .calc__container {
-    flex-direction: row;
+    flex-direction: column;
     padding-top: 35px;
   }
   .calc__item--five {
@@ -760,9 +769,13 @@ button {
   .calc__heading {
     text-align: center;
   }
-  .calc__desc--cargo {
+  div.calc__desc--cargo {
     margin: 0 auto;
-    padding-right: 20px;
+    padding-right: 10px;
+    padding-bottom: 0;
+  }
+  div.calc__desc--cargo-time {
+    padding-bottom: 0;
   }
   .calc__desc--client {
     padding-bottom: 14px;
@@ -827,6 +840,7 @@ button {
   }
   .calc__container {
     flex-direction: column;
+    padding-top: 35px;
   }
   .calc__item--five {
     flex-direction: column;
@@ -845,9 +859,6 @@ button {
   .calc__box--car {
     margin-bottom: 30px;
   }
-  .calc__container {
-    padding-top: 35px;
-  }
   .calc__wrapper {
     margin: 0 auto;
     padding-bottom: 10px;
@@ -855,9 +866,13 @@ button {
   .calc__heading {
     text-align: center;
   }
-  .calc__desc--cargo {
+  div.calc__desc--cargo {
     margin: 0 auto;
-    padding-right: 0;
+    padding-right: 10px;
+    padding-bottom: 0;
+  }
+  div.calc__desc--cargo-time {
+    padding-bottom: 0;
   }
   .calc__desc--client {
     padding-bottom: 14px;
