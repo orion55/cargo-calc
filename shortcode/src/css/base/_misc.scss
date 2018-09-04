@@ -11,6 +11,96 @@ body {
   padding-top: 50px;
 }
 
+.hvr-radial-out {
+  display: inline-block;
+  vertical-align: middle;
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  overflow: hidden;
+  transition-property: color;
+  transition-duration: 0.3s;
+}
+
+.hvr-radial-out:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color-main;
+  border-radius: 100%;
+  transform: scale(0);
+  transition-property: transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
+}
+
+.hvr-radial-out:hover, .hvr-radial-out:focus, .hvr-radial-out:active {
+  color: white;
+}
+
+.hvr-radial-out:hover:before, .hvr-radial-out:focus:before, .hvr-radial-out:active:before {
+  transform: scale(2);
+}
+
+@keyframes hvr-pop {
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.hvr-pop {
+  display: inline-block;
+  vertical-align: middle;
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+
+.hvr-pop:hover, .hvr-pop:focus, .hvr-pop:active {
+  animation-name: hvr-pop;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+
+.select2-container .select2-selection--single {
+  height: 35px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 33px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 5px;
+}
+
+.select2-results__group, .select2-results__option {
+  font-family: 'Roboto', sans-serif;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: $color-main;
+}
+
+.item-down {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.item-down--img {
+  padding-right: 10px;
+}
+
+.item-down--text {
+  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
+}
+
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {
   .page {
     width: 100%;

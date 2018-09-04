@@ -1,4 +1,4 @@
-$(document).ready(function () {
+jQuery(document).ready(function ($) {
     $('.calc__dropdown--loaders').select2(
         {
             width: '100%'
@@ -14,9 +14,10 @@ $(document).ready(function () {
         if (!state.id) {
             return state.text;
         }
+        var plugin_url = 'http://master-gruzov.ru/wp-content/plugins/cargo-calc/shortcode/';
         var baseUrl = "assets/img/car";
         return $(
-            '<div class="item-down"><img src="' + baseUrl + '/' + state.element.value.toLowerCase() + '.jpg" class="item-down--img" /><div class="item-down--text">' + state.text + '</div></div>'
+            '<div class="item-down"><img src="' + plugin_url + baseUrl + '/' + state.element.value.toLowerCase() + '.jpg" class="item-down--img" /><div class="item-down--text">' + state.text + '</div></div>'
         );
     }
 

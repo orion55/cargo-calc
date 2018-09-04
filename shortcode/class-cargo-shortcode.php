@@ -17,7 +17,7 @@ class Cargo_Shortcode
         self::$add_script = true;
 
         $html = "
-        <h1>Cargo-calc!</h1>
+        <div id=\"cargo-calc\"></div>
         ";
 
         return $html;
@@ -25,8 +25,15 @@ class Cargo_Shortcode
 
     static function register_script()
     {
-//        wp_register_script('calc-js', get_template_directory_uri() . '/calc/calc.js', array('jquery'), time(), true);
-//        wp_register_style('calc', get_template_directory_uri() . '/calc/calc.css', array(), time(), 'all');
+        $url = plugin_dir_url(__FILE__);
+        wp_register_style('fontawesome', 'https://use.fontawesome.com/releases/v5.3.1/css/all.css', array(), time(), 'all');
+        wp_register_style('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css', array(), time(), 'all');
+        wp_register_script('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js', array('jquery'), time(), false);
+        wp_register_style('datepicker', plugin_dir_url(__FILE__) . 'assets/css/datepicker.min.css', array(), time(), 'all');
+        wp_register_script('datepicker', plugin_dir_url(__FILE__) . 'assets/js/datepicker.min.js', array('jquery'), time(), false);
+        wp_register_style('main', plugin_dir_url(__FILE__) . 'assets/css/main.min.css', array(), time(), 'all');
+        wp_register_script('main', plugin_dir_url(__FILE__) . 'assets/js/main.min.js', array('jquery'), time(), false);
+        wp_register_script('build', plugin_dir_url(__FILE__) . 'assets/js/build.js', array('jquery'), time(), true);
     }
 
     static function print_script()
@@ -34,8 +41,14 @@ class Cargo_Shortcode
         if (!self::$add_script) {
             return;
         }
-//        wp_print_scripts('calc-js');
-//        wp_enqueue_style('calc');
+        wp_enqueue_style('fontawesome');
+        wp_enqueue_style('select2');
+        wp_print_scripts('select2');
+        wp_enqueue_style('datepicker');
+        wp_print_scripts('datepicker');
+        wp_enqueue_style('main');
+        wp_print_scripts('main');
+        wp_print_scripts('build');
     }
 
     static function js_variables()
@@ -45,7 +58,7 @@ class Cargo_Shortcode
         }
 
         $variables = array(
-            'var0' => 0,
+            'plugin_dir_url' => plugin_dir_url(__FILE__),
         );
         echo('<script type="text/javascript">window.wp_data=' . json_encode($variables) . ';</script>');
     }
