@@ -2,7 +2,7 @@
 
 .calc {
   font-family: 'Roboto', sans-serif;
-  max-width: 1200px;
+  max-width: 1150px;
   transition: max-width .5s ease, opacity 1s ease;
   width: 100%;
   border-radius: 5px;
@@ -14,7 +14,7 @@
   padding: 15px 15px 0;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 0 auto 20px;
 }
 
 #calc-shipment {
