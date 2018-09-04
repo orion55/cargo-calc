@@ -302,6 +302,7 @@ body {
   box-sizing: border-box;
   padding: 10px;
   margin-right: 5px;
+  margin-bottom: 0;
 }
 
 #calc-shipment .calc__input::-webkit-input-placeholder {
@@ -487,7 +488,7 @@ body {
 
 #calc-shipment .calc__container {
   display: flex;
-  padding-top: 45px;
+  padding-top: 38px;
   padding-bottom: 20px;
   flex-direction: column;
 }
@@ -568,7 +569,7 @@ body {
 }
 
 #calc-shipment .calc__desc--client {
-  padding-bottom: 24px;
+  padding-bottom: 18px;
 }
 
 #calc-shipment .calc__input--number {

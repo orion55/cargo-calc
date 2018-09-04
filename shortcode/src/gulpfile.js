@@ -117,7 +117,7 @@ gulp.task('vue-build', function () {
 gulp.task('watch', function () {
     gulp.watch(['./css/**/*.scss', './css/main.scss'], ['sass', 'deploy-ftp']);
     gulp.watch('./js/*.js', ['js', 'deploy-ftp']);
-    gulp.watch('./components/*.vue', ['vue']);
+    gulp.watch('./components/*.vue', ['vue', 'deploy-ftp']);
     gulp.watch('./img/**/*', ['images']);
 });
 
