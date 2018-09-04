@@ -2,7 +2,11 @@
     <form method="POST" class="calc__form">
         <div class="calc" id="calc-shipment">
             <div class="calc__head">
-                <div class="calc__title">Заказ грузового такси</div>
+                <div class="calc__title">Заказ грузового такси
+                    <!--<v-select v-model="selected" :options="options"
+                              class="calc__dropdown"></v-select>
+                    {{selected.id}}-->
+                </div>
                 <div class="calc__title calc__title--links">
                     <a href="#" class="calc__link--undo hvr-pop">
                         <i class="fas fa-undo"></i>
@@ -113,7 +117,8 @@
                                         <i class="fas fa-info-circle calc__icon"></i>
                                     </a>
                                     <div class="calc__picture">
-                                        <img src="http://master-gruzov.ru/wp-content/plugins/cargo-calc/shortcode/assets/img/car/car01.jpg" alt="car01" class="calc__img">
+                                        <img src="http://master-gruzov.ru/wp-content/plugins/cargo-calc/shortcode/assets/img/car/car01.jpg"
+                                             alt="car01" class="calc__img">
                                     </div>
                                     <div class="calc__heading">Ларгус/пикап</div>
                                 </div>
@@ -248,7 +253,13 @@
         name: 'app',
         data() {
             return {
-                msg: 'Welcome to Your Vue.js App'
+                msg: 'Welcome to Your Vue.js App',
+                options: [
+                    {id: 1, label: 'foo'},
+                    {id: 3, label: 'bar'},
+                    {id: 2, label: 'baz'},
+                ],
+                selected: {id: 3, label: 'bar'}
             }
         }
     }

@@ -13,7 +13,8 @@
     "compilation": "browserify js-vue/main.js -o ../assets/js/build.js"
   },
   "dependencies": {
-    "vue": "^2.0.1"
+    "vue": "^2.0.1",
+    "vue-select": "^2.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -44,6 +45,7 @@
     "http-server": "^0.9.0",
     "imagemin-pngquant": "^5.0.1",
     "npm-run-all": "^2.1.2",
+    "run-sequence": "^2.2.1",
     "smart-grid": "^2.0.1",
     "uglify-js": "^2.5.0",
     "vinyl-ftp": "^0.6.1",

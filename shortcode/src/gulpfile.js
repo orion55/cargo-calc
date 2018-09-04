@@ -15,6 +15,7 @@ var gutil = require('gulp-util');
 var ftp = require('vinyl-ftp');
 var babel = require("gulp-babel");
 var shell = require('gulp-shell');
+var runSequence = require('run-sequence');
 
 var docs = '../assets/';
 var subfolder = 'css';
@@ -105,6 +106,7 @@ gulp.task('deploy-ftp', function () {
 });
 
 gulp.task('vue', function () {
+    subfolder = 'js';
     return gulp.src(['./components/*.vue'])
         .pipe(shell('browserify js-vue/main.js -o ../assets/js/build.js'))
 });
@@ -114,10 +116,14 @@ gulp.task('vue-build', function () {
         .pipe(shell('cross-env NODE_ENV=production browserify -g envify js-vue/main.js | uglifyjs -c warnings=false -m > ../assets/js/build.js'))
 });
 
+gulp.task('vue-build-task', function () {
+    return runSequence('vue', 'deploy-ftp');
+});
+
 gulp.task('watch', function () {
     gulp.watch(['./css/**/*.scss', './css/main.scss'], ['sass', 'deploy-ftp']);
     gulp.watch('./js/*.js', ['js', 'deploy-ftp']);
-    gulp.watch('./components/*.vue', ['vue', 'deploy-ftp']);
+    gulp.watch('./components/*.vue', ['vue-build-task']);
     gulp.watch('./img/**/*', ['images']);
 });
 
