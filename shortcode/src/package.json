@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "bootstrap-vue": "^2.0.0-rc.11",
-    "keen-ui": "^1.0.1",
-    "vue": "^2.0.1"
+    "vue": "^2.0.1",
+    "vue-select": "^2.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

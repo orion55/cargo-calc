@@ -623,6 +623,16 @@
     flex-direction: column;
     height: 100%;
   }
+  .calc__dropdown {
+    width: 100%;
+  }
+  .v-select .dropdown-menu > .highlight > a {
+    background: $color-main;
+    color: #fff;
+    text-decoration: none;
+    padding: 3px 20px 3px 13px;
+    line-height: 1.42857143;
+  }
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1199px) {

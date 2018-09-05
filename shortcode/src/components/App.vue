@@ -134,25 +134,15 @@
                             <div class="calc__holder">
                                 <div class="calc__inner">
                                     <div class="calc__desc calc__desc--cargo">Грузчики</div>
-                                    <b-form-select v-model="loaders.selected" class="calc__dropdown calc__dropdown--loaders" >
-                                        <option value="none" default>Нет</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                    </b-form-select>
+                                    <v-select v-model="loaders.selected" :options="loaders.options"
+                                              maxHeight="200px"
+                                              class="calc__dropdown calc__dropdown--loaders">
+                                    </v-select>
                                     <div class="calc__desc calc__desc--cargo-time">Время работы</div>
-                                    <select class="calc__dropdown calc__dropdown--cargo-time">
-                                        <option value="none">нет</option>
-                                        <option value="1">1 час</option>
-                                        <option value="2">2 часа</option>
-                                        <option value="3">3 часа</option>
-                                        <option value="4">4 часа</option>
-                                        <option value="5">5 часов</option>
-                                        <option value="6">6 часов</option>
-                                        <option value="7">7 часов</option>
-                                        <option value="8">8 часов</option>
-                                    </select>
+                                    <v-select v-model="cargo_time.selected" :options="cargo_time.options"
+                                              maxHeight="200px"
+                                              class="calc__dropdown calc__dropdown--cargo-time">
+                                    </v-select>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +242,28 @@
         data() {
             return {
                 loaders: {
-                    selected: "none"
+                    selected: {id: 0, label: 'Нет'},
+                    options: [
+                        {id: 0, label: 'Нет'},
+                        {id: 1, label: '1'},
+                        {id: 2, label: '2'},
+                        {id: 3, label: '3'},
+                        {id: 4, label: '4'}
+                    ]
+                },
+                cargo_time: {
+                    selected: {id: 0, label: 'Нет'},
+                    options: [
+                        {id: 0, label: 'Нет'},
+                        {id: 1, label: '1 час'},
+                        {id: 2, label: '2 часа'},
+                        {id: 3, label: '3 часа'},
+                        {id: 4, label: '4 часа'},
+                        {id: 5, label: '5 часов'},
+                        {id: 6, label: '6 часов'},
+                        {id: 7, label: '7 часов'},
+                        {id: 8, label: '8 часов'},
+                    ]
                 }
             }
         }
