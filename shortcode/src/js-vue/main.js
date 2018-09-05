@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from '../components/App.vue'
-import vSelect from 'vue-select'
-Vue.component('v-select', vSelect)
+import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue);
 
 new Vue({
     el: '#cargo-calc',

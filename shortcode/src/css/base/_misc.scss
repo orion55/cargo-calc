@@ -101,6 +101,19 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.custom-select {
+  height: 35px;
+  option:hover {
+    background-color: $color-main;
+  }
+}
+
+.custom-select:focus {
+  border-color: $color-main;
+  box-shadow: 0 0 3px $color-main;
+  background-color: white !important;
+}
+
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {
   .page {
     width: 100%;

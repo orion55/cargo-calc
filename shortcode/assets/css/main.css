@@ -125,6 +125,20 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.custom-select {
+  height: 35px;
+}
+
+.custom-select option:hover {
+  background-color: #90B630;
+}
+
+.custom-select:focus {
+  border-color: #90B630;
+  box-shadow: 0 0 3px #90B630;
+  background-color: white !important;
+}
+
 .calc {
   font-family: 'Roboto', sans-serif;
   max-width: 1150px;

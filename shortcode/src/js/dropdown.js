@@ -1,15 +1,14 @@
 jQuery(document).ready(function ($) {
-    $('.calc__dropdown--loaders').select2(
+    /*$('.calc__dropdown--loaders').select2(
         {
             width: '100%'
         }
-    );
+    );*/
     $('.calc__dropdown--cargo-time').select2(
         {
             width: '100%'
         }
     );
-
     function formatState(state) {
         if (!state.id) {
             return state.text;

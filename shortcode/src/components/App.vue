@@ -3,9 +3,7 @@
         <div class="calc" id="calc-shipment">
             <div class="calc__head">
                 <div class="calc__title">Заказ грузового такси
-                    <!--<v-select v-model="selected" :options="options"
-                              class="calc__dropdown"></v-select>
-                    {{selected.id}}-->
+                    <!--<b-alert show>Default Alert</b-alert>-->
                 </div>
                 <div class="calc__title calc__title--links">
                     <a href="#" class="calc__link--undo hvr-pop">
@@ -136,13 +134,13 @@
                             <div class="calc__holder">
                                 <div class="calc__inner">
                                     <div class="calc__desc calc__desc--cargo">Грузчики</div>
-                                    <select class="calc__dropdown calc__dropdown--loaders">
-                                        <option value="none">Нет</option>
+                                    <b-form-select v-model="loaders.selected" class="calc__dropdown calc__dropdown--loaders" >
+                                        <option value="none" default>Нет</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
-                                    </select>
+                                    </b-form-select>
                                     <div class="calc__desc calc__desc--cargo-time">Время работы</div>
                                     <select class="calc__dropdown calc__dropdown--cargo-time">
                                         <option value="none">нет</option>
@@ -253,13 +251,9 @@
         name: 'app',
         data() {
             return {
-                msg: 'Welcome to Your Vue.js App',
-                options: [
-                    {id: 1, label: 'foo'},
-                    {id: 3, label: 'bar'},
-                    {id: 2, label: 'baz'},
-                ],
-                selected: {id: 3, label: 'bar'}
+                loaders: {
+                    selected: "none"
+                }
             }
         }
     }
