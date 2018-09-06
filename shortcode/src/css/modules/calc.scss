@@ -68,8 +68,8 @@
   }
 
   .calc__stage--three {
-    //margin-top: 20px;
     padding-bottom: 40px;
+    z-index: 0;
   }
 
   .calc__row--one {
@@ -152,26 +152,6 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-  }
-
-  .calc__pre--from {
-    position: absolute;
-    background-image: url(../img/from-arrow.jpg);
-    width: 17px;
-    height: 51px;
-    top: 13px;
-    left: -20px;
-    margin-left: 26px;
-  }
-
-  .calc__pre--to {
-    position: absolute;
-    background-image: url(../img/to-arrow.jpg);
-    width: 13px;
-    height: 15px;
-    top: 14px;
-    left: -20px;
-    margin-left: 26px;
   }
 
   .calc__input {
@@ -642,6 +622,43 @@
   }
   div.calc__dropdown--durability {
     width: 55%;
+  }
+  .multiselect {
+    min-height: 33px;
+  }
+  .multiselect__tags {
+    min-height: 33px;
+    padding: 3px 33px 0 5px;
+    border: 1px solid rgba(60, 60, 60, .26);
+  }
+  .multiselect__select {
+    height: 33px;
+  }
+  .multiselect__content-wrapper {
+    z-index: 40;
+  }
+  .multiselect__element {
+    margin-bottom: 0;
+    z-index: 100;
+  }
+  .multiselect__option--selected.multiselect__option--highlight {
+    background: $color-two;
+  }
+  .multiselect__content {
+    margin: 0;
+    list-style: none;
+    display: inline-block;
+    z-index: 100;
+  }
+  .multiselect__option--highlight {
+    background: $color-main;
+  }
+  .multiselect__select {
+    top: 4px;
+  }
+  .multiselect__single{
+    margin-bottom: 0;
+    padding-top: 3px;
   }
 }
 

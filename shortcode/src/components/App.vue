@@ -3,7 +3,6 @@
         <div class="calc" id="calc-shipment">
             <div class="calc__head">
                 <div class="calc__title">Заказ грузового такси
-                    <!--<b-alert show>Default Alert</b-alert>-->
                 </div>
                 <div class="calc__title calc__title--links">
                     <a href="#" class="calc__link--undo hvr-pop">
@@ -134,15 +133,15 @@
                             <div class="calc__holder">
                                 <div class="calc__inner">
                                     <div class="calc__desc calc__desc--cargo">Грузчики</div>
-                                    <v-select v-model="loaders.selected" :options="loaders.options"
-                                              maxHeight="200px" :searchable=false
-                                              class="calc__dropdown calc__dropdown--loaders">
-                                    </v-select>
+                                    <multiselect v-model="loaders.selected" :options="loaders.options"
+                                                 label="label" track-by="id" :searchable="false"
+                                                 :show-labels="false" :maxHeight="200"
+                                                 class="calc__dropdown calc__dropdown--loaders"></multiselect>
                                     <div class="calc__desc calc__desc--cargo-time">Время работы</div>
-                                    <v-select v-model="cargo_time.selected" :options="cargo_time.options"
-                                              maxHeight="200px" :searchable=false
-                                              class="calc__dropdown calc__dropdown--cargo-time">
-                                    </v-select>
+                                    <multiselect v-model="cargo_time.selected" :options="cargo_time.options"
+                                                 label="label" track-by="id" :searchable="false"
+                                                 :show-labels="false" :maxHeight="200"
+                                                 class="calc__dropdown calc__dropdown--cargo-time"></multiselect>
                                 </div>
                             </div>
                         </div>
@@ -170,9 +169,10 @@
                         <div class="calc__row calc__row--four">
                             <div class="calc__item calc__item--five">
                                 <div class="calc__desc calc__desc--time">Время подачи</div>
-                                <v-select v-model="time_delivery.selected" :options="time_delivery.options" :searchable=false
-                                          class="calc__dropdown calc__dropdown--time">
-                                </v-select>
+                                <multiselect v-model="time_delivery.selected" :options="time_delivery.options"
+                                             label="label" track-by="id" :searchable="false"
+                                             :show-labels="false" :maxHeight="200"
+                                             class="calc__dropdown calc__dropdown--time"></multiselect>
                             </div>
                             <div class="calc__item calc__item--six">
                                 <i class="far fa-calendar-alt calc__icon"></i>
@@ -181,9 +181,13 @@
                             </div>
                             <div class="calc__item calc__item--seven">
                                 <div class="calc__desc calc__desc--durability">Длительность заказа</div>
-                                <v-select v-model="durability.selected" :options="durability.options" :searchable=false
-                                          class="calc__dropdown calc__dropdown--durability">
-                                </v-select>
+                                <multiselect v-model="durability.selected" :options="durability.options"
+                                             label="label" track-by="id" :searchable="false"
+                                             :show-labels="false" :maxHeight="200"
+                                             class="calc__dropdown calc__dropdown--durability"></multiselect>
+                                <!--<v-select v-model="durability.selected" :options="durability.options" :searchable=false
+                                          class="calc__dropdown calc__dropdown&#45;&#45;durability">
+                                </v-select>-->
                             </div>
                             <div class="calc__item calc__item--eight">
                                 <a href="#" class="calc__link--plus">
@@ -233,6 +237,8 @@
         name: 'app',
         data() {
             return {
+                value: '',
+                options: ['Select option', 'options', 'selected', 'mulitple', 'label', 'searchable', 'clearOnSelect', 'hideSelected', 'maxHeight', 'allowEmpty', 'showLabels', 'onChange', 'touched'],
                 loaders: {
                     selected: {id: 0, label: 'Нет'},
                     options: [
@@ -258,9 +264,9 @@
                     ]
                 },
                 time_delivery: {
-                    selected: {id: 0, label: 'Срочная (в течении 30 минут)'},
+                    selected: {id: 0, label: 'Срочная (30 минут)'},
                     options: [
-                        {id: 0, label: 'Срочная (в течении 30 минут)'},
+                        {id: 0, label: 'Срочная (30 минут)'},
                         {id: 1, label: 'Плановая'}
                     ]
                 },

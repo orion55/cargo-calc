@@ -207,6 +207,7 @@ body {
 
 #calc-shipment .calc__stage--three {
   padding-bottom: 40px;
+  z-index: 0;
 }
 
 #calc-shipment .calc__row--one {
@@ -286,26 +287,6 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-}
-
-#calc-shipment .calc__pre--from {
-  position: absolute;
-  background-image: url(../img/from-arrow.jpg);
-  width: 17px;
-  height: 51px;
-  top: 13px;
-  left: -20px;
-  margin-left: 26px;
-}
-
-#calc-shipment .calc__pre--to {
-  position: absolute;
-  background-image: url(../img/to-arrow.jpg);
-  width: 13px;
-  height: 15px;
-  top: 14px;
-  left: -20px;
-  margin-left: 26px;
 }
 
 #calc-shipment .calc__input {
@@ -792,6 +773,53 @@ body {
 
 #calc-shipment div.calc__dropdown--durability {
   width: 55%;
+}
+
+#calc-shipment .multiselect {
+  min-height: 33px;
+}
+
+#calc-shipment .multiselect__tags {
+  min-height: 33px;
+  padding: 3px 33px 0 5px;
+  border: 1px solid rgba(60, 60, 60, 0.26);
+}
+
+#calc-shipment .multiselect__select {
+  height: 33px;
+}
+
+#calc-shipment .multiselect__content-wrapper {
+  z-index: 40;
+}
+
+#calc-shipment .multiselect__element {
+  margin-bottom: 0;
+  z-index: 100;
+}
+
+#calc-shipment .multiselect__option--selected.multiselect__option--highlight {
+  background: #385620;
+}
+
+#calc-shipment .multiselect__content {
+  margin: 0;
+  list-style: none;
+  display: inline-block;
+  z-index: 100;
+}
+
+#calc-shipment .multiselect__option--highlight {
+  background: #90B630;
+}
+
+#calc-shipment .multiselect__select {
+  top: 4px;
+}
+
+#calc-shipment .multiselect__single {
+  margin-bottom: 0;
+  padding-top: 3px;
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {
