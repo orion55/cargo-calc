@@ -779,6 +779,19 @@ body {
   text-decoration: none;
   padding: 3px 20px 3px 13px;
   line-height: 1.42857143;
+  margin: 0;
+}
+
+#calc-shipment .v-select .dropdown-menu li {
+  margin-bottom: 0;
+}
+
+#calc-shipment div.calc__dropdown--time {
+  width: 70%;
+}
+
+#calc-shipment div.calc__dropdown--durability {
+  width: 55%;
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {

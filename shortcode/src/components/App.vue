@@ -135,12 +135,12 @@
                                 <div class="calc__inner">
                                     <div class="calc__desc calc__desc--cargo">Грузчики</div>
                                     <v-select v-model="loaders.selected" :options="loaders.options"
-                                              maxHeight="200px"
+                                              maxHeight="200px" :searchable=false
                                               class="calc__dropdown calc__dropdown--loaders">
                                     </v-select>
                                     <div class="calc__desc calc__desc--cargo-time">Время работы</div>
                                     <v-select v-model="cargo_time.selected" :options="cargo_time.options"
-                                              maxHeight="200px"
+                                              maxHeight="200px" :searchable=false
                                               class="calc__dropdown calc__dropdown--cargo-time">
                                     </v-select>
                                 </div>
@@ -170,10 +170,9 @@
                         <div class="calc__row calc__row--four">
                             <div class="calc__item calc__item--five">
                                 <div class="calc__desc calc__desc--time">Время подачи</div>
-                                <select class="calc__dropdown calc__dropdown--time">
-                                    <option value="1">Срочная (в течении 30 минут)</option>
-                                    <option value="2">Плановая</option>
-                                </select>
+                                <v-select v-model="time_delivery.selected" :options="time_delivery.options" :searchable=false
+                                          class="calc__dropdown calc__dropdown--time">
+                                </v-select>
                             </div>
                             <div class="calc__item calc__item--six">
                                 <i class="far fa-calendar-alt calc__icon"></i>
@@ -182,16 +181,9 @@
                             </div>
                             <div class="calc__item calc__item--seven">
                                 <div class="calc__desc calc__desc--durability">Длительность заказа</div>
-                                <select class="calc__dropdown calc__dropdown--durability">
-                                    <option value="1">1 час</option>
-                                    <option value="2">2 часа</option>
-                                    <option value="3">3 часа</option>
-                                    <option value="4">4 часа</option>
-                                    <option value="5">5 часов</option>
-                                    <option value="6">6 часов</option>
-                                    <option value="7">7 часов</option>
-                                    <option value="8">8 часов</option>
-                                </select>
+                                <v-select v-model="durability.selected" :options="durability.options" :searchable=false
+                                          class="calc__dropdown calc__dropdown--durability">
+                                </v-select>
                             </div>
                             <div class="calc__item calc__item--eight">
                                 <a href="#" class="calc__link--plus">
@@ -262,7 +254,27 @@
                         {id: 5, label: '5 часов'},
                         {id: 6, label: '6 часов'},
                         {id: 7, label: '7 часов'},
-                        {id: 8, label: '8 часов'},
+                        {id: 8, label: '8 часов'}
+                    ]
+                },
+                time_delivery: {
+                    selected: {id: 0, label: 'Срочная (в течении 30 минут)'},
+                    options: [
+                        {id: 0, label: 'Срочная (в течении 30 минут)'},
+                        {id: 1, label: 'Плановая'}
+                    ]
+                },
+                durability: {
+                    selected: {id: 1, label: '1 час'},
+                    options: [
+                        {id: 1, label: '1 час'},
+                        {id: 2, label: '2 часа'},
+                        {id: 3, label: '3 часа'},
+                        {id: 4, label: '4 часа'},
+                        {id: 5, label: '5 часов'},
+                        {id: 6, label: '6 часов'},
+                        {id: 7, label: '7 часов'},
+                        {id: 8, label: '8 часов'}
                     ]
                 }
             }

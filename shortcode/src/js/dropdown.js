@@ -39,15 +39,15 @@ jQuery(document).ready(function ($) {
         }
     );
 
-    $('.calc__dropdown--time').select2(
+    /*$('.calc__dropdown--time').select2(
         {
             width: '70%'
         }
-    );
+    );*/
 
-    $('.calc__dropdown--durability').select2(
+    /*$('.calc__dropdown--durability').select2(
         {
             width: '55%'
         }
-    );
+    );*/
 });

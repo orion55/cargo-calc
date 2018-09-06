@@ -33,11 +33,15 @@ jQuery(document).ready(function ($) {
         width: '85%'
     });
 
-    $('.calc__dropdown--time').select2({
-        width: '70%'
-    });
+    /*$('.calc__dropdown--time').select2(
+        {
+            width: '70%'
+        }
+    );*/
 
-    $('.calc__dropdown--durability').select2({
-        width: '55%'
-    });
+    /*$('.calc__dropdown--durability').select2(
+        {
+            width: '55%'
+        }
+    );*/
 });

@@ -632,6 +632,16 @@
     text-decoration: none;
     padding: 3px 20px 3px 13px;
     line-height: 1.42857143;
+    margin: 0;
+  }
+  .v-select .dropdown-menu li {
+    margin-bottom: 0;
+  }
+  div.calc__dropdown--time {
+    width: 70%;
+  }
+  div.calc__dropdown--durability {
+    width: 55%;
   }
 }
 
