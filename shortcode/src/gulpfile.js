@@ -116,6 +116,10 @@ gulp.task('vue-build', function () {
         .pipe(shell('cross-env NODE_ENV=production browserify -g envify js-vue/main.js | uglifyjs -c warnings=false -m > ../assets/js/build.js'))
 });
 
+gulp.task('vue-build-production-task', function () {
+    return runSequence('vue-build', 'deploy-ftp');
+});
+
 gulp.task('vue-build-task', function () {
     return runSequence('vue', 'deploy-ftp');
 });
