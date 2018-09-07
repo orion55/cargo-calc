@@ -27,22 +27,7 @@
                             <div class="calc__item calc__item--one">
                                 <div class="calc__box-select">
                                     <div class="calc__desc">Откуда</div>
-                                    <!--<select class="calc__dropdown calc__dropdown&#45;&#45;from">
-                                        <optgroup label="г. Тольятти">
-                                            <option value="area01">Автозаводский р-н</option>
-                                            <option value="area02" selected>Центральный р-н</option>
-                                            <option value="area03">Комсомольский р-н</option>
-                                            <option value="area04">Жиг.море\Шлюзовый</option>
-                                        </optgroup>
-                                        <optgroup label="Пригород">
-                                            <option value="area05">Ягодное</option>
-                                            <option value="area06">Тимофеевка</option>
-                                            <option value="area07">Русская Борковка</option>
-                                            <option value="area08">Ниж. Санчелеево</option>
-                                            <option value="area09">Верх. Санчелеево</option>
-                                        </optgroup>
-                                    </select>-->
-                                    <multiselect v-model="address_from.selected" :options="address_from.options"
+                                    <multiselect v-model="address_from.selected" :options="address.options"
                                                  label="name" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="350"
                                                  group-values="area" group-label="place"
@@ -61,21 +46,11 @@
                             <div class="calc__item calc__item--two">
                                 <div class="calc__box-select">
                                     <div class="calc__desc">Куда</div>
-                                    <select class="calc__dropdown calc__dropdown--to">
-                                        <optgroup label="г. Тольятти">
-                                            <option value="area01">Автозаводский р-н</option>
-                                            <option value="area02" selected>Центральный р-н</option>
-                                            <option value="area03">Комсомольский р-н</option>
-                                            <option value="area04">Жиг.море\Шлюзовый</option>
-                                        </optgroup>
-                                        <optgroup label="Пригород">
-                                            <option value="area05">Ягодное</option>
-                                            <option value="area06">Тимофеевка</option>
-                                            <option value="area07">Русская Борковка</option>
-                                            <option value="area08">Ниж. Санчелеево</option>
-                                            <option value="area09">Верх. Санчелеево</option>
-                                        </optgroup>
-                                    </select>
+                                    <multiselect v-model="address_to.selected" :options="address.options"
+                                                 label="name" track-by="id" :searchable="false"
+                                                 :show-labels="false" :maxHeight="350"
+                                                 group-values="area" group-label="place"
+                                                 class="calc__dropdown calc__dropdown--to"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value="" class="calc__input calc__input--street"
@@ -119,20 +94,25 @@
                                         <i class="fas fa-info-circle calc__icon"></i>
                                     </a>
                                     <div class="calc__picture">
-                                        <img src="http://master-gruzov.ru/wp-content/plugins/cargo-calc/shortcode/assets/img/car/car01.jpg"
-                                             alt="car01" class="calc__img">
+                                        <img :src ="wp_data.plugin_dir_url + car.selected.picture" alt="props.option.name"
+                                             class="calc__img">
                                     </div>
-                                    <div class="calc__heading">Ларгус/пикап</div>
+                                    <div class="calc__heading">{{car.selected.name}}</div>
                                 </div>
                                 <div class="calc__selectbox">
-                                    <select class="calc__dropdown calc__dropdown--selectbox" size="4">
-                                        <option value="car01" selected>Ларгус/пикап</option>
-                                        <option value="car02">Газель 3 метра</option>
-                                        <option value="car02">Газель 4 метра</option>
-                                        <option value="car03">Isuzu 6 метров</option>
-                                        <option value="car04">Man 6-7 метров</option>
-                                        <option value="car04">Man 7-8 метров</option>
-                                    </select>
+                                    <multiselect v-model="car.selected" :options="car.options"
+                                                 label="name" track-by="id" :searchable="false"
+                                                 :show-labels="false" :maxHeight="270"
+                                                 :option-height="58"
+                                                 class="calc__dropdown calc__dropdown--selectbox">
+                                        <template slot="option" slot-scope="props">
+                                            <div class="item-down">
+                                                <img :src="wp_data.plugin_dir_url + props.option.picture"
+                                                     class="item-down--img" :alt="props.option.name"/>
+                                                <div class="item-down--text">{{ props.option.name }}</div>
+                                            </div>
+                                        </template>
+                                    </multiselect>
                                 </div>
                             </div>
                             <div class="calc__holder">
@@ -231,12 +211,13 @@
                 </div>
             </div>
         </div>
-        <!--{{info.data}}-->
+        <!--{{car.selected}}-->
     </form>
 </template>
 
 <script>
     import axios from 'axios';
+    import _ from 'lodash';
 
     export default {
         name: 'app',
@@ -292,54 +273,31 @@
                     ]
                 },
                 address_from: {
-                    selected: {},
+                    selected: {"id": 1, "name": "Центральный р-н"}
+                },
+                address_to: {
+                    selected: {"id": 1, "name": "Центральный р-н"}
+                },
+                address: {
                     options: [{
                         place: 'г. Тольятти',
-                        area: [
-                            {
-                                "id": 0,
-                                "name": "Автозаводский р-н"
-                            },
-                            {
-                                "id": 1,
-                                "name": "Центральный р-н"
-                            },
-                            {
-                                "id": 2,
-                                "name": "Комсомольский р-н"
-                            },
-                            {
-                                "id": 3,
-                                "name": "Жиг.море\\Шлюзовый"
-                            }
-                        ]
+                        area: []
                     },
                         {
                             place: 'Пригород',
-                            area: [
-                                {
-                                    "id": 10,
-                                    "name": "Ягодное"
-                                },
-                                {
-                                    "id": 11,
-                                    "name": "Тимофеевка"
-                                },
-                                {
-                                    "id": 12,
-                                    "name": "Русская Борковка"
-                                },
-                                {
-                                    "id": 13,
-                                    "name": "Ниж. Санчелеево"
-                                },
-                                {
-                                    "id": 14,
-                                    "name": "Верх. Санчелеево"
-                                }
-                            ]
+                            area: []
                         }
                     ]
+                },
+                car: {
+                    selected: {
+                        "id": 0,
+                        "name": "Ларгус/пикап",
+                        "picture": "assets/img/car/car01.jpg",
+                        "size": "1,7м * 1,2м * 1м",
+                        "carrying": "700 кг"
+                    },
+                    options: []
                 }
             }
         },
@@ -353,7 +311,28 @@
                 .get(wp_data.plugin_dir_url + 'assets/price1.json')
                 .then(response => {
                     this.info.data = response.data;
-                    console.log(this.info.data.metadata.area);
+
+                    //Заполняем пункты назначения
+                    let filterArray = _.filter(this.info.data.metadata.area, (item) => {
+                        return item.id < 10;
+                    });
+                    _.forEach(filterArray, (item) => {
+                        this.address.options[0].area.push(item);
+                    });
+                    filterArray = _.filter(this.info.data.metadata.area, (item) => {
+                        return item.id >= 10;
+                    });
+                    filterArray = _.sortBy(filterArray, [(item) => {
+                        return item.name;
+                    }]);
+                    _.forEach(filterArray, (item) => {
+                        this.address.options[1].area.push(item);
+                    });
+
+                    //Заполняем список автомобилей
+                    _.forEach(this.info.data.metadata.car, (item) => {
+                        this.car.options.push(item);
+                    });
                 })
                 .catch(error => {
                     console.log(error);

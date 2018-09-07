@@ -656,13 +656,17 @@
   .multiselect__select {
     top: 2px;
   }
-  .multiselect__single{
+  .multiselect__single {
     margin-bottom: 0;
     padding-top: 3px;
   }
-  .calc__dropdown--from{
+  .calc__dropdown--from, .calc__dropdown--to {
     width: 85%;
   }
+  .calc__dropdown--selectbox {
+    width: 100%;
+  }
+
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1199px) {

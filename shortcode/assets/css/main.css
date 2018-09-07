@@ -822,8 +822,13 @@ body {
   padding-top: 3px;
 }
 
-#calc-shipment .calc__dropdown--from {
+#calc-shipment .calc__dropdown--from,
+#calc-shipment .calc__dropdown--to {
   width: 85%;
+}
+
+#calc-shipment .calc__dropdown--selectbox {
+  width: 100%;
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {
