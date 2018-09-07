@@ -654,11 +654,14 @@
     background: $color-main;
   }
   .multiselect__select {
-    top: 4px;
+    top: 2px;
   }
   .multiselect__single{
     margin-bottom: 0;
     padding-top: 3px;
+  }
+  .calc__dropdown--from{
+    width: 85%;
   }
 }
 

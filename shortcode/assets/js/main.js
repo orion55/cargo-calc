@@ -25,9 +25,11 @@ jQuery(document).ready(function ($) {
         templateResult: formatState
     });
 
-    $('.calc__dropdown--from').select2({
-        width: '85%'
-    });
+    /* $('.calc__dropdown--from').select2(
+         {
+             width: '85%'
+         }
+     );*/
 
     $('.calc__dropdown--to').select2({
         width: '85%'

@@ -814,12 +814,16 @@ body {
 }
 
 #calc-shipment .multiselect__select {
-  top: 4px;
+  top: 2px;
 }
 
 #calc-shipment .multiselect__single {
   margin-bottom: 0;
   padding-top: 3px;
+}
+
+#calc-shipment .calc__dropdown--from {
+  width: 85%;
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {

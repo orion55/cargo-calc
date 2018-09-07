@@ -27,11 +27,11 @@ jQuery(document).ready(function ($) {
         }
     );
 
-    $('.calc__dropdown--from').select2(
+   /* $('.calc__dropdown--from').select2(
         {
             width: '85%'
         }
-    );
+    );*/
 
     $('.calc__dropdown--to').select2(
         {

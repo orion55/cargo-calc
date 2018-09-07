@@ -27,7 +27,7 @@
                             <div class="calc__item calc__item--one">
                                 <div class="calc__box-select">
                                     <div class="calc__desc">Откуда</div>
-                                    <select class="calc__dropdown calc__dropdown--from">
+                                    <!--<select class="calc__dropdown calc__dropdown&#45;&#45;from">
                                         <optgroup label="г. Тольятти">
                                             <option value="area01">Автозаводский р-н</option>
                                             <option value="area02" selected>Центральный р-н</option>
@@ -41,7 +41,12 @@
                                             <option value="area08">Ниж. Санчелеево</option>
                                             <option value="area09">Верх. Санчелеево</option>
                                         </optgroup>
-                                    </select>
+                                    </select>-->
+                                    <multiselect v-model="address_from.selected" :options="address_from.options"
+                                                 label="name" track-by="id" :searchable="false"
+                                                 :show-labels="false" :maxHeight="350"
+                                                 group-values="area" group-label="place"
+                                                 class="calc__dropdown calc__dropdown--from"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value="" class="calc__input calc__input--street"
@@ -185,9 +190,6 @@
                                              label="label" track-by="id" :searchable="false"
                                              :show-labels="false" :maxHeight="200"
                                              class="calc__dropdown calc__dropdown--durability"></multiselect>
-                                <!--<v-select v-model="durability.selected" :options="durability.options" :searchable=false
-                                          class="calc__dropdown calc__dropdown&#45;&#45;durability">
-                                </v-select>-->
                             </div>
                             <div class="calc__item calc__item--eight">
                                 <a href="#" class="calc__link--plus">
@@ -229,16 +231,22 @@
                 </div>
             </div>
         </div>
+        <!--{{info.data}}-->
     </form>
 </template>
 
 <script>
+    import axios from 'axios';
+
     export default {
         name: 'app',
         data() {
             return {
-                value: '',
-                options: ['Select option', 'options', 'selected', 'mulitple', 'label', 'searchable', 'clearOnSelect', 'hideSelected', 'maxHeight', 'allowEmpty', 'showLabels', 'onChange', 'touched'],
+                info: {
+                    data: null,
+                    loading: true,
+                    errored: false,
+                },
                 loaders: {
                     selected: {id: 0, label: 'Нет'},
                     options: [
@@ -282,8 +290,76 @@
                         {id: 7, label: '7 часов'},
                         {id: 8, label: '8 часов'}
                     ]
+                },
+                address_from: {
+                    selected: {},
+                    options: [{
+                        place: 'г. Тольятти',
+                        area: [
+                            {
+                                "id": 0,
+                                "name": "Автозаводский р-н"
+                            },
+                            {
+                                "id": 1,
+                                "name": "Центральный р-н"
+                            },
+                            {
+                                "id": 2,
+                                "name": "Комсомольский р-н"
+                            },
+                            {
+                                "id": 3,
+                                "name": "Жиг.море\\Шлюзовый"
+                            }
+                        ]
+                    },
+                        {
+                            place: 'Пригород',
+                            area: [
+                                {
+                                    "id": 10,
+                                    "name": "Ягодное"
+                                },
+                                {
+                                    "id": 11,
+                                    "name": "Тимофеевка"
+                                },
+                                {
+                                    "id": 12,
+                                    "name": "Русская Борковка"
+                                },
+                                {
+                                    "id": 13,
+                                    "name": "Ниж. Санчелеево"
+                                },
+                                {
+                                    "id": 14,
+                                    "name": "Верх. Санчелеево"
+                                }
+                            ]
+                        }
+                    ]
                 }
             }
+        },
+        computed: {
+            wp_data: function () {
+                return window.wp_data;
+            }
+        },
+        mounted() {
+            axios
+                .get(wp_data.plugin_dir_url + 'assets/price1.json')
+                .then(response => {
+                    this.info.data = response.data;
+                    console.log(this.info.data.metadata.area);
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.info.errored = true;
+                })
+                .finally(() => (this.info.loading = false));
         }
     }
 </script>
