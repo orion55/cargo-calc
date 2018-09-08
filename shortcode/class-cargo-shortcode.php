@@ -26,7 +26,7 @@ class Cargo_Shortcode
     static function register_script()
     {
         $url = plugin_dir_url(__FILE__);
-        wp_register_style('fontawesome', 'https://use.fontawesome.com/releases/v5.3.1/css/all.css', array(), time(), 'all');
+        wp_register_style('fontawesome', plugin_dir_url(__FILE__) . 'assets/css/fontawesome.all.min.css', array(), time(), 'all');
 //        wp_register_style('bootstrap', plugin_dir_url(__FILE__) . 'assets/css/bootstrap.min.css', array(), time(), 'all');
 //        wp_register_style('bootstrap-vue', plugin_dir_url(__FILE__) . 'assets/css/bootstrap-vue.min.css', array(), time(), 'all');
         wp_register_style('vue-multiselect', plugin_dir_url(__FILE__) . 'assets/css/vue-multiselect.min.css', array(), time(), 'all');

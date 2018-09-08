@@ -94,7 +94,8 @@
                                         <i class="fas fa-info-circle calc__icon"></i>
                                     </a>
                                     <div class="calc__picture">
-                                        <img :src ="wp_data.plugin_dir_url + car.selected.picture" alt="props.option.name"
+                                        <img :src="wp_data.plugin_dir_url + car.selected.picture"
+                                             alt="props.option.name"
                                              class="calc__img">
                                     </div>
                                     <div class="calc__heading">{{car.selected.name}}</div>
@@ -155,7 +156,7 @@
                             <div class="calc__item calc__item--five">
                                 <div class="calc__desc calc__desc--time">Время подачи</div>
                                 <multiselect v-model="time_delivery.selected" :options="time_delivery.options"
-                                             label="label" track-by="id" :searchable="false"
+                                             label="name" track-by="id" :searchable="false"
                                              :show-labels="false" :maxHeight="200"
                                              class="calc__dropdown calc__dropdown--time"></multiselect>
                             </div>
@@ -253,11 +254,8 @@
                     ]
                 },
                 time_delivery: {
-                    selected: {id: 0, label: 'Срочная (30 минут)'},
-                    options: [
-                        {id: 0, label: 'Срочная (30 минут)'},
-                        {id: 1, label: 'Плановая'}
-                    ]
+                    selected: {"id": 0, "name": "Срочная (30 минут)"},
+                    options: []
                 },
                 durability: {
                     selected: {id: 1, label: '1 час'},
@@ -332,6 +330,11 @@
                     //Заполняем список автомобилей
                     _.forEach(this.info.data.metadata.car, (item) => {
                         this.car.options.push(item);
+                    });
+
+                    //Заполняем время подачи
+                    _.forEach(this.info.data.metadata.time_delivery, (item) => {
+                        this.time_delivery.options.push(item);
                     });
                 })
                 .catch(error => {

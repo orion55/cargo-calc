@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto");
-
 body {
   background-color: #F9F9F9;
 }
@@ -137,6 +135,41 @@ body {
   border-color: #90B630;
   box-shadow: 0 0 3px #90B630;
   background-color: white !important;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-style: normal;
+  src: url("../webfonts/RobotoRegular/RobotoRegular.eot?#iefix") format("embedded-opentype"), url("../webfonts/RobotoRegular/RobotoRegular.woff") format("woff"), url("../webfonts/RobotoRegular/RobotoRegular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 300;
+  font-style: normal;
+  src: url("../webfonts/Roboto-Light/Roboto-Light.eot?#iefix") format("embedded-opentype"), url("../webfonts/Roboto-Light/Roboto-Light.woff") format("woff"), url("../webfonts/Roboto-Light/Roboto-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 100;
+  font-style: normal;
+  src: url("../webfonts/Roboto-Thin/Roboto-Thin.eot?#iefix") format("embedded-opentype"), url("../webfonts/Roboto-Thin/Roboto-Thin.woff") format("woff"), url("../webfonts/Roboto-Thin/Roboto-Thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-style: normal;
+  src: url("../webfonts/Roboto-Medium/Roboto-Medium.eot?#iefix") format("embedded-opentype"), url("../webfonts/Roboto-Medium/Roboto-Medium.woff") format("woff"), url("../webfonts/Roboto-Medium/Roboto-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 700;
+  font-style: normal;
+  src: url("../webfonts/Roboto-Bold/Roboto-Bold.eot?#iefix") format("embedded-opentype"), url("../webfonts/Roboto-Bold/Roboto-Bold.woff") format("woff"), url("../webfonts/Roboto-Bold/Roboto-Bold.ttf") format("truetype");
 }
 
 .calc {
