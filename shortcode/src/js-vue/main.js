@@ -1,14 +1,12 @@
 import Vue from 'vue'
 import App from '../components/App.vue'
-// import BootstrapVue from 'bootstrap-vue'
-// Vue.use(BootstrapVue);
-
-import vSelect from 'vue-select'
-
-Vue.component('v-select', vSelect);
-
+import Datetime from 'vue-datetime'
 import Multiselect from 'vue-multiselect'
-Vue.component('multiselect', Multiselect)
+import Simplert from 'vue2-simplert'
+
+Vue.component('multiselect', Multiselect);
+Vue.use(Datetime);
+Vue.component('simplert', Simplert);
 
 new Vue({
     el: '#cargo-calc',

@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="calc__row calc__row--three">
-                            <button type="button" class="btn">Продолжить</button>
+                            <button type="button" class="btn" @click="openSimplert">Продолжить</button>
                         </div>
                     </div>
                 </div>
@@ -162,8 +162,11 @@
                             </div>
                             <div class="calc__item calc__item--six">
                                 <i class="far fa-calendar-alt calc__icon"></i>
-                                <input type='text' class='calc__input calc__input--datepicker datepicker-here'
-                                       data-timepicker="true"/>
+                                <datetime type="datetime" v-model="calendar.datetime" class='calc__input--datepicker'
+                                          :phrases="{ok: 'Ok', cancel: 'Выход'}" :minute-step="10"
+                                          :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                                          value-zone="Europe/Samara" :value="calendar.datetime"
+                                ></datetime>
                             </div>
                             <div class="calc__item calc__item--seven">
                                 <div class="calc__desc calc__desc--durability">Длительность заказа</div>
@@ -173,11 +176,12 @@
                                              class="calc__dropdown calc__dropdown--durability"></multiselect>
                             </div>
                             <div class="calc__item calc__item--eight">
-                                <a href="#" class="calc__link--plus">
+                                <a href="#" class="calc__link--plus" @click.prevent="inverseShowNote">
                                     <i class="fas fa-plus calc__icon calc__plus"></i>
                                     <span class="calc__desc calc__desc--plus">Примечание к заказу</span>
                                 </a>
-                                <textarea class='calc__input calc__input--note calc__hide'/></textarea>
+                                <textarea class='calc__input calc__input--note'
+                                          v-show="note.visibility" v-model="note.text"></textarea>
                             </div>
                             <div class="calc__price">
                                 <div class="calc__item calc__item--nine">
@@ -212,13 +216,16 @@
                 </div>
             </div>
         </div>
-        <!--{{car.selected}}-->
+        <simplert :useRadius="true" :useIcon="true" ref="simplert">
+        </simplert>
+        <!--{{note.text}}-->
     </form>
 </template>
 
 <script>
     import axios from 'axios';
     import _ from 'lodash';
+    import {DateTime} from 'luxon';
 
     export default {
         name: 'app',
@@ -296,12 +303,35 @@
                         "carrying": "700 кг"
                     },
                     options: []
+                },
+                calendar: {
+                    datetime: null
+                },
+                note: {
+                    visibility: false,
+                    text: ''
+                },
+                objAlert: {
+                    title: '',
+                    message: '<span style="color:red;">I am HTML</span>',
+                    type: 'info',
+                    customCloseBtnClass: 'btn',
+                    customCloseBtnText: 'Ok'
                 }
             }
         },
         computed: {
             wp_data: function () {
                 return window.wp_data;
+            }
+        },
+        methods: {
+            inverseShowNote: function () {
+                this.note.visibility = !this.note.visibility;
+            },
+            openSimplert: function () {
+                this.objAlert.title = this.car.selected.name;
+                this.$refs.simplert.openSimplert(this.objAlert);
             }
         },
         mounted() {
@@ -336,6 +366,9 @@
                     _.forEach(this.info.data.metadata.time_delivery, (item) => {
                         this.time_delivery.options.push(item);
                     });
+
+                    //устанавливаем время
+                    this.calendar.datetime = DateTime.local().toISO();
                 })
                 .catch(error => {
                     console.log(error);
