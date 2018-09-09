@@ -70,7 +70,7 @@
                                        placeholder="Представьтесь">
                             </div>
                             <div class="calc__item calc__item--four">
-                                <label for="calc__phone" class="calc__label">Телефон</label>
+                                <label for="calc__phone" class="calc__label" ref="phone">Телефон</label>
                                 <input id="calc__phone" value="" class="calc__input calc__input--phone"
                                        placeholder="Ваш номер">
                             </div>
@@ -226,6 +226,7 @@
     import axios from 'axios';
     import _ from 'lodash';
     import {DateTime} from 'luxon';
+    import Inputmask from 'inputmask';
 
     export default {
         name: 'app',
@@ -278,10 +279,16 @@
                     ]
                 },
                 address_from: {
-                    selected: {"id": 1, "name": "Центральный р-н"}
+                    selected: {"id": 1, "name": "Центральный р-н"},
+                    street: '',
+                    house: '',
+                    entrance: ''
                 },
                 address_to: {
-                    selected: {"id": 1, "name": "Центральный р-н"}
+                    selected: {"id": 1, "name": "Центральный р-н"},
+                    street: '',
+                    house: '',
+                    entrance: ''
                 },
                 address: {
                     options: [{
@@ -318,6 +325,13 @@
                     type: 'info',
                     customCloseBtnClass: 'btn btn--modal',
                     customCloseBtnText: 'Ok'
+                },
+                contact: {
+                    name: '',
+                    phone: ''
+                },
+                card: {
+                    serial: ''
                 }
             }
         },
