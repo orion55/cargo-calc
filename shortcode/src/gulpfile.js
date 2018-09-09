@@ -131,4 +131,4 @@ gulp.task('watch', function () {
     gulp.watch('./img/**/*', ['images']);
 });
 
-gulp.task('default', ['sass', 'js', 'images', 'fonts', 'watch']);
+gulp.task('default', ['sass', 'js', 'images', 'watch']);

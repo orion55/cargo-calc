@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="calc__row calc__row--three">
-                            <button type="button" class="btn" @click="openSimplert">Продолжить</button>
+                            <button type="button" class="btn">Продолжить</button>
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                         <div class="calc__box calc__box--car">
                             <div class="calc__container">
                                 <div class="calc__wrapper">
-                                    <a href="#" class="calc__info-link">
+                                    <a href="#" class="calc__info-link" @click="openSimplert">
                                         <i class="fas fa-info-circle calc__icon"></i>
                                     </a>
                                     <div class="calc__picture">
@@ -215,9 +215,9 @@
                     </div>
                 </div>
             </div>
+            <simplert :useRadius="true" :useIcon="true" ref="simplert">
+            </simplert>
         </div>
-        <simplert :useRadius="true" :useIcon="true" ref="simplert">
-        </simplert>
         <!--{{note.text}}-->
     </form>
 </template>
@@ -300,7 +300,8 @@
                         "name": "Ларгус/пикап",
                         "picture": "assets/img/car/car01.jpg",
                         "size": "1,7м * 1,2м * 1м",
-                        "carrying": "700 кг"
+                        "carrying": "700 кг",
+                        "desc": "подходит для загородного переезда, перевозки стройматериалов"
                     },
                     options: []
                 },
@@ -313,9 +314,9 @@
                 },
                 objAlert: {
                     title: '',
-                    message: '<span style="color:red;">I am HTML</span>',
+                    message: '',
                     type: 'info',
-                    customCloseBtnClass: 'btn',
+                    customCloseBtnClass: 'btn btn--modal',
                     customCloseBtnText: 'Ok'
                 }
             }
@@ -331,6 +332,14 @@
             },
             openSimplert: function () {
                 this.objAlert.title = this.car.selected.name;
+                this.objAlert.message = '<div class="calc__modal">' +
+                    '<div class="calc__modal-desc">' + this.car.selected.desc + '</div>' +
+                    '<div class="calc__modal-charater">' +
+                    '<div class="calc__modal-text">Габаритные размеры</div>' +
+                    '<div class="calc__modal-info">' + this.car.selected.size + '</div>' +
+                    '<div class="calc__modal-text">Грузоподъемность</div>' +
+                    '<div class="calc__modal-info">до ' + this.car.selected.carrying + '</div>' +
+                    '</div></div>';
                 this.$refs.simplert.openSimplert(this.objAlert);
             }
         },

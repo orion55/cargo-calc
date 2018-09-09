@@ -137,6 +137,11 @@ body {
   background-color: white !important;
 }
 
+.simplert__title {
+  font-size: 23px;
+  font-family: 'Roboto', sans-serif;
+}
+
 @font-face {
   font-family: 'Roboto';
   font-weight: 400;
@@ -476,7 +481,8 @@ body {
   cursor: pointer;
 }
 
-#calc-shipment .btn {
+#calc-shipment .btn,
+#calc-shipment button.btn {
   display: inline-block;
   text-align: center;
   text-decoration: none;
@@ -512,8 +518,6 @@ body {
 
 #calc-shipment .btn:focus {
   outline: none;
-  /*box-shadow: 0 0 0 3px rgba(129, 170, 33, 0.5),
-    0 0 0 1.5px rgba(129, 170, 33, 0.5);*/
 }
 
 #calc-shipment .calc__container {
@@ -884,6 +888,24 @@ body {
 
 #calc-shipment .calc__dropdown--selectbox {
   width: 100%;
+}
+
+#calc-shipment .calc__modal-desc {
+  padding-bottom: 30px;
+  font-size: 17px;
+  line-height: 21px;
+}
+
+#calc-shipment .calc__modal-charater {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#calc-shipment .calc__modal-text {
+  padding-bottom: 10px;
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {
