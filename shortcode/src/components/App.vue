@@ -29,17 +29,17 @@
                                     <div class="calc__desc">Откуда</div>
                                     <multiselect v-model="address_from.selected" :options="address.options"
                                                  label="name" track-by="id" :searchable="false"
-                                                 :show-labels="false" :maxHeight="350"
+                                                 :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--from"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value="" class="calc__input calc__input--street"
-                                           placeholder="Улица">
+                                           placeholder="Улица" v-model="address_from.street">
                                     <input type="text" value="" class="calc__input calc__input--house"
-                                           placeholder="Дом">
+                                           placeholder="Дом" v-model="address_from.house">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
-                                           placeholder="Под">
+                                           placeholder="Под" v-model="address_from.entrance">
                                     <div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>
                                 </div>
                             </div>
@@ -48,17 +48,17 @@
                                     <div class="calc__desc">Куда</div>
                                     <multiselect v-model="address_to.selected" :options="address.options"
                                                  label="name" track-by="id" :searchable="false"
-                                                 :show-labels="false" :maxHeight="350"
+                                                 :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--to"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value="" class="calc__input calc__input--street"
-                                           placeholder="Улица">
+                                           placeholder="Улица" v-model="address_to.street">
                                     <input type="text" value="" class="calc__input calc__input--house"
-                                           placeholder="Дом">
+                                           placeholder="Дом" v-model="address_to.house">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
-                                           placeholder="Под">
+                                           placeholder="Под" v-model="address_to.entrance">
                                     <div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>
                                 </div>
                             </div>
@@ -67,12 +67,12 @@
                             <div class="calc__item calc__item--three">
                                 <label for="calc__name" class="calc__label">Имя</label>
                                 <input id="calc__name" value="" class="calc__input calc__input--name"
-                                       placeholder="Представьтесь">
+                                       placeholder="Представьтесь" v-model="contact.name">
                             </div>
                             <div class="calc__item calc__item--four">
-                                <label for="calc__phone" class="calc__label" ref="phone">Телефон</label>
+                                <label for="calc__phone" class="calc__label">Телефон</label>
                                 <input id="calc__phone" value="" class="calc__input calc__input--phone"
-                                       placeholder="Ваш номер">
+                                       placeholder="Ваш номер" v-model="contact.phone" ref="phone">
                             </div>
                         </div>
                         <div class="calc__row calc__row--three">
@@ -139,7 +139,7 @@
                         </div>
                         <div class="calc__box calc__box--client">
                             <div class="calc__desc calc__desc--client">Номер карты постоянного клиента</div>
-                            <input class="calc__input calc__input--number">
+                            <input class="calc__input calc__input--number" v-model="card.serial" ref="card">
                             <button type="button" class="btn btn--client">Проверить</button>
                         </div>
                     </div>
@@ -218,7 +218,7 @@
             <simplert :useRadius="true" :useIcon="true" ref="simplert">
             </simplert>
         </div>
-        <!--{{note.text}}-->
+        <!--{{contact}}-->
     </form>
 </template>
 
@@ -392,6 +392,13 @@
 
                     //устанавливаем время
                     this.calendar.datetime = DateTime.local().toISO();
+
+                    //устанавливаем маску телефона
+                    let im = new Inputmask("+7 (999) 999 99 99");
+                    im.mask(this.$refs.phone);
+
+                    let im1 = new Inputmask("99999-99999");
+                    im1.mask(this.$refs.card);
                 })
                 .catch(error => {
                     console.log(error);
