@@ -31,7 +31,8 @@
                                                  label="name" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
-                                                 class="calc__dropdown calc__dropdown--from"></multiselect>
+                                                 class="calc__dropdown calc__dropdown--from"
+                                                 :allow-empty="false"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text"
@@ -52,7 +53,8 @@
                                                  label="name" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
-                                                 class="calc__dropdown calc__dropdown--to"></multiselect>
+                                                 class="calc__dropdown calc__dropdown--to"
+                                                 :allow-empty="false"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value=""
@@ -85,9 +87,15 @@
                             </div>
                         </div>
                         <div class="calc__row calc__row--three">
-                            <button type="button" class="btn" @click.prevent="validateContact" ref="btnContinue">
+                            <button type="button" class="btn" @click.prevent="validateContact" ref="btnContinue"
+                                    v-if="formResult">
                                 Продолжить
                             </button>
+                            <div class="calc__desc calc__desc--personal" v-else>
+                                Нажимая кнопку «Оформить заказ», вы соглашаетесь
+                                на <a href="#" class="calc__link calc__link--personal">обработку ваших персональных данных</a>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -116,7 +124,7 @@
                                                  label="name" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="270"
                                                  :option-height="58"
-                                                 class="calc__dropdown calc__dropdown--selectbox">
+                                                 class="calc__dropdown calc__dropdown--selectbox" :allow-empty="false">
                                         <template slot="option" slot-scope="props">
                                             <div class="item-down">
                                                 <img :src="wp_data.plugin_dir_url + props.option.picture"
@@ -133,12 +141,14 @@
                                     <multiselect v-model="loaders.selected" :options="loaders.options"
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
-                                                 class="calc__dropdown calc__dropdown--loaders"></multiselect>
+                                                 class="calc__dropdown calc__dropdown--loaders"
+                                                 :allow-empty="false"></multiselect>
                                     <div class="calc__desc calc__desc--cargo-time">Время работы</div>
                                     <multiselect v-model="cargo_time.selected" :options="cargo_time.options"
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
-                                                 class="calc__dropdown calc__dropdown--cargo-time"></multiselect>
+                                                 class="calc__dropdown calc__dropdown--cargo-time" :allow-empty="false"
+                                    ></multiselect>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +179,8 @@
                                 <multiselect v-model="time_delivery.selected" :options="time_delivery.options"
                                              label="name" track-by="id" :searchable="false"
                                              :show-labels="false" :maxHeight="200"
-                                             class="calc__dropdown calc__dropdown--time"></multiselect>
+                                             class="calc__dropdown calc__dropdown--time"
+                                             @select="dispatchAction" :allow-empty="false"></multiselect>
                             </div>
                             <div class="calc__item calc__item--six">
                                 <i class="far fa-calendar-alt calc__icon"></i>
@@ -184,7 +195,8 @@
                                 <multiselect v-model="durability.selected" :options="durability.options"
                                              label="label" track-by="id" :searchable="false"
                                              :show-labels="false" :maxHeight="200"
-                                             class="calc__dropdown calc__dropdown--durability"></multiselect>
+                                             class="calc__dropdown calc__dropdown--durability"
+                                             :allow-empty="false"></multiselect>
                             </div>
                             <div class="calc__item calc__item--eight">
                                 <a href="#" class="calc__link--plus" @click.prevent="inverseShowNote">
@@ -262,7 +274,7 @@
                     selected: {id: 0, label: 'Нет'},
                     options: [
                         {id: 0, label: 'Нет'},
-                        {id: 1, label: '1 час'},
+                        {id: 1, label: '1 час', $isDisabled: false},
                         {id: 2, label: '2 часа'},
                         {id: 3, label: '3 часа'},
                         {id: 4, label: '4 часа'},
@@ -343,12 +355,16 @@
                 },
                 card: {
                     serial: ''
-                }
+                },
+                formResult: true
             }
         },
         computed: {
             wp_data: function () {
                 return window.wp_data;
+            },
+            cargo_time_disabled: function () {
+                return this.loaders.selected.id === 0;
             }
         },
         methods: {
@@ -370,7 +386,7 @@
             validateContact() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        console.log('Form Submitted!');
+                        this.formResult = !this.formResult;
                         return;
                     }
                     let btnContinue = this.$refs.btnContinue;
@@ -381,6 +397,13 @@
                     }, 1000);
 
                 });
+            },
+            dispatchAction(option) {
+                //отключаем "1 час" время работы грузчиков при Плановой подаче
+                this.cargo_time.options[1].$isDisabled = !!option.id;
+                if (this.cargo_time.selected.id === 1) {
+                    this.cargo_time.selected = this.cargo_time.options[2];
+                }
             }
         },
         mounted() {

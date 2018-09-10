@@ -697,6 +697,14 @@
   .calc__modal-text {
     padding-bottom: 10px;
   }
+  .calc__link--personal {
+    border-bottom: 1px solid #90b630;
+    transition: all .5s ease;
+    &:hover {
+      border-bottom: 1px solid transparent;
+      text-decoration: none;
+    }
+  }
 }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1199px) {
