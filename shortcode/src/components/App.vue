@@ -34,8 +34,10 @@
                                                  class="calc__dropdown calc__dropdown--from"></multiselect>
                                 </div>
                                 <div class="calc__address">
-                                    <input type="text" value="" class="calc__input calc__input--street"
-                                           placeholder="Улица" v-model="address_from.street">
+                                    <input type="text"
+                                           placeholder="Улица" v-model="address_from.street"
+                                           :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-from') }"
+                                           v-validate="'required'" name="calc__street-from">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_from.house">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -53,8 +55,10 @@
                                                  class="calc__dropdown calc__dropdown--to"></multiselect>
                                 </div>
                                 <div class="calc__address">
-                                    <input type="text" value="" class="calc__input calc__input--street"
-                                           placeholder="Улица" v-model="address_to.street">
+                                    <input type="text" value=""
+                                           placeholder="Улица" v-model="address_to.street"
+                                           :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-to') }"
+                                           v-validate="'required'" name="calc__street-to">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_to.house">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -74,12 +78,16 @@
                             </div>
                             <div class="calc__item calc__item--four">
                                 <label for="calc__phone" class="calc__label">Телефон</label>
-                                <input id="calc__phone" value="" class="calc__input calc__input--phone"
-                                       placeholder="Ваш номер" v-model="contact.phone" ref="phone">
+                                <input id="calc__phone"
+                                       :class="{'calc__input': true, 'calc__input--phone': true, 'is-danger': errors.has('calc__phone') }"
+                                       placeholder="Ваш номер" v-model="contact.phone" ref="phone"
+                                       v-validate="'required'" name="calc__phone">
                             </div>
                         </div>
                         <div class="calc__row calc__row--three">
-                            <button type="button" class="btn" @click.prevent="validateContact" ref="btnContinue">Продолжить</button>
+                            <button type="button" class="btn" @click.prevent="validateContact" ref="btnContinue">
+                                Продолжить
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -362,14 +370,13 @@
             validateContact() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
-                        // eslint-disable-next-line
-                        alert('Form Submitted!');
+                        console.log('Form Submitted!');
                         return;
                     }
                     let btnContinue = this.$refs.btnContinue;
                     btnContinue.classList.add('hvr-buzz-out');
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         btnContinue.classList.remove('hvr-buzz-out');
                     }, 1000);
 
