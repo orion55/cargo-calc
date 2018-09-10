@@ -66,8 +66,11 @@
                         <div class="calc__row calc__row--two">
                             <div class="calc__item calc__item--three">
                                 <label for="calc__name" class="calc__label">Имя</label>
-                                <input id="calc__name" value="" class="calc__input calc__input--name"
-                                       placeholder="Представьтесь" v-model="contact.name">
+                                <input id="calc__name" value=""
+                                       :class="{'calc__input': true, 'calc__input--name': true, 'is-danger': errors.has('calc__name') }"
+                                       placeholder="Представьтесь" v-model="contact.name" v-validate="'required|alpha'"
+                                       name="calc__name">
+
                             </div>
                             <div class="calc__item calc__item--four">
                                 <label for="calc__phone" class="calc__label">Телефон</label>
@@ -76,7 +79,7 @@
                             </div>
                         </div>
                         <div class="calc__row calc__row--three">
-                            <button type="button" class="btn">Продолжить</button>
+                            <button type="button" class="btn" @click.prevent="validateContact" ref="btnContinue">Продолжить</button>
                         </div>
                     </div>
                 </div>
@@ -355,6 +358,22 @@
                     '<div class="calc__modal-info">до ' + this.car.selected.carrying + '</div>' +
                     '</div></div>';
                 this.$refs.simplert.openSimplert(this.objAlert);
+            },
+            validateContact() {
+                this.$validator.validateAll().then((result) => {
+                    if (result) {
+                        // eslint-disable-next-line
+                        alert('Form Submitted!');
+                        return;
+                    }
+                    let btnContinue = this.$refs.btnContinue;
+                    btnContinue.classList.add('hvr-buzz-out');
+
+                    setTimeout(function() {
+                        btnContinue.classList.remove('hvr-buzz-out');
+                    }, 1000);
+
+                });
             }
         },
         mounted() {
@@ -399,6 +418,7 @@
 
                     let im1 = new Inputmask("99999-99999");
                     im1.mask(this.$refs.card);
+
                 })
                 .catch(error => {
                     console.log(error);
