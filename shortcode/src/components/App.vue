@@ -144,12 +144,13 @@
                                                  class="calc__dropdown calc__dropdown--loaders"
                                                  :allow-empty="false"></multiselect>
                                     <div class="calc__desc calc__desc--cargo-time">Время работы</div>
-                                    <multiselect v-model="cargo_time.selected" :options="cargo_time.options"
+                                    <multiselect v-model="cargo_time.selected" :options="cargo_time_options"
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
                                                  class="calc__dropdown calc__dropdown--cargo-time" :allow-empty="false"
                                     ></multiselect>
                                 </div>
+                                {{cargo_time.selected}}
                             </div>
                         </div>
                         <div class="calc__stage calc__stage--three">
@@ -180,7 +181,7 @@
                                              label="name" track-by="id" :searchable="false"
                                              :show-labels="false" :maxHeight="200"
                                              class="calc__dropdown calc__dropdown--time"
-                                             @select="dispatchAction" :allow-empty="false"></multiselect>
+                                             :allow-empty="false"></multiselect>
                             </div>
                             <div class="calc__item calc__item--six">
                                 <i class="far fa-calendar-alt calc__icon"></i>
@@ -271,18 +272,7 @@
                     ]
                 },
                 cargo_time: {
-                    selected: {id: 0, label: 'Нет'},
-                    options: [
-                        {id: 0, label: 'Нет'},
-                        {id: 1, label: '1 час', $isDisabled: false},
-                        {id: 2, label: '2 часа'},
-                        {id: 3, label: '3 часа'},
-                        {id: 4, label: '4 часа'},
-                        {id: 5, label: '5 часов'},
-                        {id: 6, label: '6 часов'},
-                        {id: 7, label: '7 часов'},
-                        {id: 8, label: '8 часов'}
-                    ]
+                    selected: {id: 0, label: 'Нет', $isDisabled: false}
                 },
                 time_delivery: {
                     selected: {"id": 0, "name": "Срочная (30 минут)"},
@@ -365,12 +355,33 @@
             },
             cargo_time_disabled: function () {
                 return this.loaders.selected.id === 0;
+            },
+            cargo_time_options: function () {
+                let data = [
+                    {id: 0, label: 'Нет', $isDisabled: false},
+                    {id: 1, label: '1 час', $isDisabled: false},
+                    {id: 2, label: '2 часа', $isDisabled: false},
+                    {id: 3, label: '3 часа', $isDisabled: false},
+                    {id: 4, label: '4 часа', $isDisabled: false},
+                    {id: 5, label: '5 часов', $isDisabled: false},
+                    {id: 6, label: '6 часов', $isDisabled: false},
+                    {id: 7, label: '7 часов', $isDisabled: false},
+                    {id: 8, label: '8 часов', $isDisabled: false}
+                ];
+                //отключаем "1 час" время работы грузчиков при Плановой подаче
+                data[1].$isDisabled = !!this.time_delivery.selected.id;
+
+                if (this.cargo_time.selected.id === 1 && data[1].$isDisabled) {
+                    this.cargo_time.selected = data[2];
+                }
+                return data;
             }
         },
         methods: {
             inverseShowNote: function () {
                 this.note.visibility = !this.note.visibility;
-            },
+            }
+            ,
             openSimplert: function () {
                 this.objAlert.title = this.car.selected.name;
                 this.objAlert.message = '<div class="calc__modal">' +
@@ -382,7 +393,8 @@
                     '<div class="calc__modal-info">до ' + this.car.selected.carrying + '</div>' +
                     '</div></div>';
                 this.$refs.simplert.openSimplert(this.objAlert);
-            },
+            }
+            ,
             validateContact() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
@@ -397,7 +409,8 @@
                     }, 1000);
 
                 });
-            },
+            }
+            ,
             dispatchAction(option) {
                 //отключаем "1 час" время работы грузчиков при Плановой подаче
                 this.cargo_time.options[1].$isDisabled = !!option.id;
@@ -405,7 +418,8 @@
                     this.cargo_time.selected = this.cargo_time.options[2];
                 }
             }
-        },
+        }
+        ,
         mounted() {
             axios
                 .get(wp_data.plugin_dir_url + 'assets/price1.json')
