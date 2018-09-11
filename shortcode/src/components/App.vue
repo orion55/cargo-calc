@@ -150,7 +150,6 @@
                                                  class="calc__dropdown calc__dropdown--cargo-time" :allow-empty="false"
                                     ></multiselect>
                                 </div>
-                                {{cargo_time.selected}}
                             </div>
                         </div>
                         <div class="calc__stage calc__stage--three">
@@ -193,7 +192,7 @@
                             </div>
                             <div class="calc__item calc__item--seven">
                                 <div class="calc__desc calc__desc--durability">Длительность заказа</div>
-                                <multiselect v-model="durability.selected" :options="durability.options"
+                                <multiselect v-model="durability.selected" :options="durability_options"
                                              label="label" track-by="id" :searchable="false"
                                              :show-labels="false" :maxHeight="200"
                                              class="calc__dropdown calc__dropdown--durability"
@@ -210,7 +209,7 @@
                             <div class="calc__price">
                                 <div class="calc__item calc__item--nine">
                                     <span class="calc__price-text">Обычная цена</span>
-                                    <span class="calc__price-number" id="calc__price-number">1290</span>
+                                    <span class="calc__price-number" id="calc__price-number">{{price_normal}}</span>
                                     <span class="calc__rub"><i class="fas fa-ruble-sign calc__price-rub"></i></span>
                                 </div>
                                 <div class="calc__item calc__item--ten">
@@ -279,17 +278,7 @@
                     options: []
                 },
                 durability: {
-                    selected: {id: 1, label: '1 час'},
-                    options: [
-                        {id: 1, label: '1 час'},
-                        {id: 2, label: '2 часа'},
-                        {id: 3, label: '3 часа'},
-                        {id: 4, label: '4 часа'},
-                        {id: 5, label: '5 часов'},
-                        {id: 6, label: '6 часов'},
-                        {id: 7, label: '7 часов'},
-                        {id: 8, label: '8 часов'}
-                    ]
+                    selected: {id: 1, label: '1 час', $isDisabled: false}
                 },
                 address_from: {
                     selected: {"id": 1, "name": "Центральный р-н"},
@@ -375,6 +364,85 @@
                     this.cargo_time.selected = data[2];
                 }
                 return data;
+            },
+            durability_options: function () {
+                //блокируем пункты выпадающего списка в зависимости от типа машины, времени подачи и адреса подачи
+                let data = [
+                    {id: 1, label: '1 час', $isDisabled: false},
+                    {id: 2, label: '2 часа', $isDisabled: false},
+                    {id: 3, label: '3 часа', $isDisabled: false},
+                    {id: 4, label: '4 часа', $isDisabled: false},
+                    {id: 5, label: '5 часов', $isDisabled: false},
+                    {id: 6, label: '6 часов', $isDisabled: false},
+                    {id: 7, label: '7 часов', $isDisabled: false},
+                    {id: 8, label: '8 часов', $isDisabled: false}
+                ];
+
+                let car_id = this.car.selected.id;
+                let time_delivery_id = this.time_delivery.selected.id;
+                let address_to_id = this.address_to.selected.id;
+
+                if (car_id <= 2 && time_delivery_id === 1 && address_to_id < 10) {
+                    data[0].$isDisabled = true;
+                } else if (car_id === 3 && address_to_id < 10) {
+                    data[0].$isDisabled = true;
+                } else if (car_id === 4 && address_to_id < 10) {
+                    data[0].$isDisabled = true;
+                    data[1].$isDisabled = true;
+                } else if (car_id === 5 && address_to_id < 10) {
+                    data[0].$isDisabled = true;
+                    data[1].$isDisabled = true;
+                } else if (address_to_id >= 10) {
+                    data[0].$isDisabled = true;
+                }
+
+                //если уже установлен заблокированный элемент, меняем на первый за ним незаблокированный
+                if (data[this.durability.selected.id - 1].$isDisabled) {
+                    this.durability.selected = _.find(data, ['$isDisabled', false]);
+                }
+
+                return data;
+            },
+            price_normal: function () {
+                let priceNormal = 0;
+
+                //текущие адреса
+                let address_from_id = this.address_from.selected.id;
+                let address_to_id = this.address_to.selected.id;
+
+                //текущий автомобиль
+                let car_id = this.car.selected.id;
+
+                //грузчики
+                let loaders_id = this.loaders.selected.id;
+                let cargo_time_id = this.cargo_time.selected.id;
+
+                //время подачи
+                let time_delivery_id = this.time_delivery.selected.id;
+
+                //длительность заказа
+                let durability_id = this.durability.selected.id;
+
+
+                if (!_.isEmpty(this.info.data)) {
+                    //коллекция цен
+                    let priceData = this.info.data.price;
+
+                    //коллекция цен грузчиков
+                    let priceLoader = this.info.data.price_loader;
+
+                    let currentPrice = 0;
+                    if (time_delivery_id === 0) {
+                        let current = _.find(priceData, {'car_id': car_id, 'time_delivery_id': 0});
+                        currentPrice = current.min_price * current.min_time;
+                        if (durability_id > current.min_time) {
+                            currentPrice += current.additional_price * (durability_id - current.min_time);
+                        }
+                    }
+                    priceNormal += currentPrice;
+                }
+                return priceNormal;
+
             }
         },
         methods: {
