@@ -161,7 +161,8 @@
                         <div class="calc__box calc__box--client">
                             <div class="calc__desc calc__desc--client">Номер карты постоянного клиента</div>
                             <input class="calc__input calc__input--number" v-model="card.serial" ref="card">
-                            <button type="button" class="btn btn--client">Проверить</button>
+                            <button type="button" class="btn btn--client" @click.prevent="validateCard">Проверить
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -537,8 +538,7 @@
         methods: {
             inverseShowNote: function () {
                 this.note.visibility = !this.note.visibility;
-            }
-            ,
+            },
             openSimplert: function () {
                 this.objAlert.title = this.car.selected.name;
                 this.objAlert.message = '<div class="calc__modal">' +
@@ -550,8 +550,7 @@
                     '<div class="calc__modal-info">до ' + this.car.selected.carrying + '</div>' +
                     '</div></div>';
                 this.$refs.simplert.openSimplert(this.objAlert);
-            }
-            ,
+            },
             validateContact() {
                 this.$validator.validateAll().then((result) => {
                     if (result) {
@@ -566,17 +565,12 @@
                     }, 1000);
 
                 });
+            },
+            validateCard() {
+                let numberCard = this.card.serial;
+                numberCard = numberCard.split('-').join('');
             }
-            ,
-            dispatchAction(option) {
-                //отключаем "1 час" время работы грузчиков при Плановой подаче
-                this.cargo_time.options[1].$isDisabled = !!option.id;
-                if (this.cargo_time.selected.id === 1) {
-                    this.cargo_time.selected = this.cargo_time.options[2];
-                }
-            }
-        }
-        ,
+        },
         mounted() {
             axios
                 .all([axios.get(wp_data.plugin_dir_url + 'assets/price1.json'),
@@ -621,7 +615,7 @@
                     let im1 = new Inputmask("99999-99999");
                     im1.mask(this.$refs.card);
 
-                    console.log(card_response);
+                    this.card_data = card_response.data;
                 }))
                 .catch(error => {
                     console.log(error);
