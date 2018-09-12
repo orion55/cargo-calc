@@ -272,7 +272,7 @@
                     ]
                 },
                 cargo_time: {
-                    selected: {id: 0, label: 'Нет', $isDisabled: false}
+                    selected: {id: 1, label: '1 час', $isDisabled: false}
                 },
                 time_delivery: {
                     selected: {"id": 0, "name": "Срочная (30 минут)"},
@@ -337,7 +337,8 @@
                     serial: ''
                 },
                 formResult: true,
-                discount: 0
+                discount: 0,
+                card_data: null
             }
         },
         computed: {
@@ -346,7 +347,6 @@
             },
             cargo_time_options: function () {
                 let data = [
-                    {id: 0, label: 'Нет', $isDisabled: false},
                     {id: 1, label: '1 час', $isDisabled: false},
                     {id: 2, label: '2 часа', $isDisabled: false},
                     {id: 3, label: '3 часа', $isDisabled: false},
@@ -357,10 +357,10 @@
                     {id: 8, label: '8 часов', $isDisabled: false}
                 ];
                 //отключаем "1 час" время работы грузчиков при Плановой подаче
-                data[1].$isDisabled = !!this.time_delivery.selected.id;
+                data[0].$isDisabled = !!this.time_delivery.selected.id;
 
-                if (this.cargo_time.selected.id === 1 && data[1].$isDisabled) {
-                    this.cargo_time.selected = data[2];
+                if (this.cargo_time.selected.id === 1 && data[0].$isDisabled) {
+                    this.cargo_time.selected = data[1];
                 }
                 return data;
             },
@@ -472,9 +472,11 @@
                                 'address_to': address_from_id
                             });
 
-                            currentPrice += current.min_price;
-                            if (durability_id > current.min_time) {
-                                currentPrice += current.additional_price * (durability_id - current.min_time);
+                            if (!_.isEmpty(current)) {
+                                currentPrice += current.min_price;
+                                if (durability_id > current.min_time) {
+                                    currentPrice += current.additional_price * (durability_id - current.min_time);
+                                }
                             }
                         } else {
                             //расчет пригород - пригород
@@ -500,6 +502,27 @@
                         }
                     }
                     priceNormal += currentPrice;
+
+                    let loaders__price = 0;
+                    if (loaders_id !== 0) {
+                        if (time_delivery_id === 0) {
+                            current = _.find(priceData, {'time_delivery_id': 0});
+                            if (!_.isEmpty(current)) {
+                                loaders__price = current.min_price * cargo_time_id * loaders_id;
+                            }
+                        } else {
+                            current = _.find(priceData, {'time_delivery_id': 1});
+
+                            if (!_.isEmpty(current)) {
+                                loaders__price += current.min_price;
+                                if (cargo_time_id > current.min_time) {
+                                    loaders__price += current.additional_price * (cargo_time_id - current.min_time) * loaders_id;
+                                }
+                            }
+                        }
+                    }
+
+                    priceNormal += loaders__price;
                 }
                 return priceNormal;
 
@@ -556,8 +579,9 @@
         ,
         mounted() {
             axios
-                .get(wp_data.plugin_dir_url + 'assets/price1.json')
-                .then(response => {
+                .all([axios.get(wp_data.plugin_dir_url + 'assets/price1.json'),
+                    axios.get(wp_data.plugin_dir_url + 'assets/card.json')])
+                .then(axios.spread((response, card_response) => {
                     this.info.data = response.data;
 
                     //Заполняем пункты назначения
@@ -597,7 +621,8 @@
                     let im1 = new Inputmask("99999-99999");
                     im1.mask(this.$refs.card);
 
-                })
+                    console.log(card_response);
+                }))
                 .catch(error => {
                     console.log(error);
                     this.info.errored = true;

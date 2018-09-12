@@ -36,7 +36,7 @@ exports.default = {
                 options: [{ id: 0, label: 'Нет' }, { id: 1, label: '1' }, { id: 2, label: '2' }, { id: 3, label: '3' }, { id: 4, label: '4' }]
             },
             cargo_time: {
-                selected: { id: 0, label: 'Нет', $isDisabled: false }
+                selected: { id: 1, label: '1 час', $isDisabled: false }
             },
             time_delivery: {
                 selected: { "id": 0, "name": "Срочная (30 минут)" },
@@ -99,7 +99,8 @@ exports.default = {
                 serial: ''
             },
             formResult: true,
-            discount: 0
+            discount: 0,
+            card_data: null
         };
     },
 
@@ -108,12 +109,12 @@ exports.default = {
             return window.wp_data;
         },
         cargo_time_options: function cargo_time_options() {
-            var data = [{ id: 0, label: 'Нет', $isDisabled: false }, { id: 1, label: '1 час', $isDisabled: false }, { id: 2, label: '2 часа', $isDisabled: false }, { id: 3, label: '3 часа', $isDisabled: false }, { id: 4, label: '4 часа', $isDisabled: false }, { id: 5, label: '5 часов', $isDisabled: false }, { id: 6, label: '6 часов', $isDisabled: false }, { id: 7, label: '7 часов', $isDisabled: false }, { id: 8, label: '8 часов', $isDisabled: false }];
+            var data = [{ id: 1, label: '1 час', $isDisabled: false }, { id: 2, label: '2 часа', $isDisabled: false }, { id: 3, label: '3 часа', $isDisabled: false }, { id: 4, label: '4 часа', $isDisabled: false }, { id: 5, label: '5 часов', $isDisabled: false }, { id: 6, label: '6 часов', $isDisabled: false }, { id: 7, label: '7 часов', $isDisabled: false }, { id: 8, label: '8 часов', $isDisabled: false }];
 
-            data[1].$isDisabled = !!this.time_delivery.selected.id;
+            data[0].$isDisabled = !!this.time_delivery.selected.id;
 
-            if (this.cargo_time.selected.id === 1 && data[1].$isDisabled) {
-                this.cargo_time.selected = data[2];
+            if (this.cargo_time.selected.id === 1 && data[0].$isDisabled) {
+                this.cargo_time.selected = data[1];
             }
             return data;
         },
@@ -202,9 +203,11 @@ exports.default = {
                             'address_to': address_from_id
                         });
 
-                        currentPrice += current.min_price;
-                        if (durability_id > current.min_time) {
-                            currentPrice += current.additional_price * (durability_id - current.min_time);
+                        if (!_lodash2.default.isEmpty(current)) {
+                            currentPrice += current.min_price;
+                            if (durability_id > current.min_time) {
+                                currentPrice += current.additional_price * (durability_id - current.min_time);
+                            }
                         }
                     } else {
                         current = _lodash2.default.find(priceData, {
@@ -217,6 +220,7 @@ exports.default = {
                             'time_delivery_id': 1,
                             'address_to': address_to_id
                         });
+
                         if (!_lodash2.default.isEmpty(current) && !_lodash2.default.isEmpty(current1)) {
                             currentPrice += current.min_price;
                             currentPrice += current1.min_price;
@@ -228,6 +232,27 @@ exports.default = {
                     }
                 }
                 priceNormal += currentPrice;
+
+                var loaders__price = 0;
+                if (loaders_id !== 0) {
+                    if (time_delivery_id === 0) {
+                        current = _lodash2.default.find(priceData, { 'time_delivery_id': 0 });
+                        if (!_lodash2.default.isEmpty(current)) {
+                            loaders__price = current.min_price * cargo_time_id * loaders_id;
+                        }
+                    } else {
+                        current = _lodash2.default.find(priceData, { 'time_delivery_id': 1 });
+
+                        if (!_lodash2.default.isEmpty(current)) {
+                            loaders__price += current.min_price;
+                            if (cargo_time_id > current.min_time) {
+                                loaders__price += current.additional_price * (cargo_time_id - current.min_time) * loaders_id;
+                            }
+                        }
+                    }
+                }
+
+                priceNormal += loaders__price;
             }
             return priceNormal;
         },
@@ -276,7 +301,7 @@ exports.default = {
     mounted: function mounted() {
         var _this2 = this;
 
-        _axios2.default.get(wp_data.plugin_dir_url + 'assets/price1.json').then(function (response) {
+        _axios2.default.all([_axios2.default.get(wp_data.plugin_dir_url + 'assets/price1.json'), _axios2.default.get(wp_data.plugin_dir_url + 'assets/card.json')]).then(_axios2.default.spread(function (response, card_response) {
             _this2.info.data = response.data;
 
             var filterArray = _lodash2.default.filter(_this2.info.data.metadata.area, function (item) {
@@ -310,7 +335,9 @@ exports.default = {
 
             var im1 = new _inputmask2.default("99999-99999");
             im1.mask(_this2.$refs.card);
-        }).catch(function (error) {
+
+            console.log(card_response);
+        })).catch(function (error) {
             console.log(error);
             _this2.info.errored = true;
         }).finally(function () {
@@ -329,9 +356,9 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-8b484bbe", __vue__options__)
+    hotAPI.createRecord("data-v-1cdcfc6b", __vue__options__)
   } else {
-    hotAPI.reload("data-v-8b484bbe", __vue__options__)
+    hotAPI.reload("data-v-1cdcfc6b", __vue__options__)
   }
 })()}
 },{"axios":3,"inputmask":37,"lodash":39,"luxon":40,"vue":50,"vue-hot-reload-api":47}],2:[function(require,module,exports){
