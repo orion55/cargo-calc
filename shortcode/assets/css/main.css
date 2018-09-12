@@ -944,7 +944,7 @@ input.is-danger {
   font-size: 23px;
 }
 
-#calc-shipment .btn--result {
+#calc-shipment button.btn--result {
   font-size: 18px;
   font-family: 'Roboto', sans-serif;
   background-color: #F9DF00;

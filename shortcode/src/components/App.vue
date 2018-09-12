@@ -215,11 +215,12 @@
                                 <div class="calc__item calc__item--ten">
                                     <div class="calc__box-discount">
                                         <span class="calc__discount">Экономия</span>
-                                        <span class="calc__discount-number" id="calc__discount-number">5</span>
+                                        <span class="calc__discount-number"
+                                              id="calc__discount-number">{{discount}}</span>
                                         <span class="calc__discount-percent">%</span>
                                     </div>
                                     <div class="calc__box-discount-price">
-                                        <span class="calc__discount-sum" id="calc__discount-sum">400</span>
+                                        <span class="calc__discount-sum" id="calc__discount-sum">{{economy}}</span>
                                         <span class="calc__rub"><i
                                                 class="fas fa-ruble-sign calc__discount-rub"></i></span>
                                     </div>
@@ -227,7 +228,7 @@
                                 <div class="calc__item calc__item--eleven">
                                     <div class="calc__result-text">Итого со скидкой</div>
                                     <div class="calc__box-result-price">
-                                        <span class="calc__result-sum" id="calc__result-sum">890</span>
+                                        <span class="calc__result-sum" id="calc__result-sum">{{price_result}}</span>
                                         <span class="calc__rub"><i
                                                 class="fas fa-ruble-sign  calc__result-rub"></i></span>
                                     </div>
@@ -335,15 +336,13 @@
                 card: {
                     serial: ''
                 },
-                formResult: true
+                formResult: true,
+                discount: 0
             }
         },
         computed: {
             wp_data: function () {
                 return window.wp_data;
-            },
-            cargo_time_disabled: function () {
-                return this.loaders.selected.id === 0;
             },
             cargo_time_options: function () {
                 let data = [
@@ -431,18 +430,85 @@
                     //коллекция цен грузчиков
                     let priceLoader = this.info.data.price_loader;
 
-                    let currentPrice = 0;
-                    if (time_delivery_id === 0) {
-                        let current = _.find(priceData, {'car_id': car_id, 'time_delivery_id': 0});
-                        currentPrice = current.min_price * current.min_time;
-                        if (durability_id > current.min_time) {
-                            currentPrice += current.additional_price * (durability_id - current.min_time);
+                    let currentPrice = 0, current = {}, current1 = {};
+
+                    if (address_from_id < 10) {
+                        //расчет цены между районов внутри города
+                        if (address_to_id < 10) {
+                            //доставка срочная или плановая
+                            if (time_delivery_id === 0) {
+                                current = _.find(priceData, {'car_id': car_id, 'time_delivery_id': 0});
+                            } else {
+                                current = _.find(priceData, {
+                                    'car_id': car_id,
+                                    'time_delivery_id': 1,
+                                    'address_from': address_from_id,
+                                    'address_to': address_to_id
+                                });
+                            }
+                        } else {
+                            //расчет город - пригород
+                            current = _.find(priceData, {
+                                'car_id': car_id,
+                                'time_delivery_id': 1,
+                                'address_to': address_to_id
+                            });
+
+                        }
+
+                        if (!_.isEmpty(current)) {
+                            currentPrice += current.min_price;
+                            if (durability_id > current.min_time) {
+                                currentPrice += current.additional_price * (durability_id - current.min_time);
+                            }
+                        }
+
+                    } else {
+                        // расчет пригород - город
+                        if (address_to_id < 10) {
+                            current = _.find(priceData, {
+                                'car_id': car_id,
+                                'time_delivery_id': 1,
+                                'address_to': address_from_id
+                            });
+
+                            currentPrice += current.min_price;
+                            if (durability_id > current.min_time) {
+                                currentPrice += current.additional_price * (durability_id - current.min_time);
+                            }
+                        } else {
+                            //расчет пригород - пригород
+                            current = _.find(priceData, {
+                                'car_id': car_id,
+                                'time_delivery_id': 1,
+                                'address_to': address_from_id
+                            });
+                            current1 = _.find(priceData, {
+                                'car_id': car_id,
+                                'time_delivery_id': 1,
+                                'address_to': address_to_id
+                            });
+
+                            if (!_.isEmpty(current) && !_.isEmpty(current1)) {
+                                currentPrice += current.min_price;
+                                currentPrice += current1.min_price;
+
+                                if (durability_id > current.min_time) {
+                                    currentPrice += current.additional_price * (durability_id - current.min_time);
+                                }
+                            }
                         }
                     }
                     priceNormal += currentPrice;
                 }
                 return priceNormal;
 
+            },
+            economy: function () {
+                return 0;
+            },
+            price_result: function () {
+                return this.price_normal - this.economy;
             }
         },
         methods: {
