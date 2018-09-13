@@ -253,6 +253,18 @@
     import {DateTime} from 'luxon';
     import Inputmask from 'inputmask';
 
+    //простой расчет цены услуги
+    function pricePlus(obj, durability) {
+        let curPrice = 0;
+        if (!_.isEmpty(obj)) {
+            curPrice += obj.min_price;
+            if (durability > obj.min_time) {
+                curPrice += obj.additional_price * (durability - obj.min_time);
+            }
+        }
+        return curPrice;
+    }
+
     export default {
         name: 'app',
         data() {
@@ -433,6 +445,11 @@
 
                     let currentPrice = 0, current = {}, current1 = {};
 
+                    /* if (car_id >= 3 && car_id <= 5) {
+                         current = _.find(priceData, {
+                             'car_id': car_id
+                         });
+                     }*/
                     if (address_from_id < 10) {
                         //расчет цены между районов внутри города
                         if (address_to_id < 10) {
@@ -457,12 +474,7 @@
 
                         }
 
-                        if (!_.isEmpty(current)) {
-                            currentPrice += current.min_price;
-                            if (durability_id > current.min_time) {
-                                currentPrice += current.additional_price * (durability_id - current.min_time);
-                            }
-                        }
+                        currentPrice += pricePlus(current, durability_id);
 
                     } else {
                         // расчет пригород - город
@@ -473,12 +485,8 @@
                                 'address_to': address_from_id
                             });
 
-                            if (!_.isEmpty(current)) {
-                                currentPrice += current.min_price;
-                                if (durability_id > current.min_time) {
-                                    currentPrice += current.additional_price * (durability_id - current.min_time);
-                                }
-                            }
+                            currentPrice += pricePlus(current, durability_id);
+
                         } else {
                             //расчет пригород - пригород
                             current = _.find(priceData, {
@@ -507,15 +515,16 @@
                     let loaders__price = 0;
                     if (loaders_id !== 0) {
                         if (time_delivery_id === 0) {
-                            current = _.find(priceData, {'time_delivery_id': 0});
+                            current = _.find(priceLoader, {'time_delivery_id': 0});
                             if (!_.isEmpty(current)) {
                                 loaders__price = current.min_price * cargo_time_id * loaders_id;
                             }
                         } else {
-                            current = _.find(priceData, {'time_delivery_id': 1});
+                            current = _.find(priceLoader, {'time_delivery_id': 1});
 
                             if (!_.isEmpty(current)) {
-                                loaders__price += current.min_price;
+                                loaders__price += current.min_price * loaders_id;
+
                                 if (cargo_time_id > current.min_time) {
                                     loaders__price += current.additional_price * (cargo_time_id - current.min_time) * loaders_id;
                                 }

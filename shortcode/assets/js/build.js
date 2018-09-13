@@ -22,6 +22,17 @@ var _inputmask2 = _interopRequireDefault(_inputmask);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function pricePlus(obj, durability) {
+    var curPrice = 0;
+    if (!_lodash2.default.isEmpty(obj)) {
+        curPrice += obj.min_price;
+        if (durability > obj.min_time) {
+            curPrice += obj.additional_price * (durability - obj.min_time);
+        }
+    }
+    return curPrice;
+}
+
 exports.default = {
     name: 'app',
     data: function data() {
@@ -189,12 +200,7 @@ exports.default = {
                         });
                     }
 
-                    if (!_lodash2.default.isEmpty(current)) {
-                        currentPrice += current.min_price;
-                        if (durability_id > current.min_time) {
-                            currentPrice += current.additional_price * (durability_id - current.min_time);
-                        }
-                    }
+                    currentPrice += pricePlus(current, durability_id);
                 } else {
                     if (address_to_id < 10) {
                         current = _lodash2.default.find(priceData, {
@@ -203,12 +209,7 @@ exports.default = {
                             'address_to': address_from_id
                         });
 
-                        if (!_lodash2.default.isEmpty(current)) {
-                            currentPrice += current.min_price;
-                            if (durability_id > current.min_time) {
-                                currentPrice += current.additional_price * (durability_id - current.min_time);
-                            }
-                        }
+                        currentPrice += pricePlus(current, durability_id);
                     } else {
                         current = _lodash2.default.find(priceData, {
                             'car_id': car_id,
@@ -236,15 +237,16 @@ exports.default = {
                 var loaders__price = 0;
                 if (loaders_id !== 0) {
                     if (time_delivery_id === 0) {
-                        current = _lodash2.default.find(priceData, { 'time_delivery_id': 0 });
+                        current = _lodash2.default.find(priceLoader, { 'time_delivery_id': 0 });
                         if (!_lodash2.default.isEmpty(current)) {
                             loaders__price = current.min_price * cargo_time_id * loaders_id;
                         }
                     } else {
-                        current = _lodash2.default.find(priceData, { 'time_delivery_id': 1 });
+                        current = _lodash2.default.find(priceLoader, { 'time_delivery_id': 1 });
 
                         if (!_lodash2.default.isEmpty(current)) {
-                            loaders__price += current.min_price;
+                            loaders__price += current.min_price * loaders_id;
+
                             if (cargo_time_id > current.min_time) {
                                 loaders__price += current.additional_price * (cargo_time_id - current.min_time) * loaders_id;
                             }
@@ -351,9 +353,9 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1cdcfc6b", __vue__options__)
+    hotAPI.createRecord("data-v-8b484bbe", __vue__options__)
   } else {
-    hotAPI.reload("data-v-1cdcfc6b", __vue__options__)
+    hotAPI.reload("data-v-8b484bbe", __vue__options__)
   }
 })()}
 },{"axios":3,"inputmask":37,"lodash":39,"luxon":40,"vue":50,"vue-hot-reload-api":47}],2:[function(require,module,exports){
