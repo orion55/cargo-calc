@@ -259,8 +259,8 @@
       "time_delivery_id": 0,
       "car_id": 2,
       "min_time": 1,
-      "min_price": 590,
-      "additional_price": 580
+      "min_price": 690,
+      "additional_price": 680
     },
     {
       "time_delivery_id": 0,
@@ -432,7 +432,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 890,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 0,
       "address_to": 0
     },
@@ -441,7 +441,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 990,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 0,
       "address_to": 1
     },
@@ -450,7 +450,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 1090,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 0,
       "address_to": 2
     },
@@ -459,7 +459,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 1190,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 0,
       "address_to": 3
     },
@@ -468,7 +468,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 990,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 1,
       "address_to": 0
     },
@@ -477,7 +477,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 890,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 1,
       "address_to": 1
     },
@@ -486,7 +486,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 990,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 1,
       "address_to": 2
     },
@@ -495,7 +495,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 1090,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 1,
       "address_to": 3
     },
@@ -504,7 +504,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 1090,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 2,
       "address_to": 0
     },
@@ -513,7 +513,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 990,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 2,
       "address_to": 1
     },
@@ -522,7 +522,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 890,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 2,
       "address_to": 2
     },
@@ -531,7 +531,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 990,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 2,
       "address_to": 3
     },
@@ -540,7 +540,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 1190,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 3,
       "address_to": 0
     },
@@ -549,7 +549,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 1090,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 3,
       "address_to": 1
     },
@@ -558,7 +558,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 990,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 3,
       "address_to": 2
     },
@@ -567,7 +567,7 @@
       "car_id": 1,
       "min_time": 2,
       "min_price": 890,
-      "additional_price": 490,
+      "additional_price": 440,
       "address_from": 3,
       "address_to": 3
     },
@@ -575,7 +575,7 @@
       "time_delivery_id": 1,
       "car_id": 2,
       "min_time": 2,
-      "min_price": 890,
+      "min_price": 990,
       "additional_price": 490,
       "address_from": 0,
       "address_to": 0
@@ -584,19 +584,10 @@
       "time_delivery_id": 1,
       "car_id": 2,
       "min_time": 2,
-      "min_price": 990,
-      "additional_price": 490,
-      "address_from": 0,
-      "address_to": 1
-    },
-    {
-      "time_delivery_id": 1,
-      "car_id": 2,
-      "min_time": 2,
       "min_price": 1090,
       "additional_price": 490,
       "address_from": 0,
-      "address_to": 2
+      "address_to": 1
     },
     {
       "time_delivery_id": 1,
@@ -605,42 +596,15 @@
       "min_price": 1190,
       "additional_price": 490,
       "address_from": 0,
-      "address_to": 3
-    },
-    {
-      "time_delivery_id": 1,
-      "car_id": 2,
-      "min_time": 2,
-      "min_price": 990,
-      "additional_price": 490,
-      "address_from": 1,
-      "address_to": 0
-    },
-    {
-      "time_delivery_id": 1,
-      "car_id": 2,
-      "min_time": 2,
-      "min_price": 890,
-      "additional_price": 490,
-      "address_from": 1,
-      "address_to": 1
-    },
-    {
-      "time_delivery_id": 1,
-      "car_id": 2,
-      "min_time": 2,
-      "min_price": 990,
-      "additional_price": 490,
-      "address_from": 1,
       "address_to": 2
     },
     {
       "time_delivery_id": 1,
       "car_id": 2,
       "min_time": 2,
-      "min_price": 1090,
+      "min_price": 1290,
       "additional_price": 490,
-      "address_from": 1,
+      "address_from": 0,
       "address_to": 3
     },
     {
@@ -649,7 +613,7 @@
       "min_time": 2,
       "min_price": 1090,
       "additional_price": 490,
-      "address_from": 2,
+      "address_from": 1,
       "address_to": 0
     },
     {
@@ -658,25 +622,25 @@
       "min_time": 2,
       "min_price": 990,
       "additional_price": 490,
-      "address_from": 2,
+      "address_from": 1,
       "address_to": 1
     },
     {
       "time_delivery_id": 1,
       "car_id": 2,
       "min_time": 2,
-      "min_price": 890,
+      "min_price": 1090,
       "additional_price": 490,
-      "address_from": 2,
+      "address_from": 1,
       "address_to": 2
     },
     {
       "time_delivery_id": 1,
       "car_id": 2,
       "min_time": 2,
-      "min_price": 990,
+      "min_price": 1190,
       "additional_price": 490,
-      "address_from": 2,
+      "address_from": 1,
       "address_to": 3
     },
     {
@@ -685,7 +649,7 @@
       "min_time": 2,
       "min_price": 1190,
       "additional_price": 490,
-      "address_from": 3,
+      "address_from": 2,
       "address_to": 0
     },
     {
@@ -694,7 +658,7 @@
       "min_time": 2,
       "min_price": 1090,
       "additional_price": 490,
-      "address_from": 3,
+      "address_from": 2,
       "address_to": 1
     },
     {
@@ -703,6 +667,42 @@
       "min_time": 2,
       "min_price": 990,
       "additional_price": 490,
+      "address_from": 2,
+      "address_to": 2
+    },
+    {
+      "time_delivery_id": 1,
+      "car_id": 2,
+      "min_time": 2,
+      "min_price": 1090,
+      "additional_price": 490,
+      "address_from": 2,
+      "address_to": 3
+    },
+    {
+      "time_delivery_id": 1,
+      "car_id": 2,
+      "min_time": 2,
+      "min_price": 1290,
+      "additional_price": 490,
+      "address_from": 3,
+      "address_to": 0
+    },
+    {
+      "time_delivery_id": 1,
+      "car_id": 2,
+      "min_time": 2,
+      "min_price": 1190,
+      "additional_price": 490,
+      "address_from": 3,
+      "address_to": 1
+    },
+    {
+      "time_delivery_id": 1,
+      "car_id": 2,
+      "min_time": 2,
+      "min_price": 1090,
+      "additional_price": 490,
       "address_from": 3,
       "address_to": 2
     },
@@ -710,7 +710,7 @@
       "time_delivery_id": 1,
       "car_id": 2,
       "min_time": 2,
-      "min_price": 890,
+      "min_price": 990,
       "additional_price": 490,
       "address_from": 3,
       "address_to": 3
