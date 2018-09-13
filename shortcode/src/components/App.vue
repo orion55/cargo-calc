@@ -7,7 +7,7 @@
                 <div class="calc__title calc__title--links">
                     <a href="#" class="calc__link--undo hvr-pop">
                         <i class="fas fa-undo"></i>
-                        <span class="calc__link--text">Очистить</span>
+                        <span class="calc__link--text" @click.prevent="clearData">Очистить</span>
                     </a>
                     <a href="#" class="calc__link--close hvr-pop">
                         <i class="fas fa-times-circle"></i>
@@ -160,8 +160,9 @@
                         </div>
                         <div class="calc__box calc__box--client">
                             <div class="calc__desc calc__desc--client">Номер карты постоянного клиента</div>
-                            <input class="calc__input calc__input--number" v-model="card.serial" ref="card">
-                            <button type="button" class="btn btn--client" @click.prevent="validateCard">Проверить
+                            <input class="calc__input calc__input--number" ref="card" v-model="card.serial">
+                            <button type="button" class="btn btn--client" ref="btnCheck" @click.prevent="validateCard">
+                                Проверить
                             </button>
                         </div>
                     </div>
@@ -254,7 +255,7 @@
     import Inputmask from 'inputmask';
 
     //простой расчет цены услуги
-    function pricePlus(obj, durability) {
+    let pricePlus = (obj, durability) => {
         let curPrice = 0;
         if (!_.isEmpty(obj)) {
             curPrice += obj.min_price;
@@ -263,6 +264,15 @@
             }
         }
         return curPrice;
+    }
+
+    //добавляем анимацию к объекту
+    let animateObj = (obj, className) => {
+        obj.classList.add(className);
+
+        setTimeout(function () {
+            obj.classList.remove(className);
+        }, 1000);
     }
 
     export default {
@@ -396,12 +406,9 @@
 
                 if (car_id <= 2 && time_delivery_id === 1 && address_to_id < 10) {
                     data[0].$isDisabled = true;
-                } else if (car_id === 3 && address_to_id < 10) {
+                } else if (car_id === 3) {
                     data[0].$isDisabled = true;
-                } else if (car_id === 4 && address_to_id < 10) {
-                    data[0].$isDisabled = true;
-                    data[1].$isDisabled = true;
-                } else if (car_id === 5 && address_to_id < 10) {
+                } else if (car_id === 4 || car_id === 5) {
                     data[0].$isDisabled = true;
                     data[1].$isDisabled = true;
                 } else if (address_to_id >= 10) {
@@ -445,12 +452,10 @@
 
                     let currentPrice = 0, current = {}, current1 = {};
 
-                    /* if (car_id >= 3 && car_id <= 5) {
-                         current = _.find(priceData, {
-                             'car_id': car_id
-                         });
-                     }*/
-                    if (address_from_id < 10) {
+                    if (car_id >= 3 && car_id <= 5) {
+                        current = _.find(priceData, {'car_id': car_id});
+                        currentPrice += pricePlus(current, durability_id);
+                    } else if (address_from_id < 10) {
                         //расчет цены между районов внутри города
                         if (address_to_id < 10) {
                             //доставка срочная или плановая
@@ -538,7 +543,7 @@
 
             },
             economy: function () {
-                return 0;
+                return Math.round(this.price_normal * this.discount / 100);
             },
             price_result: function () {
                 return this.price_normal - this.economy;
@@ -566,24 +571,59 @@
                         this.formResult = !this.formResult;
                         return;
                     }
+
                     let btnContinue = this.$refs.btnContinue;
-                    btnContinue.classList.add('hvr-buzz-out');
-
-                    setTimeout(function () {
-                        btnContinue.classList.remove('hvr-buzz-out');
-                    }, 1000);
-
+                    animateObj(btnContinue, 'hvr-buzz-out');
                 });
             },
             validateCard() {
                 let numberCard = this.card.serial;
                 numberCard = numberCard.split('-').join('');
+                let serial = this.card_data.serial;
+                var result = serial.includes(numberCard);
+                if (result) {
+                    animateObj(this.$refs.card, 'is-success');
+                    this.discount = this.card_data.discount;
+                } else {
+                    this.discount = 0;
+                    animateObj(this.$refs.card, 'is-danger');
+                    animateObj(this.$refs.btnCheck, 'hvr-buzz-out');
+                }
+            },
+            clearData() {
+                this.loaders.selected = {id: 0, label: 'Нет'};
+                this.cargo_time.selected = {id: 1, label: '1 час', $isDisabled: false};
+                this.time_delivery.selected = {"id": 0, "name": "Срочная (30 минут)"};
+                this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
+                this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
+                this.address_from.street = '';
+                this.address_from.house = '';
+                this.address_from.entrance = '';
+                this.address_to.selected = {"id": 1, "name": "Центральный р-н"};
+                this.address_to.street = '';
+                this.address_to.house = '';
+                this.address_to.entrance = '';
+                this.car.selected = {
+                    "id": 0,
+                    "name": "Ларгус/пикап",
+                    "picture": "assets/img/car/car01.jpg",
+                    "size": "1,7м * 1,2м * 1м",
+                    "carrying": "700 кг",
+                    "desc": "подходит для загородного переезда, перевозки стройматериалов"
+                };
+                this.calendar.datetime = DateTime.local().toISO();
+                this.note.visibility = false;
+                this.note.text = '';
+                this.contact.name = '';
+                this.contact.phone = '';
+                this.card.serial = '';
+                this.discount = 0;
             }
         },
         mounted() {
             axios
-                .all([axios.get(wp_data.plugin_dir_url + 'assets/price1.json'),
-                    axios.get(wp_data.plugin_dir_url + 'assets/card.json')])
+                .all([axios.get(wp_data.plugin_dir_url + 'assets/json/price1.json'),
+                    axios.get(wp_data.plugin_dir_url + 'assets/json/card.json')])
                 .then(axios.spread((response, card_response) => {
                     this.info.data = response.data;
 

@@ -124,6 +124,11 @@ input.is-danger {
   box-shadow: 0 0 3px red;
 }
 
+input.is-success {
+  border-color: $color-invert;
+  box-shadow: 0 0 3px $color-invert;
+}
+
 @-webkit-keyframes hvr-buzz {
   50% {
     -webkit-transform: translateX(3px) rotate(2deg);
@@ -183,6 +188,7 @@ input.is-danger {
     transform: translateX(-1px) rotate(0);
   }
 }
+
 .hvr-buzz-out {
   animation-name: hvr-buzz-out;
   animation-duration: 0.75s;

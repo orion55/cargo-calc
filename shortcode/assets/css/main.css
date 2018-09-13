@@ -147,6 +147,11 @@ input.is-danger {
   box-shadow: 0 0 3px red;
 }
 
+input.is-success {
+  border-color: #F9DF00;
+  box-shadow: 0 0 3px #F9DF00;
+}
+
 @-webkit-keyframes hvr-buzz {
   50% {
     -webkit-transform: translateX(3px) rotate(2deg);
