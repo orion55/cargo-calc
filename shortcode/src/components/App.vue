@@ -38,7 +38,7 @@
                                     <input type="text"
                                            placeholder="Улица" v-model="address_from.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-from') }"
-                                           v-validate="'required'" name="calc__street-from">
+                                           v-validate.disable="'required'" name="calc__street-from">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_from.house">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -60,7 +60,7 @@
                                     <input type="text" value=""
                                            placeholder="Улица" v-model="address_to.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-to') }"
-                                           v-validate="'required'" name="calc__street-to">
+                                           v-validate.disable="'required'" name="calc__street-to">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_to.house">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -74,7 +74,7 @@
                                 <label for="calc__name" class="calc__label">Имя</label>
                                 <input id="calc__name" value=""
                                        :class="{'calc__input': true, 'calc__input--name': true, 'is-danger': errors.has('calc__name') }"
-                                       placeholder="Представьтесь" v-model="contact.name" v-validate="'required|alpha'"
+                                       placeholder="Представьтесь" v-model="contact.name" v-validate.disable="'required|alpha'"
                                        name="calc__name">
 
                             </div>
@@ -83,7 +83,7 @@
                                 <input id="calc__phone"
                                        :class="{'calc__input': true, 'calc__input--phone': true, 'is-danger': errors.has('calc__phone') }"
                                        placeholder="Ваш номер" v-model="contact.phone" ref="phone"
-                                       v-validate="'required'" name="calc__phone">
+                                       v-validate.disable="'required'" name="calc__phone">
                             </div>
                         </div>
                         <div class="calc__row calc__row--three">
@@ -566,15 +566,16 @@
                 this.$refs.simplert.openSimplert(this.objAlert);
             },
             validateContact() {
-                this.$validator.validateAll().then((result) => {
-                    if (result) {
-                        this.formResult = !this.formResult;
-                        return;
-                    }
+                this.$validator.validateAll()
+                    .then((result) => {
+                        if (result) {
+                            this.formResult = !this.formResult;
+                            return;
+                        }
 
-                    let btnContinue = this.$refs.btnContinue;
-                    animateObj(btnContinue, 'hvr-buzz-out');
-                });
+                        let btnContinue = this.$refs.btnContinue;
+                        animateObj(btnContinue, 'hvr-buzz-out');
+                    });
             },
             validateCard() {
                 let numberCard = this.card.serial;
