@@ -74,7 +74,8 @@
                                 <label for="calc__name" class="calc__label">Имя</label>
                                 <input id="calc__name" value=""
                                        :class="{'calc__input': true, 'calc__input--name': true, 'is-danger': errors.has('calc__name') }"
-                                       placeholder="Представьтесь" v-model="contact.name" v-validate.disable="'required|alpha'"
+                                       placeholder="Представьтесь" v-model="contact.name"
+                                       v-validate.disable="'required|alpha'"
                                        name="calc__name">
 
                             </div>
@@ -144,7 +145,7 @@
                                                  class="calc__dropdown calc__dropdown--loaders"
                                                  :allow-empty="false"></multiselect>
                                     <div class="calc__desc calc__desc--cargo-time">Время работы</div>
-                                    <multiselect v-model="cargo_time.selected" :options="cargo_time_options"
+                                    <multiselect v-model="cargo_time.selected" :options="cargo_time.options"
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
                                                  class="calc__dropdown calc__dropdown--cargo-time" :allow-empty="false"
@@ -230,7 +231,8 @@
                                 <div class="calc__item calc__item--eleven">
                                     <div class="calc__result-text">Итого со скидкой</div>
                                     <div class="calc__box-result-price">
-                                        <span class="calc__result-sum" id="calc__result-sum">{{price_result}}</span>
+                                        <span class="calc__result-sum"
+                                              id="calc__result-sum">{{animated_price_result}}</span>
                                         <span class="calc__rub"><i
                                                 class="fas fa-ruble-sign  calc__result-rub"></i></span>
                                     </div>
@@ -253,6 +255,8 @@
     import _ from 'lodash';
     import {DateTime} from 'luxon';
     import Inputmask from 'inputmask';
+    //    import {TweenLite} from "TweenMax";
+    import {TweenLite} from 'gsap';
 
     //простой расчет цены услуги
     let pricePlus = (obj, durability) => {
@@ -295,7 +299,17 @@
                     ]
                 },
                 cargo_time: {
-                    selected: {id: 1, label: '1 час', $isDisabled: false}
+                    selected: {id: 1, label: '1 час'},
+                    options: [
+                        {id: 1, label: '1 час'},
+                        {id: 2, label: '2 часа'},
+                        {id: 3, label: '3 часа'},
+                        {id: 4, label: '4 часа'},
+                        {id: 5, label: '5 часов'},
+                        {id: 6, label: '6 часов'},
+                        {id: 7, label: '7 часов'},
+                        {id: 8, label: '8 часов'}
+                    ]
                 },
                 time_delivery: {
                     selected: {"id": 0, "name": "Срочная (30 минут)"},
@@ -361,31 +375,13 @@
                 },
                 formResult: true,
                 discount: 0,
-                card_data: null
+                card_data: null,
+                tweened_price_normal: 0
             }
         },
         computed: {
             wp_data: function () {
                 return window.wp_data;
-            },
-            cargo_time_options: function () {
-                let data = [
-                    {id: 1, label: '1 час', $isDisabled: false},
-                    {id: 2, label: '2 часа', $isDisabled: false},
-                    {id: 3, label: '3 часа', $isDisabled: false},
-                    {id: 4, label: '4 часа', $isDisabled: false},
-                    {id: 5, label: '5 часов', $isDisabled: false},
-                    {id: 6, label: '6 часов', $isDisabled: false},
-                    {id: 7, label: '7 часов', $isDisabled: false},
-                    {id: 8, label: '8 часов', $isDisabled: false}
-                ];
-                //отключаем "1 час" время работы грузчиков при Плановой подаче
-               /* data[0].$isDisabled = !!this.time_delivery.selected.id;
-
-                if (this.cargo_time.selected.id === 1 && data[0].$isDisabled) {
-                    this.cargo_time.selected = data[1];
-                }*/
-                return data;
             },
             durability_options: function () {
                 //блокируем пункты выпадающего списка в зависимости от типа машины, времени подачи и адреса подачи
@@ -547,6 +543,9 @@
             },
             price_result: function () {
                 return this.price_normal - this.economy;
+            },
+            animated_price_result: function () {
+                return this.tweened_price_normal.toFixed(0);
             }
         },
         methods: {
@@ -593,7 +592,7 @@
             },
             clearData() {
                 this.loaders.selected = {id: 0, label: 'Нет'};
-                this.cargo_time.selected = {id: 1, label: '1 час', $isDisabled: false};
+                this.cargo_time.selected = {id: 1, label: '1 час'};
                 this.time_delivery.selected = {"id": 0, "name": "Срочная (30 минут)"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
@@ -619,6 +618,11 @@
                 this.contact.phone = '';
                 this.card.serial = '';
                 this.discount = 0;
+            }
+        },
+        watch: {
+            price_result: function (newValue) {
+                TweenLite.to(this.$data, 1, {tweened_price_normal: newValue});
             }
         },
         mounted() {
