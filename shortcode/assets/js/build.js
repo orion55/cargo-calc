@@ -130,11 +130,6 @@ exports.default = {
         cargo_time_options: function cargo_time_options() {
             var data = [{ id: 1, label: '1 час', $isDisabled: false }, { id: 2, label: '2 часа', $isDisabled: false }, { id: 3, label: '3 часа', $isDisabled: false }, { id: 4, label: '4 часа', $isDisabled: false }, { id: 5, label: '5 часов', $isDisabled: false }, { id: 6, label: '6 часов', $isDisabled: false }, { id: 7, label: '7 часов', $isDisabled: false }, { id: 8, label: '8 часов', $isDisabled: false }];
 
-            data[0].$isDisabled = !!this.time_delivery.selected.id;
-
-            if (this.cargo_time.selected.id === 1 && data[0].$isDisabled) {
-                this.cargo_time.selected = data[1];
-            }
             return data;
         },
         durability_options: function durability_options() {

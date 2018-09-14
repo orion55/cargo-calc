@@ -380,11 +380,11 @@
                     {id: 8, label: '8 часов', $isDisabled: false}
                 ];
                 //отключаем "1 час" время работы грузчиков при Плановой подаче
-                data[0].$isDisabled = !!this.time_delivery.selected.id;
+               /* data[0].$isDisabled = !!this.time_delivery.selected.id;
 
                 if (this.cargo_time.selected.id === 1 && data[0].$isDisabled) {
                     this.cargo_time.selected = data[1];
-                }
+                }*/
                 return data;
             },
             durability_options: function () {
