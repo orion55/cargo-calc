@@ -196,6 +196,15 @@ input.is-success {
   animation-iteration-count: 1;
 }
 
+div.is-collapse {
+  max-width: 350px;
+}
+
+#calc-shipment div.is-disable {
+  pointer-events: none;
+  opacity: .4;
+}
+
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {
   .page {
     width: 100%;
@@ -206,11 +215,23 @@ input.is-success {
   .page {
     width: 100%;
   }
+  div.is-collapse{
+    max-width: none;
+    max-height: 510px;
+  }
 }
 
 @media only screen and (max-device-width: 767px) {
   .page {
     width: 100%;
     min-width: 320px;
+  }
+  .section_wrapper{
+    padding-left: 10px!important;
+    padding-right: 10px!important;
+  }
+  div.is-collapse{
+    max-width: none;
+    max-height: 510px;
   }
 }

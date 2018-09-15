@@ -14,7 +14,7 @@
   padding: 15px 15px 0;
   display: flex;
   flex-direction: column;
-  margin: 0 auto 20px;
+  margin: 0 0 20px 0;
 }
 
 #calc-shipment {
@@ -26,17 +26,23 @@
   .calc__one {
     max-width: 380px;
     padding-right: 33px;
+    pointer-events: auto;
   }
 
   .calc__two {
     max-width: 480px;
     padding-right: 20px;
     width: 100%;
+    pointer-events: auto;
   }
 
   .calc__block {
     position: relative;
     padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 96%;
+    justify-content: space-around;
   }
 
   .calc__title {
@@ -465,6 +471,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    pointer-events: auto;
   }
 
   .calc__input--datepicker {
@@ -712,6 +719,7 @@
     min-width: 320px;
     padding: 0;
     width: 75%;
+    margin: 0 auto 20px;
   }
   #calc-shipment {
     .calc__megabox {
@@ -804,6 +812,21 @@
     .calc__desc--durability {
       padding-bottom: 0;
     }
+    &.is-collapse {
+      & .calc__two, & .calc__three {
+        display: none;
+      }
+    }
+    .calc__title {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .calc__item--eight {
+      margin: 0;
+    }
+    .calc__link--plus {
+      justify-content: center;
+    }
   }
 }
 
@@ -811,6 +834,7 @@
   .calc {
     min-width: 320px;
     padding: 0;
+    margin: 0 auto 20px;
   }
   #calc-shipment {
     .calc__megabox {
@@ -845,6 +869,10 @@
     }
     .calc__item--seven {
       flex-direction: column;
+    }
+    .calc__title {
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
     .calc__title--links {
       width: 100%;
@@ -895,6 +923,20 @@
     }
     .calc__input--name, .calc__input--phone {
       width: 100%;
+    }
+    &.is-collapse {
+      & .calc__two, & .calc__three {
+        display: none;
+      }
+    }
+    .calc__label {
+      padding-right: 5px;
+    }
+    .calc__item--eight {
+      margin: 0;
+    }
+    .calc__link--plus {
+      justify-content: center;
     }
   }
 }

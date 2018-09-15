@@ -1,15 +1,17 @@
 <template>
     <form method="POST" class="calc__form">
-        <div class="calc" id="calc-shipment">
+        <div :class="{'calc':true, 'is-collapse': cargo_form.isCollapse}" id="calc-shipment">
             <div class="calc__head">
                 <div class="calc__title">Заказ грузового такси
                 </div>
                 <div class="calc__title calc__title--links">
-                    <a href="#" class="calc__link--undo hvr-pop">
+                    <a href="#" class="calc__link--undo hvr-pop" v-if="!cargo_form.isCollapse"
+                       @click.prevent="clearData">
                         <i class="fas fa-undo"></i>
-                        <span class="calc__link--text" @click.prevent="clearData">Очистить</span>
+                        <span class="calc__link--text">Очистить</span>
                     </a>
-                    <a href="#" class="calc__link--close hvr-pop">
+                    <a href="#"
+                       class="calc__link--close hvr-pop" v-if="!cargo_form.isCollapse" @click.prevent="closeForm">
                         <i class="fas fa-times-circle"></i>
                     </a>
                 </div>
@@ -38,11 +40,11 @@
                                     <input type="text"
                                            placeholder="Улица" v-model="address_from.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-from') }"
-                                           v-validate.disable="'required'" name="calc__street-from">
+                                           v-validate.disable="'required'" name="calc__street-from" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--house"
-                                           placeholder="Дом" v-model="address_from.house">
+                                           placeholder="Дом" v-model="address_from.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
-                                           placeholder="Под" v-model="address_from.entrance">
+                                           placeholder="Под" v-model="address_from.entrance" @focus="onFocus">
                                     <div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>
                                 </div>
                             </div>
@@ -60,11 +62,11 @@
                                     <input type="text" value=""
                                            placeholder="Улица" v-model="address_to.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-to') }"
-                                           v-validate.disable="'required'" name="calc__street-to">
+                                           v-validate.disable="'required'" name="calc__street-to" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--house"
-                                           placeholder="Дом" v-model="address_to.house">
+                                           placeholder="Дом" v-model="address_to.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
-                                           placeholder="Под" v-model="address_to.entrance">
+                                           placeholder="Под" v-model="address_to.entrance" @focus="onFocus">
                                     <div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>
                                 </div>
                             </div>
@@ -76,7 +78,7 @@
                                        :class="{'calc__input': true, 'calc__input--name': true, 'is-danger': errors.has('calc__name') }"
                                        placeholder="Представьтесь" v-model="contact.name"
                                        v-validate.disable="'required|alpha'"
-                                       name="calc__name">
+                                       name="calc__name" @focus="onFocus">
 
                             </div>
                             <div class="calc__item calc__item--four">
@@ -84,7 +86,7 @@
                                 <input id="calc__phone"
                                        :class="{'calc__input': true, 'calc__input--phone': true, 'is-danger': errors.has('calc__phone') }"
                                        placeholder="Ваш номер" v-model="contact.phone" ref="phone"
-                                       v-validate.disable="'required'" name="calc__phone">
+                                       v-validate.disable="'required'" name="calc__phone" @focus="onFocus">
                             </div>
                         </div>
                         <div class="calc__row calc__row--three">
@@ -100,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="calc__two">
+                <div :class="{'calc__two': true, 'is-disable': cargo_form.isDisable}">
                     <div class="calc__block">
                         <div class="calc__stage calc__stage--two">
                             <div class="calc__caption calc__caption--two"><span class="calc__wide">Шаг 2:</span> Подбор
@@ -168,7 +170,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="calc__three">
+                <div :class="{'calc__three': true, 'is-disable': cargo_form.isDisable}">
                     <div class="calc__block calc__block--three">
                         <div class="calc__stage calc__stage--four">
                             <div class="calc__caption calc__caption--four"><span class="calc__wide">Шаг 4:</span> Время
@@ -376,7 +378,11 @@
                 formResult: true,
                 discount: 0,
                 card_data: null,
-                tweened_price_normal: 0
+                tweened_price_normal: 0,
+                cargo_form: {
+                    isCollapse: true,
+                    isDisable: true
+                }
             }
         },
         computed: {
@@ -568,12 +574,15 @@
                 this.$validator.validateAll()
                     .then((result) => {
                         if (result) {
-                            this.formResult = !this.formResult;
+                            this.formResult = false;
+                            this.cargo_form.isDisable = false;
+                            this.cargo_form.isCollapse = false;
                             return;
                         }
 
                         let btnContinue = this.$refs.btnContinue;
                         animateObj(btnContinue, 'hvr-buzz-out');
+                        this.formResult = true;
                     });
             },
             validateCard() {
@@ -618,6 +627,18 @@
                 this.contact.phone = '';
                 this.card.serial = '';
                 this.discount = 0;
+                this.cargo_form.isDisable = true;
+                this.formResult = true;
+            },
+            closeForm() {
+                this.cargo_form.isCollapse = !this.cargo_form.isCollapse;
+                this.formResult = true;
+                this.cargo_form.isDisable = true;
+            },
+            onFocus() {
+                if (this.cargo_form.isCollapse) {
+                    this.cargo_form.isCollapse = false;
+                }
             }
         },
         watch: {
