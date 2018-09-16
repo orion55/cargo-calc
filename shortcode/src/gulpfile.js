@@ -112,6 +112,7 @@ gulp.task('vue', function () {
 });
 
 gulp.task('vue-build', function () {
+    subfolder = 'js';
     return gulp.src(['./components/*.vue'])
         .pipe(shell('cross-env NODE_ENV=production browserify -g envify js-vue/main.js | uglifyjs -c warnings=false -m > ../assets/js/build.js'))
 });
