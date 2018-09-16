@@ -111,9 +111,44 @@ class Cargo_Calc_Public
             $title = 'Новый заказ - ' . $info['contact_name'];
             $headers[] = 'From: master-gruzov.ru <mail@master-gruzov.ru>';
             $headers[] = 'Content-type: text/html; charset=utf-8';
-            $message = '<h1>' . $info['address_from'] . '</h1>';
+            $email = 'grol55@mail.ru';
 
-            return wp_mail('grol55@mail.ru', $title, $message, $headers);
+            $message = '<html><body>';
+//            $message .= '<h1>Новый заказ</h1>';
+            $message .= '<table rules="all" style="border-color: #666;" cellpadding="10" border="1">';
+            $message .= "<tr style='background: #eee;'><td><strong>Имя:</strong> </td><td>" . $info['contact_name'] . "</td></tr>";
+            $message .= "<tr><td><strong>Телефон:</strong> </td><td>" . $info['contact_phone'] . "</td></tr>";
+
+            $message .= "<tr style='background: #eee;'><td><strong>Откуда:</strong> </td><td>" . $info['address_from'] . "</td></tr>";
+            $message .= "<tr><td><strong>Улица:</strong> </td><td>" . $info['address_from_street'] . "</td></tr>";
+            $message .= "<tr><td><strong>Дом:</strong> </td><td>" . $info['address_from_house'] . "</td></tr>";
+            $message .= "<tr><td><strong>Подъезд:</strong> </td><td>" . $info['address_from_entrance'] . "</td></tr>";
+
+            $message .= "<tr style='background: #eee;'><td><strong>Куда:</strong> </td><td>" . $info['address_to'] . "</td></tr>";
+            $message .= "<tr><td><strong>Улица:</strong> </td><td>" . $info['address_to_street'] . "</td></tr>";
+            $message .= "<tr><td><strong>Дом:</strong> </td><td>" . $info['address_to_house'] . "</td></tr>";
+            $message .= "<tr><td><strong>Подъезд:</strong> </td><td>" . $info['address_to_entrance'] . "</td></tr>";
+
+            $message .= "<tr style='background: #eee;'><td><strong>Тип подачи:</strong> </td><td>" . $info['time_delivery'] . "</td></tr>";
+            $message .= "<tr><td><strong>Время подачи:</strong> </td><td>" . $info['calendar'] . "</td></tr>";
+            $message .= "<tr><td><strong>Длительность заказа:</strong> </td><td>" . $info['durability'] . "</td></tr>";
+            $message .= "<tr><td><strong>Примечание:</strong> </td><td>" . $info['note'] . "</td></tr>";
+
+            $message .= "<tr style='background: #eee;'><td><strong>Машина:</strong> </td><td>" . $info['car'] . "</td></tr>";
+            $message .= "<tr><td><strong>Грузчики:</strong> </td><td>" . $info['loaders'] . "</td></tr>";
+            $message .= "<tr><td><strong>Время работы грузчиков:</strong> </td><td>" . $info['cargo_time'] . "</td></tr>";
+
+            $message .= "<tr><td><strong>Номер карты постоянного клиента:</strong> </td><td>" . $info['card_serial'] . "</td></tr>";
+
+            $message .= "<tr style='background: #eee;'><td><strong>Обычная цена:</strong> </td><td>" . $info['price_normal'] . " руб.</td></tr>";
+            $message .= "<tr><td><strong>Размер скидки:</strong> </td><td>" . $info['discount'] . "%</td></tr>";
+            $message .= "<tr><td><strong>Сумма скидки:</strong> </td><td>" . $info['economy'] . " руб.</td></tr>";
+            $message .= "<tr><td><strong>Итого со скидкой:</strong> </td><td>" . $info['price_result'] . " руб.</td></tr>";
+
+            $message .= "</table>";
+            $message .= "</body></html>";
+
+            return wp_mail($email, $title, $message, $headers);
         }
 
         if (empty($_POST['nonce'])) {
@@ -152,7 +187,7 @@ class Cargo_Calc_Public
         $info['price_result'] = intval($_POST['price_result']);
         $info['time_delivery'] = sanitize_text_field($_POST['time_delivery']);
 
-//        contact_send($info);
+        contact_send($info);
 
         wp_send_json_success($info);
     }
