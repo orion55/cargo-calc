@@ -77,7 +77,7 @@
                                 <input id="calc__name" value=""
                                        :class="{'calc__input': true, 'calc__input--name': true, 'is-danger': errors.has('calc__name') }"
                                        placeholder="Представьтесь" v-model="contact.name"
-                                       v-validate.disable="'required|alpha'"
+                                       v-validate.disable="'required'"
                                        name="calc__name" @focus="onFocus">
 
                             </div>
@@ -239,7 +239,9 @@
                                                 class="fas fa-ruble-sign  calc__result-rub"></i></span>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn--result hvr-radial-out">Оформить заказ</button>
+                                <button type="button" class="btn btn--result hvr-radial-out" @click.prevent="checkout">
+                                    Оформить заказ
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -257,8 +259,9 @@
     import _ from 'lodash';
     import {DateTime} from 'luxon';
     import Inputmask from 'inputmask';
-    //    import {TweenLite} from "TweenMax";
     import {TweenLite} from 'gsap';
+
+    let Qs = require('qs');
 
     //простой расчет цены услуги
     let pricePlus = (obj, durability) => {
@@ -630,6 +633,38 @@
                 this.cargo_form.isDisable = true;
                 this.formResult = true;
             },
+            demoData() {
+                this.loaders.selected = {id: 1, label: '1'};
+                this.cargo_time.selected = {id: 1, label: '1 час'};
+                this.time_delivery.selected = {"id": 0, "name": "Срочная (30 минут)"};
+                this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
+                this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
+                this.address_from.street = 'Республики';
+                this.address_from.house = '1';
+                this.address_from.entrance = 'а';
+                this.address_to.selected = {"id": 1, "name": "Центральный р-н"};
+                this.address_to.street = 'Республики';
+                this.address_to.house = '2';
+                this.address_to.entrance = 'б';
+                this.car.selected = {
+                    "id": 0,
+                    "name": "Ларгус/пикап",
+                    "picture": "assets/img/car/car01.jpg",
+                    "size": "1,7м * 1,2м * 1м",
+                    "carrying": "700 кг",
+                    "desc": "подходит для загородного переезда, перевозки стройматериалов"
+                };
+                this.calendar.datetime = DateTime.local().toISO();
+                this.note.visibility = false;
+                this.note.text = 'Срочно, быстро, дешево!';
+                this.contact.name = 'Милый Друг';
+                this.contact.phone = '+7 (111) 111 11 11';
+                this.card.serial = '11111-11111';
+                this.discount = 5;
+                this.cargo_form.isDisable = false;
+                this.formResult = false;
+                this.cargo_form.isCollapse = false;
+            },
             closeForm() {
                 this.cargo_form.isCollapse = !this.cargo_form.isCollapse;
                 this.formResult = true;
@@ -639,6 +674,42 @@
                 if (this.cargo_form.isCollapse) {
                     this.cargo_form.isCollapse = false;
                 }
+            },
+            checkout() {
+                let data = {
+                    action: 'cargo_add',
+                    nonce: this.wp_data.nonce,
+                    loaders: this.loaders.selected.label,
+                    cargo_time: this.cargo_time.selected.label,
+                    time_delivery: this.time_delivery.selected.name,
+                    durability: this.durability.selected.label,
+                    address_from: this.address_from.selected.name,
+                    address_from_street: this.address_from.street,
+                    address_from_house: this.address_from.house,
+                    address_from_entrance: this.address_from.entrance,
+                    address_to: this.address_to.selected.name,
+                    address_to_street: this.address_to.street,
+                    address_to_house: this.address_to.house,
+                    address_to_entrance: this.address_to.entrance,
+                    car: this.car.selected.name,
+                    calendar: this.calendar.datetime,
+                    note: this.note.text,
+                    contact_name: this.contact.name,
+                    contact_phone: this.contact.phone,
+                    card_serial: this.card.serial,
+                    price_normal: this.price_normal,
+                    economy: this.economy,
+                    discount: this.discount,
+                    price_result: this.price_result
+                };
+
+                axios.post(this.wp_data.url_ajax, Qs.stringify(data))
+                    .then(function (response) {
+                        console.log(response.data);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         },
         watch: {
@@ -691,6 +762,8 @@
                     im1.mask(this.$refs.card);
 
                     this.card_data = card_response.data;
+
+                    this.demoData();
                 }))
                 .catch(error => {
                     console.log(error);

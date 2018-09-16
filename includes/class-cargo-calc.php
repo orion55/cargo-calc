@@ -178,6 +178,8 @@ class Cargo_Calc
 
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+        $this->loader->add_action('wp_ajax_cargo_add', $plugin_public, 'cargo_add');
+        $this->loader->add_action('wp_ajax_nopriv__cargo_add', $plugin_public, 'cargo_add');
 
     }
 
