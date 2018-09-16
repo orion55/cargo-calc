@@ -106,6 +106,16 @@ class Cargo_Calc_Public
 
     public function cargo_add()
     {
+        function contact_send($info)
+        {
+            $title = 'Новый заказ - ' . $info['contact_name'];
+            $headers[] = 'From: master-gruzov.ru <mail@master-gruzov.ru>';
+            $headers[] = 'Content-type: text/html; charset=utf-8';
+            $message = '<h1>' . $info['address_from'] . '</h1>';
+
+            return wp_mail('grol55@mail.ru', $title, $message, $headers);
+        }
+
         if (empty($_POST['nonce'])) {
             wp_die('Nonce bad');
         }
@@ -113,9 +123,39 @@ class Cargo_Calc_Public
         $check_ajax_referer = check_ajax_referer('myajax-nonce123', 'nonce', false);
 
         if (!$check_ajax_referer) {
-            wp_die('Эх! Сработала защита', '', 403);
+            wp_send_json_error('Эх! Сработала защита');
         }
 
-        wp_die(print_r($_POST));
+        $info = [];
+        $info['address_from'] = sanitize_text_field($_POST['address_from']);
+        $info['address_from_entrance'] = sanitize_text_field($_POST['address_from_entrance']);
+        $info['address_from_house'] = sanitize_text_field($_POST['address_from_house']);
+        $info['address_from_street'] = sanitize_text_field($_POST['address_from_street']);
+        $info['address_to'] = sanitize_text_field($_POST['address_to']);
+        $info['address_to_entrance'] = sanitize_text_field($_POST['address_to_entrance']);
+        $info['address_to_house'] = sanitize_text_field($_POST['address_to_house']);
+        $info['address_to_street'] = sanitize_text_field($_POST['address_to_street']);
+        $exp = sanitize_text_field($_POST['calendar']);
+        $newDate = DateTime::createFromFormat("Y-m-d\TG:i:s.uO", $exp);
+        $info['calendar'] = $newDate->format("d.m.Y H:i");
+        $info['car'] = sanitize_text_field($_POST['car']);
+        $info['card_serial'] = sanitize_text_field($_POST['card_serial']);
+        $info['cargo_time'] = sanitize_text_field($_POST['cargo_time']);
+        $info['contact_name'] = sanitize_text_field($_POST['contact_name']);
+        $info['contact_phone'] = sanitize_text_field($_POST['contact_phone']);
+        $info['discount'] = intval($_POST['discount']);
+        $info['durability'] = sanitize_text_field($_POST['durability']);
+        $info['economy'] = intval($_POST['economy']);
+        $info['loaders'] = sanitize_text_field($_POST['loaders']);
+        $info['note'] = sanitize_textarea_field($_POST['note']);
+        $info['price_normal'] = intval($_POST['price_normal']);
+        $info['price_result'] = intval($_POST['price_result']);
+        $info['time_delivery'] = sanitize_text_field($_POST['time_delivery']);
+
+//        contact_send($info);
+
+        wp_send_json_success($info);
     }
+
+
 }
