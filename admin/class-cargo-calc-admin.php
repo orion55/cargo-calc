@@ -20,6 +20,7 @@
  * @subpackage Cargo_Calc/admin
  * @author     Oleg Grebenev <admin@infoblog72.ru>
  */
+
 class Cargo_Calc_Admin
 {
 
@@ -53,7 +54,7 @@ class Cargo_Calc_Admin
 
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        add_action('admin_menu', array($this, 'add_plugin_page'));
+//        add_action('admin_menu', array($this, 'add_plugin_page'));
     }
 
     /**
