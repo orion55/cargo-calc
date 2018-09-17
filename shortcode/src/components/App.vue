@@ -317,7 +317,7 @@
                     ]
                 },
                 time_delivery: {
-                    selected: {"id": 0, "name": "Срочная (30 минут)"},
+                    selected: {"id": 1, "name": "Плановая"},
                     options: []
                 },
                 durability: {
@@ -605,7 +605,7 @@
             clearData() {
                 this.loaders.selected = {id: 0, label: 'Нет'};
                 this.cargo_time.selected = {id: 1, label: '1 час'};
-                this.time_delivery.selected = {"id": 0, "name": "Срочная (30 минут)"};
+                this.time_delivery.selected = {"id": 1, "name": "Плановая"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
                 this.address_from.street = '';
@@ -636,7 +636,7 @@
             demoData() {
                 this.loaders.selected = {id: 1, label: '1'};
                 this.cargo_time.selected = {id: 1, label: '1 час'};
-                this.time_delivery.selected = {"id": 0, "name": "Срочная (30 минут)"};
+                this.time_delivery.selected = {"id": 1, "name": "Плановая"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
                 this.address_from.street = 'Республики';

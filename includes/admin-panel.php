@@ -15,11 +15,12 @@ function crb_attach_theme_options()
                 ->set_help_text('Email для отправки заказов')
         ));
 
-    Container::make('post_meta', __('Опции блюда', 'crb'))
+    Container::make('post_meta', __('Опции', 'crb'))
         ->where('post_type', '=', 'order_cargo')
         ->add_fields(array(
-            Field::make('text', 'price_dish', 'Цена')
-                ->set_attribute('type', 'number')
-                ->set_attribute('min', '0')
-        ));
+                Field::make('text', 'price_dish', 'Цена')
+                    ->set_attribute('type', 'number')
+                    ->set_attribute('min', '0')
+            )
+        );
 }
