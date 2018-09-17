@@ -387,7 +387,6 @@ div.is-collapse {
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
-  height: 96%;
   justify-content: space-around;
 }
 
@@ -722,6 +721,7 @@ div.is-collapse {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 25px;
+  height: 31px;
 }
 
 #calc-shipment .calc__heading {
