@@ -720,15 +720,19 @@
                         } else {
                             this.objAlertResult.type = 'error';
                             this.objAlertResult.title = 'Ошибка';
-//                            answer.forEach((element) => {
-//                                this.objAlertResult.message += element;
-//                            });
+                            this.objAlertResult.message = '';
+                            answer.data.forEach((element) => {
+                                this.objAlertResult.message += element + '<br />';
+                            });
                         }
-                        console.log(answer);
                         this.$refs.simplert_result.openSimplert(this.objAlertResult);
                     })
-                    .catch(function (error) {
+                    .catch((error) => {
                         console.log(error);
+                        this.objAlertResult.type = 'error';
+                        this.objAlertResult.title = 'Ошибка';
+                        this.objAlertResult.message = 'Ошибка сервера';
+                        this.$refs.simplert_result.openSimplert(this.objAlertResult);
                     });
             }
         },

@@ -433,11 +433,18 @@ exports.default = {
                 } else {
                     _this2.objAlertResult.type = 'error';
                     _this2.objAlertResult.title = 'Ошибка';
+                    _this2.objAlertResult.message = '';
+                    answer.data.forEach(function (element) {
+                        _this2.objAlertResult.message += element + '<br />';
+                    });
                 }
-                console.log(answer);
                 _this2.$refs.simplert_result.openSimplert(_this2.objAlertResult);
             }).catch(function (error) {
                 console.log(error);
+                _this2.objAlertResult.type = 'error';
+                _this2.objAlertResult.title = 'Ошибка';
+                _this2.objAlertResult.message = 'Ошибка сервера';
+                _this2.$refs.simplert_result.openSimplert(_this2.objAlertResult);
             });
         }
     },
@@ -506,9 +513,9 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-8b484bbe", __vue__options__)
+    hotAPI.createRecord("data-v-1cdcfc6b", __vue__options__)
   } else {
-    hotAPI.reload("data-v-8b484bbe", __vue__options__)
+    hotAPI.reload("data-v-1cdcfc6b", __vue__options__)
   }
 })()}
 },{"axios":3,"gsap":28,"inputmask":38,"lodash":40,"luxon":41,"qs":44,"vue":56,"vue-hot-reload-api":53}],2:[function(require,module,exports){
