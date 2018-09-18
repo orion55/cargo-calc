@@ -40,7 +40,7 @@
                                     <input type="text"
                                            placeholder="Улица" v-model="address_from.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-from') }"
-                                           v-validate.disable="'required'" name="calc__street-from" @focus="onFocus">
+                                           name="calc__street-from" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_from.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -62,7 +62,7 @@
                                     <input type="text" value=""
                                            placeholder="Улица" v-model="address_to.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-to') }"
-                                           v-validate.disable="'required'" name="calc__street-to" @focus="onFocus">
+                                           name="calc__street-to" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_to.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"

@@ -30,6 +30,7 @@ function crb_attach_theme_options()
                     ->set_attribute('placeholder', '+7 (***) ***-**-**')
                     ->set_required(true)
                     ->set_width(50),
+
                 Field::make('text', 'address_from', 'Откуда (район)')
                     ->set_attribute('type', 'text')
                     ->set_width(40),
@@ -42,6 +43,7 @@ function crb_attach_theme_options()
                 Field::make('text', 'address_from_entrance', 'Подъезд')
                     ->set_attribute('type', 'text')
                     ->set_width(10),
+
                 Field::make('text', 'address_to', 'Куда (район)')
                     ->set_attribute('type', 'text')
                     ->set_width(40),
@@ -53,7 +55,17 @@ function crb_attach_theme_options()
                     ->set_width(10),
                 Field::make('text', 'address_to_entrance', 'Подъезд')
                     ->set_attribute('type', 'text')
-                    ->set_width(10)
+                    ->set_width(10),
+
+                Field::make('text', 'time_delivery', 'Тип подачи')
+                    ->set_attribute('type', 'text')
+                    ->set_width(33),
+                Field::make('text', 'calendar', 'Время подачи')
+                    ->set_attribute('type', 'datetimr')
+                    ->set_width(33),
+                Field::make('text', 'durability', 'Длительность заказа')
+                    ->set_attribute('type', 'text')
+                    ->set_width(33),
             )
         );
 }
