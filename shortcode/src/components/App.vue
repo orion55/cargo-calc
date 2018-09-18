@@ -787,7 +787,7 @@
 
                     this.card_data = card_response.data;
 
-                    this.demoData();
+//                    this.demoData();
                 }))
                 .catch(error => {
                     console.log(error);

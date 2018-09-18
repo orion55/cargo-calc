@@ -81,6 +81,7 @@ run_cargo_calc();
 
 require plugin_dir_path(__FILE__) . 'shortcode/class-cargo-shortcode.php';
 require plugin_dir_path(__FILE__) . 'includes/admin-panel.php';
+//require plugin_dir_path(__FILE__) . 'includes/admin-column.php';
 
 function run_cargo_shortcode()
 {
