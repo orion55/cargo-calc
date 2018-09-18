@@ -244,6 +244,9 @@ class Cargo_Calc_Public
 
         create_post($info);
 
+//        array_push($errorArr, 'Ошибка при отправки письма!');
+//        array_push($errorArr, 'Всё плохо!');
+
         if (count($errorArr) > 0) {
             wp_send_json_error($errorArr);
         } else {

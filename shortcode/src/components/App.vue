@@ -713,13 +713,19 @@
 
                 axios.post(this.wp_data.url_ajax, Qs.stringify(data))
                     .then((response) => {
-                        if (response.data.success) {
+                        let answer = response.data;
+                        if (answer.success) {
                             this.objAlertResult.type = 'success';
-                            this.objAlertResult.title = response.data.data;
+                            this.objAlertResult.title = answer.data;
                         } else {
-//                            this.objAlertResult.type = 'error';
+                            this.objAlertResult.type = 'error';
+                            this.objAlertResult.title = 'Ошибка';
+//                            answer.forEach((element) => {
+//                                this.objAlertResult.message += element;
+//                            });
                         }
-                        console.log(response.data);
+                        console.log(answer);
+                        this.$refs.simplert_result.openSimplert(this.objAlertResult);
                     })
                     .catch(function (error) {
                         console.log(error);

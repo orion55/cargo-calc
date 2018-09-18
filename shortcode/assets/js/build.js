@@ -426,11 +426,16 @@ exports.default = {
             };
 
             _axios2.default.post(this.wp_data.url_ajax, Qs.stringify(data)).then(function (response) {
-                if (response.data.success) {
+                var answer = response.data;
+                if (answer.success) {
                     _this2.objAlertResult.type = 'success';
-                    _this2.objAlertResult.title = response.data.data;
-                } else {}
-                console.log(response.data);
+                    _this2.objAlertResult.title = answer.data;
+                } else {
+                    _this2.objAlertResult.type = 'error';
+                    _this2.objAlertResult.title = 'Ошибка';
+                }
+                console.log(answer);
+                _this2.$refs.simplert_result.openSimplert(_this2.objAlertResult);
             }).catch(function (error) {
                 console.log(error);
             });
