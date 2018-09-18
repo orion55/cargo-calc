@@ -712,7 +712,7 @@
                 };
 
                 axios.post(this.wp_data.url_ajax, Qs.stringify(data))
-                    .then(function (response) {
+                    .then((response) => {
                         if (response.data.success) {
                             this.objAlertResult.type = 'success';
                             this.objAlertResult.title = response.data.data;

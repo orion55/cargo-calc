@@ -396,6 +396,8 @@ exports.default = {
             }
         },
         checkout: function checkout() {
+            var _this2 = this;
+
             var data = {
                 action: 'cargo_add',
                 nonce: this.wp_data.nonce,
@@ -425,8 +427,8 @@ exports.default = {
 
             _axios2.default.post(this.wp_data.url_ajax, Qs.stringify(data)).then(function (response) {
                 if (response.data.success) {
-                    this.objAlertResult.type = 'success';
-                    this.objAlertResult.title = response.data.data;
+                    _this2.objAlertResult.type = 'success';
+                    _this2.objAlertResult.title = response.data.data;
                 } else {}
                 console.log(response.data);
             }).catch(function (error) {
@@ -440,51 +442,51 @@ exports.default = {
         }
     },
     mounted: function mounted() {
-        var _this2 = this;
+        var _this3 = this;
 
         _axios2.default.all([_axios2.default.get(wp_data.plugin_dir_url + 'assets/json/price1.json'), _axios2.default.get(wp_data.plugin_dir_url + 'assets/json/card.json')]).then(_axios2.default.spread(function (response, card_response) {
-            _this2.info.data = response.data;
+            _this3.info.data = response.data;
 
-            var filterArray = _lodash2.default.filter(_this2.info.data.metadata.area, function (item) {
+            var filterArray = _lodash2.default.filter(_this3.info.data.metadata.area, function (item) {
                 return item.id < 10;
             });
             _lodash2.default.forEach(filterArray, function (item) {
-                _this2.address.options[0].area.push(item);
+                _this3.address.options[0].area.push(item);
             });
-            filterArray = _lodash2.default.filter(_this2.info.data.metadata.area, function (item) {
+            filterArray = _lodash2.default.filter(_this3.info.data.metadata.area, function (item) {
                 return item.id >= 10;
             });
             filterArray = _lodash2.default.sortBy(filterArray, [function (item) {
                 return item.name;
             }]);
             _lodash2.default.forEach(filterArray, function (item) {
-                _this2.address.options[1].area.push(item);
+                _this3.address.options[1].area.push(item);
             });
 
-            _lodash2.default.forEach(_this2.info.data.metadata.car, function (item) {
-                _this2.car.options.push(item);
+            _lodash2.default.forEach(_this3.info.data.metadata.car, function (item) {
+                _this3.car.options.push(item);
             });
 
-            _lodash2.default.forEach(_this2.info.data.metadata.time_delivery, function (item) {
-                _this2.time_delivery.options.push(item);
+            _lodash2.default.forEach(_this3.info.data.metadata.time_delivery, function (item) {
+                _this3.time_delivery.options.push(item);
             });
 
-            _this2.calendar.datetime = _luxon.DateTime.local().toISO();
+            _this3.calendar.datetime = _luxon.DateTime.local().toISO();
 
             var im = new _inputmask2.default("+7 (999) 999 99 99");
-            im.mask(_this2.$refs.phone);
+            im.mask(_this3.$refs.phone);
 
             var im1 = new _inputmask2.default("99999-99999");
-            im1.mask(_this2.$refs.card);
+            im1.mask(_this3.$refs.card);
 
-            _this2.card_data = card_response.data;
+            _this3.card_data = card_response.data;
 
-            _this2.demoData();
+            _this3.demoData();
         })).catch(function (error) {
             console.log(error);
-            _this2.info.errored = true;
+            _this3.info.errored = true;
         }).finally(function () {
-            return _this2.info.loading = false;
+            return _this3.info.loading = false;
         });
     }
 };
