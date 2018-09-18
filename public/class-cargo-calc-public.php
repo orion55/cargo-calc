@@ -150,9 +150,55 @@ class Cargo_Calc_Public
                 $message .= "</table>";
                 $message .= "</body></html>";
 
-                return wp_mail($email, $title, $message, $headers);
+                if (!wp_mail($email, $title, $message, $headers)) {
+                    array_push($errorArr, 'Ошибка при отправки письма!');
+                }
             } else {
-                return false;
+                array_push($errorArr, 'Ошибка при отправки письма! Email отправки не указан!');
+            }
+        }
+
+        function create_post($info)
+        {
+            $post_data = array(
+                'post_title' => $info['contact_name'] . ' - ' . $info['calendar'],
+                'post_content' => $info['contact_name'],
+                'post_status' => 'publish',
+                'post_type' => 'order_cargo'
+            );
+
+            $post_id = wp_insert_post($post_data);
+
+            if (is_wp_error($post_id)) {
+                array_push($errorArr, $post_id->get_error_message());
+            } else {
+                update_post_meta($post_id, '_contact_name', $info['contact_name']);
+                update_post_meta($post_id, '_contact_phone', $info['contact_phone']);
+                update_post_meta($post_id, '_card_serial', $info['card_serial']);
+
+                update_post_meta($post_id, '_address_from', $info['address_from']);
+                update_post_meta($post_id, '_address_from_street', $info['address_from_street']);
+                update_post_meta($post_id, '_address_from_house', $info['address_from_house']);
+                update_post_meta($post_id, '_address_from_entrance', $info['address_from_entrance']);
+
+                update_post_meta($post_id, '_address_to', $info['address_to']);
+                update_post_meta($post_id, '_address_to_street', $info['address_to_street']);
+                update_post_meta($post_id, '_address_to_house', $info['address_to_house']);
+                update_post_meta($post_id, '_address_to_entrance', $info['address_to_entrance']);
+
+                update_post_meta($post_id, '_time_delivery', $info['time_delivery']);
+                update_post_meta($post_id, '_calendar', $info['calendar']);
+                update_post_meta($post_id, '_durability', $info['durability']);
+                update_post_meta($post_id, '_note', $info['note']);
+
+                update_post_meta($post_id, '_car', $info['car']);
+                update_post_meta($post_id, '_loaders', $info['loaders']);
+                update_post_meta($post_id, '_cargo_time', $info['cargo_time']);
+
+                update_post_meta($post_id, '_price_normal', $info['price_normal']);
+                update_post_meta($post_id, '_discount', $info['discount']);
+                update_post_meta($post_id, '_economy', $info['economy']);
+                update_post_meta($post_id, '_price_result', $info['price_result']);
             }
         }
 
@@ -192,10 +238,16 @@ class Cargo_Calc_Public
         $info['price_result'] = intval($_POST['price_result']);
         $info['time_delivery'] = sanitize_text_field($_POST['time_delivery']);
 
+        $errorArr = [];
+
         contact_send($info);
 
-        wp_send_json_success($info);
+        create_post($info);
+
+        if (count($errorArr) > 0) {
+            wp_send_json_error($errorArr);
+        } else {
+            wp_send_json_success('Заказ успешно зарегистрирован!');
+        }
     }
-
-
 }

@@ -249,8 +249,9 @@
             </div>
             <simplert :useRadius="true" :useIcon="true" ref="simplert">
             </simplert>
+            <simplert :useRadius="true" :useIcon="true" ref="simplert_result">
+            </simplert>
         </div>
-        <!--{{contact}}-->
     </form>
 </template>
 
@@ -368,6 +369,13 @@
                     title: '',
                     message: '',
                     type: 'info',
+                    customCloseBtnClass: 'btn btn--modal',
+                    customCloseBtnText: 'Ok'
+                },
+                objAlertResult: {
+                    title: '',
+                    message: '',
+                    type: '',
                     customCloseBtnClass: 'btn btn--modal',
                     customCloseBtnText: 'Ok'
                 },
@@ -705,6 +713,12 @@
 
                 axios.post(this.wp_data.url_ajax, Qs.stringify(data))
                     .then(function (response) {
+                        if (response.data.success) {
+                            this.objAlertResult.type = 'success';
+                            this.objAlertResult.title = response.data.data;
+                        } else {
+//                            this.objAlertResult.type = 'error';
+                        }
                         console.log(response.data);
                     })
                     .catch(function (error) {
@@ -763,7 +777,7 @@
 
                     this.card_data = card_response.data;
 
-//                    this.demoData();
+                    this.demoData();
                 }))
                 .catch(error => {
                     console.log(error);

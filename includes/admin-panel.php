@@ -24,12 +24,16 @@ function crb_attach_theme_options()
                 Field::make('text', 'contact_name', 'Имя')
                     ->set_attribute('type', 'text')
                     ->set_required(true)
-                    ->set_width(50),
+                    ->set_width(33),
                 Field::make('text', 'contact_phone', 'Телефон')
                     ->set_attribute('type', 'tel')
                     ->set_attribute('placeholder', '+7 (***) ***-**-**')
                     ->set_required(true)
-                    ->set_width(50),
+                    ->set_width(33),
+                Field::make('text', 'card_serial', 'Номер карты постоянного клиента')
+                    ->set_attribute('type', 'text')
+                    ->set_attribute('placeholder', '*****-*****')
+                    ->set_width(33),
 
                 Field::make('text', 'address_from', 'Откуда (район)')
                     ->set_attribute('type', 'text')
@@ -60,12 +64,44 @@ function crb_attach_theme_options()
                 Field::make('text', 'time_delivery', 'Тип подачи')
                     ->set_attribute('type', 'text')
                     ->set_width(33),
-                Field::make('text', 'calendar', 'Время подачи')
-                    ->set_attribute('type', 'datetimr')
+                Field::make('date_time', 'calendar', 'Время подачи')
+                    ->set_storage_format("d.m.Y H:i")
+                    ->set_input_format('d.m.Y H:i', 'd.m.Y H:i')
                     ->set_width(33),
                 Field::make('text', 'durability', 'Длительность заказа')
                     ->set_attribute('type', 'text')
                     ->set_width(33),
+
+                Field::make('textarea', 'note', 'Примечание')
+                    ->set_rows(2)
+                    ->set_width(100),
+
+                Field::make('text', 'car', 'Машина')
+                    ->set_attribute('type', 'text')
+                    ->set_width(33),
+                Field::make('text', 'loaders', 'Грузчики')
+                    ->set_attribute('type', 'text')
+                    ->set_width(33),
+                Field::make('text', 'cargo_time', 'Время работы грузчиков')
+                    ->set_attribute('type', 'text')
+                    ->set_width(33),
+
+                Field::make('text', 'price_normal', 'Обычная цена')
+                    ->set_attribute('type', 'number')
+                    ->set_attribute('min', '0')
+                    ->set_width(25),
+                Field::make('text', 'discount', 'Размер скидки')
+                    ->set_attribute('type', 'number')
+                    ->set_attribute('min', '0')
+                    ->set_width(25),
+                Field::make('text', 'economy', 'Сумма скидки')
+                    ->set_attribute('type', 'number')
+                    ->set_attribute('min', '0')
+                    ->set_width(25),
+                Field::make('text', 'price_result', 'Итого со скидкой')
+                    ->set_attribute('type', 'number')
+                    ->set_attribute('min', '0')
+                    ->set_width(25)
             )
         );
 }
