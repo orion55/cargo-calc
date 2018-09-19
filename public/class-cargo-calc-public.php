@@ -250,4 +250,17 @@ class Cargo_Calc_Public
             wp_send_json_success('Заказ успешно зарегистрирован!');
         }
     }
+
+    public function export_csv()
+    {
+
+        $info = [];
+        parse_str($_POST['info'], $info);
+        foreach ($info as &$value) {
+            $value = sanitize_text_field($value);
+        }
+        unset($value);
+
+        wp_send_json_success($info);
+    }
 }

@@ -63,7 +63,7 @@ class Cargo_Calc_Admin
      */
     public function enqueue_styles()
     {
-//        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/cargo-calc-admin.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name . '-admin', plugin_dir_url(__FILE__) . 'css/cargo-calc-admin.css', array(), $this->version, 'all');
         wp_enqueue_style($this->plugin_name . '-pure', plugin_dir_url(__FILE__) . 'css/pure-min.css', array(), $this->version, 'all');
         wp_enqueue_style($this->plugin_name . '-datepicker', plugin_dir_url(__FILE__) . 'css/datepicker.min.css', array(), $this->version, 'all');
 
@@ -78,6 +78,8 @@ class Cargo_Calc_Admin
     {
         wp_enqueue_script($this->plugin_name . '-datepicker', plugin_dir_url(__FILE__) . 'js/datepicker.min.js', array('jquery'), $this->version, false);
         wp_enqueue_script($this->plugin_name . '-datepicker-ru', plugin_dir_url(__FILE__) . 'js/datepicker.ru-RU.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name . '-validate', plugin_dir_url(__FILE__) . 'js/jquery.validate.min.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name . '-messages', plugin_dir_url(__FILE__) . 'js/messages_ru.min.js', array('jquery'), $this->version, false);
         wp_enqueue_script($this->plugin_name . '-cargo', plugin_dir_url(__FILE__) . 'js/cargo-calc-admin.js', array('jquery'), $this->version, false);
 
     }
@@ -98,22 +100,26 @@ class Cargo_Calc_Admin
     {
         ?>
         <div class="wrap">
-            <h2>Экспорт заказов заказов грузового такси</h2><br/>
-            <form class="pure-form pure-form-aligned">
+            <h2>Экспорт в CSV заказов грузового такси</h2><br/>
+            <form class="pure-form pure-form-aligned" id="form-export">
                 <fieldset>
                     <div class="pure-control-group">
                         <label for="name">Начальная дата</label>
-                        <input id="date_from" type="text" data-toggle="datepicker">
+                        <input id="date_from" type="text" data-toggle="datepicker" autocomplete="off" name="date_from"
+                               required>
                     </div>
 
                     <div class="pure-control-group">
                         <label for="password">Конечная дата</label>
-                        <input id="date_to" type="text" data-toggle="datepicker">
+                        <input id="date_to" type="text" data-toggle="datepicker" autocomplete="off" name="date_to"
+                               required>
                     </div>
                     <div class="pure-controls">
-                        <button class="pure-button pure-button-primary">Экспорт</button>
+                        <button class="pure-button pure-button-primary" id="btn-submit" type="submit">Экспорт</button>
                     </div>
+                    <div id="form-note"></div>
                 </fieldset>
+
             </form>
         </div>
     <?php }

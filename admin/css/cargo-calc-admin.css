@@ -1,4 +1,5 @@
-/**
- * All of the CSS for your admin-specific functionality should be
- * included in this file.
- */
+#date_from-error, #date_to-error {
+    color: red;
+    width: auto;
+    padding-left: 10px;
+}
