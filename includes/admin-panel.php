@@ -9,11 +9,13 @@ use Carbon_Fields\Field;
 add_action('carbon_fields_register_fields', 'crb_attach_theme_options');
 function crb_attach_theme_options()
 {
-    Container::make('theme_options', __('Опции темы', 'crb'))
+    Container::make('theme_options', __('Опции калькулятора', 'crb'))
         ->set_icon('dashicons-businessman')
         ->set_page_menu_title('Калькулятор')
         ->set_page_menu_position(7)
         ->add_fields(array(
+            Field::make('html', 'crb_information_text')
+                ->set_html('<div>Шорткод для вставки калькулятора <b>[cargo-calc]</b></div>'),
             Field::make('text', 'crb_email', 'Email')
                 ->set_help_text('Email для отправки заказов')
         ));

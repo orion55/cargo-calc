@@ -20,7 +20,6 @@
  * @subpackage Cargo_Calc/admin
  * @author     Oleg Grebenev <admin@infoblog72.ru>
  */
-
 class Cargo_Calc_Admin
 {
 
@@ -54,7 +53,7 @@ class Cargo_Calc_Admin
 
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-//        add_action('admin_menu', array($this, 'add_plugin_page'));
+        add_action('admin_menu', array($this, 'add_plugin_page'));
     }
 
     /**
@@ -64,20 +63,9 @@ class Cargo_Calc_Admin
      */
     public function enqueue_styles()
     {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Cargo_Calc_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Cargo_Calc_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
-
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/cargo-calc-admin.css', array(), $this->version, 'all');
+//        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/cargo-calc-admin.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name . '-pure', plugin_dir_url(__FILE__) . 'css/pure-min.css', array(), $this->version, 'all');
+        wp_enqueue_style($this->plugin_name . '-datepicker', plugin_dir_url(__FILE__) . 'css/datepicker.min.css', array(), $this->version, 'all');
 
     }
 
@@ -88,30 +76,20 @@ class Cargo_Calc_Admin
      */
     public function enqueue_scripts()
     {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Cargo_Calc_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Cargo_Calc_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
-
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/cargo-calc-admin.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name . '-datepicker', plugin_dir_url(__FILE__) . 'js/datepicker.min.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name . '-datepicker-ru', plugin_dir_url(__FILE__) . 'js/datepicker.ru-RU.js', array('jquery'), $this->version, false);
+        wp_enqueue_script($this->plugin_name . '-cargo', plugin_dir_url(__FILE__) . 'js/cargo-calc-admin.js', array('jquery'), $this->version, false);
 
     }
 
     public function add_plugin_page()
     {
-        add_options_page(
-            'Cargo calc', // page_title
-            'Калькулятор', // menu_title
+        add_submenu_page(
+            'edit.php?post_type=order_cargo',
+            'Cargo export', // page_title
+            'Экспорт в CSV', // menu_title
             'manage_options', // capability
-            'cargo-calc', // menu_slug
+            'cargo-calc-export', // menu_slug
             array($this, 'create_admin_page') // function
         );
     }
@@ -120,8 +98,23 @@ class Cargo_Calc_Admin
     {
         ?>
         <div class="wrap">
-            <h2>Калькулятор стоимости услуг грузового такси</h2>
-            <h3>Шорткод <b>[cargo-calc]</b></h3>
+            <h2>Экспорт заказов заказов грузового такси</h2><br/>
+            <form class="pure-form pure-form-aligned">
+                <fieldset>
+                    <div class="pure-control-group">
+                        <label for="name">Начальная дата</label>
+                        <input id="date_from" type="text" data-toggle="datepicker">
+                    </div>
+
+                    <div class="pure-control-group">
+                        <label for="password">Конечная дата</label>
+                        <input id="date_to" type="text" data-toggle="datepicker">
+                    </div>
+                    <div class="pure-controls">
+                        <button class="pure-button pure-button-primary">Экспорт</button>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     <?php }
 }
