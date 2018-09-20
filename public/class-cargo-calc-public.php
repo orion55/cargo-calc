@@ -254,6 +254,37 @@ class Cargo_Calc_Public
     public function export_csv()
     {
 
+        function inventory_posts($info)
+        {
+            $args = array(
+                'posts_per_page' => '-1',
+                'post_status' => 'publish',
+                'orderby' => 'date',
+                'post_type' => 'order_cargo'
+            );
+
+            $out = [];
+
+            $titles = array('Title', 'Date', 'Permalink', 'Post ID');
+            array_push($out, $titles);
+
+            $query = new WP_Query($args);
+            if ($query->have_posts()) {
+                while ($query->have_posts()) {
+                    $query->the_post();
+                    $row = array(
+                        get_the_title(),
+                        get_the_date('d.m.Y H:i')
+                    );
+                    array_push($out, $row);
+                }
+            }
+            wp_reset_postdata();
+
+//            return_csv_download($out, "posts.csv");
+            return $out;
+        }
+
         $info = [];
         parse_str($_POST['info'], $info);
         foreach ($info as &$value) {
@@ -261,6 +292,8 @@ class Cargo_Calc_Public
         }
         unset($value);
 
-        wp_send_json_success($info);
+        $arr = inventory_posts($info);
+
+        wp_send_json_success($arr);
     }
 }
