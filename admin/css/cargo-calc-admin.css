@@ -29,3 +29,7 @@
 .form-horizontal {
     display: flex;
 }
+
+#form-note {
+    padding-left: 20px;
+}

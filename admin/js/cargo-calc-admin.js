@@ -8,6 +8,7 @@ jQuery(document).ready(function ($) {
 
     var form = $("#form-export");
     var spinner = $('#spinner');
+    var note = $('#form-note');
 
     form.validate();
 
@@ -23,7 +24,11 @@ jQuery(document).ready(function ($) {
             spinner.show();
 
             jqxhr.done(function (response) {
-                console.log(response);
+                // console.log(response);
+                if (response.success) {
+                    var filename = response.data.split('/').pop();
+                    note.html('<br/><div>Файл успешно сформирован: <a href="' + response.data + '" download>' + filename + '</a></div>');
+                }
             });
 
             jqxhr.fail(function (error) {

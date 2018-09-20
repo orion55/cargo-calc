@@ -254,6 +254,31 @@ class Cargo_Calc_Public
     public function export_csv()
     {
 
+        function fputcsv_eol($fp, $array, $eol)
+        {
+            fputcsv($fp, $array, ';');
+            if ("\n" != $eol && 0 === fseek($fp, -1, SEEK_CUR)) {
+                fwrite($fp, $eol);
+            }
+        }
+
+        function csv_download($array_data, $filename)
+        {
+            $dir = wp_get_upload_dir();
+
+            $csv_path = $dir['basedir'] . '/csv';
+
+            wp_mkdir_p($csv_path);
+
+            $out = fopen($csv_path . '/' . $filename, 'w');
+            fputs($out, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+            foreach ($array_data as $row) {
+                fputcsv_eol($out, $row, "\r\n");
+            }
+            fclose($out);
+            return $dir['baseurl'] . '/csv/' . $filename;
+        }
+
         function inventory_posts($info)
         {
             $args = array(
@@ -265,24 +290,62 @@ class Cargo_Calc_Public
 
             $out = [];
 
-            $titles = array('Title', 'Date', 'Permalink', 'Post ID');
+            $titles = ['Имя', 'Телефон', 'Откуда(район)', 'Улица', 'Дом', 'Подъезд',
+                'Куда(район)', 'Улица', 'Дом', 'Подъезд', 'Тип подачи', 'Время подачи', 'Длительность заказа', 'Примечание',
+                'Машина', 'Грузчики', 'Время работы грузчиков', 'Номер карты постоянного клиента', 'Обычная цена',
+                'Размер скидки %', 'Сумма скидки', 'Итого со скидкой', 'Время заявки'];
             array_push($out, $titles);
 
             $query = new WP_Query($args);
             if ($query->have_posts()) {
                 while ($query->have_posts()) {
                     $query->the_post();
-                    $row = array(
-                        get_the_title(),
+                    $id = get_the_ID();
+
+                    $meta = new stdClass;
+                    foreach ((array)get_post_meta($id) as $k => $v) $meta->$k = $v[0];
+
+                    $row = [
+                        $meta->_contact_name,
+                        $meta->_contact_phone,
+                        $meta->_card_serial,
+
+                        $meta->_address_from,
+                        $meta->_address_from_street,
+                        $meta->_address_from_house,
+                        $meta->_address_from_entrance,
+
+                        $meta->_address_to,
+                        $meta->_address_to_street,
+                        $meta->_address_to_house,
+                        $meta->_address_to_entrance,
+
+                        $meta->_time_delivery,
+                        $meta->_calendar,
+                        $meta->_durability,
+                        $meta->_note,
+
+                        $meta->_car,
+                        $meta->_loaders,
+                        $meta->_cargo_time,
+
+                        $meta->_price_normal,
+                        $meta->_discount,
+                        $meta->_economy,
+                        $meta->_price_result,
+
                         get_the_date('d.m.Y H:i')
-                    );
+                    ];
+
                     array_push($out, $row);
                 }
+                $file_name = 'csv_file_' . date("dmY_Hi") . '.csv';
+
+                return csv_download($out, $file_name);
+            } else {
+                array_push($errorArr, 'Записи не найдены!');
             }
             wp_reset_postdata();
-
-//            return_csv_download($out, "posts.csv");
-            return $out;
         }
 
         $info = [];
@@ -292,8 +355,14 @@ class Cargo_Calc_Public
         }
         unset($value);
 
-        $arr = inventory_posts($info);
+        $errorArr = [];
 
-        wp_send_json_success($arr);
+        $result = inventory_posts($info);
+
+        if (count($errorArr) > 0) {
+            wp_send_json_error($errorArr);
+        } else {
+            wp_send_json_success($result);
+        }
     }
 }
