@@ -114,8 +114,11 @@ class Cargo_Calc_Admin
                         <input id="date_to" type="text" data-toggle="datepicker" autocomplete="off" name="date_to"
                                required>
                     </div>
-                    <div class="pure-controls">
+                    <div class="pure-controls form-horizontal">
                         <button class="pure-button pure-button-primary" id="btn-submit" type="submit">Экспорт</button>
+                        <div class="animate-spin" id="spinner">
+                            <img src="<?php echo plugin_dir_url(__FILE__) ?>/img/sync-solid.svg" class="spin">
+                        </div>
                     </div>
                     <div id="form-note"></div>
                 </fieldset>

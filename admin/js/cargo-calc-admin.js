@@ -7,6 +7,8 @@ jQuery(document).ready(function ($) {
     });
 
     var form = $("#form-export");
+    var spinner = $('#spinner');
+
     form.validate();
 
     $('#btn-submit').click(function (event) {
@@ -18,6 +20,7 @@ jQuery(document).ready(function ($) {
                 info: form.serialize()
             };
             var jqxhr = $.post(ajaxurl, data);
+            spinner.show();
 
             jqxhr.done(function (response) {
                 console.log(response);
@@ -25,6 +28,10 @@ jQuery(document).ready(function ($) {
 
             jqxhr.fail(function (error) {
                 console.log(error.statusText);
+            });
+
+            jqxhr.always(function () {
+                spinner.hide();
             });
 
         }
