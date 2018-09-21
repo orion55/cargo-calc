@@ -285,14 +285,22 @@ class Cargo_Calc_Public
                 'posts_per_page' => '-1',
                 'post_status' => 'publish',
                 'orderby' => 'date',
-                'post_type' => 'order_cargo'
+                'order' => 'ASC',
+                'post_type' => 'order_cargo',
+                'date_query' => array(
+                    array(
+                        'after' => $info['date_from'],
+                        'before' => $info['date_to'],
+                        'inclusive' => true,
+                    ),
+                )
             );
 
             $out = [];
 
-            $titles = ['Имя', 'Телефон', 'Откуда(район)', 'Улица', 'Дом', 'Подъезд',
+            $titles = ['Имя', 'Телефон', 'Номер карты', 'Откуда(район)', 'Улица', 'Дом', 'Подъезд',
                 'Куда(район)', 'Улица', 'Дом', 'Подъезд', 'Тип подачи', 'Время подачи', 'Длительность заказа', 'Примечание',
-                'Машина', 'Грузчики', 'Время работы грузчиков', 'Номер карты постоянного клиента', 'Обычная цена',
+                'Машина', 'Грузчики', 'Время работы грузчиков', 'Обычная цена',
                 'Размер скидки %', 'Сумма скидки', 'Итого со скидкой', 'Время заявки'];
             array_push($out, $titles);
 
@@ -348,6 +356,14 @@ class Cargo_Calc_Public
             wp_reset_postdata();
         }
 
+        function format_date($date)
+        {
+            $pieces = explode(".", $date);
+            $pieces = array_reverse($pieces);
+            return implode("-", $pieces);
+        }
+
+
         $info = [];
         parse_str($_POST['info'], $info);
         foreach ($info as &$value) {
@@ -356,6 +372,9 @@ class Cargo_Calc_Public
         unset($value);
 
         $errorArr = [];
+
+        $info['date_from'] = format_date($info['date_from']);
+        $info['date_to'] = format_date($info['date_to']);
 
         $result = inventory_posts($info);
 

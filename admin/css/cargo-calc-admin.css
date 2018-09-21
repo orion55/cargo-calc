@@ -1,4 +1,4 @@
-#date_from-error, #date_to-error {
+#date_from-error, #date_to-error, .error_note {
     color: red;
     width: auto;
     padding-left: 10px;

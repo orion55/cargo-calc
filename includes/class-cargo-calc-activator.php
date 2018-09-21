@@ -20,17 +20,19 @@
  * @subpackage Cargo_Calc/includes
  * @author     Oleg Grebenev <admin@infoblog72.ru>
  */
-class Cargo_Calc_Activator {
+class Cargo_Calc_Activator
+{
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since    1.0.0
+     */
+    public static function activate()
+    {
 
-	}
+    }
 
 }

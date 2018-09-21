@@ -28,6 +28,12 @@ jQuery(document).ready(function ($) {
                 if (response.success) {
                     var filename = response.data.split('/').pop();
                     note.html('<br/><div>Файл успешно сформирован: <a href="' + response.data + '" download>' + filename + '</a></div>');
+                } else {
+                    var text_error = 'Ошибка: ';
+                    response.data.forEach((element) => {
+                        text_error += element + '<br />';
+                    });
+                    note.html('<br/><div class="error_note">' + text_error + '</div>');
                 }
             });
 
