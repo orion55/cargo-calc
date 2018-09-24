@@ -3,6 +3,7 @@
 class Cargo_Shortcode
 {
     static $add_script;
+    static $full;
 
     static function init()
     {
@@ -15,10 +16,15 @@ class Cargo_Shortcode
     static function calculator_func($atts)
     {
         self::$add_script = true;
+        $atts = shortcode_atts(array(
+            'full' => '0'
+        ), $atts);
 
         $html = "
         <div id=\"cargo-calc\"></div>
         ";
+
+        self::$full = sanitize_text_field($atts['full']);
 
         return $html;
     }
@@ -54,7 +60,8 @@ class Cargo_Shortcode
         $variables = array(
             'plugin_dir_url' => plugin_dir_url(__FILE__),
             'url_ajax' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('myajax-nonce123')
+            'nonce' => wp_create_nonce('myajax-nonce123'),
+            'is_full' => self::$full
         );
         echo('<script type="text/javascript">window.wp_data=' . json_encode($variables) . ';</script>');
     }
