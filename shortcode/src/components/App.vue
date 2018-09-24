@@ -788,6 +788,11 @@
                     this.card_data = card_response.data;
 
 //                    this.demoData();
+                    if (this.wp_data.is_full === "1") {
+                        this.cargo_form.isDisable = true;
+                        this.formResult = true;
+                        this.cargo_form.isCollapse = false;
+                    }
                 }))
                 .catch(error => {
                     console.log(error);
