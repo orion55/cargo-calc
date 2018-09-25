@@ -147,7 +147,7 @@
                                                  class="calc__dropdown calc__dropdown--loaders"
                                                  :allow-empty="false"></multiselect>
                                     <div class="calc__desc calc__desc--cargo-time">Время работы</div>
-                                    <multiselect v-model="cargo_time.selected" :options="cargo_time.options"
+                                    <multiselect v-model="cargo_time.selected" :options="cargo_options"
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
                                                  class="calc__dropdown calc__dropdown--cargo-time" :allow-empty="false"
@@ -306,17 +306,7 @@
                     ]
                 },
                 cargo_time: {
-                    selected: {id: 1, label: '1 час'},
-                    options: [
-                        {id: 1, label: '1 час'},
-                        {id: 2, label: '2 часа'},
-                        {id: 3, label: '3 часа'},
-                        {id: 4, label: '4 часа'},
-                        {id: 5, label: '5 часов'},
-                        {id: 6, label: '6 часов'},
-                        {id: 7, label: '7 часов'},
-                        {id: 8, label: '8 часов'}
-                    ],
+                    selected: {id: 0, label: 'Нет', $isDisabled: false},
                     isDisabled: true
                 },
                 time_delivery: {
@@ -439,16 +429,28 @@
             },
             cargo_options: function () {
                 let data = [
-                    {id: 0, label: ''},
-                    {id: 1, label: '1 час'},
-                    {id: 2, label: '2 часа'},
-                    {id: 3, label: '3 часа'},
-                    {id: 4, label: '4 часа'},
-                    {id: 5, label: '5 часов'},
-                    {id: 6, label: '6 часов'},
-                    {id: 7, label: '7 часов'},
-                    {id: 8, label: '8 часов'}
+                    {id: 0, label: 'Нет', $isDisabled: false},
+                    {id: 1, label: '1 час', $isDisabled: false},
+                    {id: 2, label: '2 часа', $isDisabled: false},
+                    {id: 3, label: '3 часа', $isDisabled: false},
+                    {id: 4, label: '4 часа', $isDisabled: false},
+                    {id: 5, label: '5 часов', $isDisabled: false},
+                    {id: 6, label: '6 часов', $isDisabled: false},
+                    {id: 7, label: '7 часов', $isDisabled: false},
+                    {id: 8, label: '8 часов', $isDisabled: false}
                 ]
+
+                if (this.loaders.selected.id !== 0) {
+                    data[0].$isDisabled = true;
+                } else {
+                    data[0].$isDisabled = false;
+                }
+
+                if (data[0].$isDisabled) {
+                    this.cargo_time.selected = _.find(data, ['$isDisabled', false]);
+                }
+
+                return data;
             },
             price_normal: function () {
                 let priceNormal = 0;
@@ -581,6 +583,9 @@
             },
             isDisabledCargoTime: function () {
                 if (typeof this.loaders.selected.id !== 'undefined') {
+                    if (this.loaders.selected.id === 0) {
+                        this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false};
+                    }
                     return this.loaders.selected.id === 0;
                 }
             }
@@ -632,7 +637,7 @@
             },
             clearData() {
                 this.loaders.selected = {id: 0, label: 'Нет'};
-                this.cargo_time.selected = {id: 1, label: '1 час'};
+                this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false};
                 this.time_delivery.selected = {"id": 1, "name": "Планово (в течении дня)"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
@@ -663,7 +668,7 @@
             },
             demoData() {
                 this.loaders.selected = {id: 1, label: '1'};
-                this.cargo_time.selected = {id: 1, label: '1 час'};
+                this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false};
                 this.time_delivery.selected = {"id": 1, "name": "Планово (в течении дня)"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
