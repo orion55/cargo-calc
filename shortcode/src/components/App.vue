@@ -40,7 +40,7 @@
                                     <input type="text"
                                            placeholder="Улица" v-model="address_from.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-from') }"
-                                           name="calc__street-from" @focus="onFocus">
+                                           name="calc__street-from" @focus="onFocus" v-validate.disable="'required'">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_from.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -62,7 +62,7 @@
                                     <input type="text" value=""
                                            placeholder="Улица" v-model="address_to.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-to') }"
-                                           name="calc__street-to" @focus="onFocus">
+                                           name="calc__street-to" @focus="onFocus" v-validate.disable="'required'">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_to.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -151,7 +151,7 @@
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
                                                  class="calc__dropdown calc__dropdown--cargo-time" :allow-empty="false"
-                                    ></multiselect>
+                                                 :disabled="isDisabledCargoTime"></multiselect>
                                 </div>
                             </div>
                         </div>
@@ -239,7 +239,8 @@
                                                 class="fas fa-ruble-sign  calc__result-rub"></i></span>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn--result hvr-radial-out" @click.prevent="checkout">
+                                <button type="button" class="btn btn--result hvr-radial-out" @click.prevent="checkout"
+                                        ref="btnСheckout">
                                     Оформить заказ
                                 </button>
                             </div>
@@ -315,7 +316,8 @@
                         {id: 6, label: '6 часов'},
                         {id: 7, label: '7 часов'},
                         {id: 8, label: '8 часов'}
-                    ]
+                    ],
+                    isDisabled: true
                 },
                 time_delivery: {
                     selected: {"id": 1, "name": "Плановая"},
@@ -386,13 +388,13 @@
                 card: {
                     serial: ''
                 },
-                formResult: true,
+                formResult: false,
                 discount: 0,
                 card_data: null,
                 tweened_price_normal: 0,
                 cargo_form: {
                     isCollapse: true,
-                    isDisable: true
+                    isDisable: false
                 }
             }
         },
@@ -563,6 +565,11 @@
             },
             animated_price_result: function () {
                 return this.tweened_price_normal.toFixed(0);
+            },
+            isDisabledCargoTime: function () {
+                if (typeof this.loaders.selected.id !== 'undefined') {
+                    return this.loaders.selected.id === 0;
+                }
             }
         },
         methods: {
@@ -585,15 +592,15 @@
                 this.$validator.validateAll()
                     .then((result) => {
                         if (result) {
-                            this.formResult = false;
-                            this.cargo_form.isDisable = false;
+//                            this.formResult = false;
+//                            this.cargo_form.isDisable = false;
                             this.cargo_form.isCollapse = false;
                             return;
                         }
 
                         let btnContinue = this.$refs.btnContinue;
                         animateObj(btnContinue, 'hvr-buzz-out');
-                        this.formResult = true;
+//                        this.formResult = true;
                     });
             },
             validateCard() {
@@ -638,8 +645,8 @@
                 this.contact.phone = '';
                 this.card.serial = '';
                 this.discount = 0;
-                this.cargo_form.isDisable = true;
-                this.formResult = true;
+//                this.cargo_form.isDisable = true;
+//                this.formResult = true;
             },
             demoData() {
                 this.loaders.selected = {id: 1, label: '1'};
@@ -669,14 +676,14 @@
                 this.contact.phone = '+7 (111) 111 11 11';
                 this.card.serial = '11111-11111';
                 this.discount = 5;
-                this.cargo_form.isDisable = false;
-                this.formResult = false;
+//                this.cargo_form.isDisable = false;
+//                this.formResult = false;
                 this.cargo_form.isCollapse = false;
             },
             closeForm() {
                 this.cargo_form.isCollapse = !this.cargo_form.isCollapse;
-                this.formResult = true;
-                this.cargo_form.isDisable = true;
+//                this.formResult = true;
+//                this.cargo_form.isDisable = true;
             },
             onFocus() {
                 if (this.cargo_form.isCollapse) {
@@ -711,28 +718,36 @@
                     price_result: this.price_result
                 };
 
-                axios.post(this.wp_data.url_ajax, Qs.stringify(data))
-                    .then((response) => {
-                        let answer = response.data;
-                        if (answer.success) {
-                            this.objAlertResult.type = 'success';
-                            this.objAlertResult.title = answer.data;
+                this.$validator.validateAll()
+                    .then((result) => {
+                        if (result) {
+                            axios.post(this.wp_data.url_ajax, Qs.stringify(data))
+                                .then((response) => {
+                                    let answer = response.data;
+                                    if (answer.success) {
+                                        this.objAlertResult.type = 'success';
+                                        this.objAlertResult.title = answer.data;
+                                    } else {
+                                        this.objAlertResult.type = 'error';
+                                        this.objAlertResult.title = 'Ошибка';
+                                        this.objAlertResult.message = '';
+                                        answer.data.forEach((element) => {
+                                            this.objAlertResult.message += element + '<br />';
+                                        });
+                                    }
+                                    this.$refs.simplert_result.openSimplert(this.objAlertResult);
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                    this.objAlertResult.type = 'error';
+                                    this.objAlertResult.title = 'Ошибка';
+                                    this.objAlertResult.message = 'Ошибка сервера';
+                                    this.$refs.simplert_result.openSimplert(this.objAlertResult);
+                                });
                         } else {
-                            this.objAlertResult.type = 'error';
-                            this.objAlertResult.title = 'Ошибка';
-                            this.objAlertResult.message = '';
-                            answer.data.forEach((element) => {
-                                this.objAlertResult.message += element + '<br />';
-                            });
+                            let btnСheckout = this.$refs.btnСheckout;
+                            animateObj(btnСheckout, 'hvr-buzz-out');
                         }
-                        this.$refs.simplert_result.openSimplert(this.objAlertResult);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        this.objAlertResult.type = 'error';
-                        this.objAlertResult.title = 'Ошибка';
-                        this.objAlertResult.message = 'Ошибка сервера';
-                        this.$refs.simplert_result.openSimplert(this.objAlertResult);
                     });
             }
         },
@@ -789,8 +804,8 @@
 
 //                    this.demoData();
                     if (this.wp_data.is_full === "1") {
-                        this.cargo_form.isDisable = true;
-                        this.formResult = true;
+//                        this.cargo_form.isDisable = false;
+//                        this.formResult = true;
                         this.cargo_form.isCollapse = false;
                     }
                 }))
