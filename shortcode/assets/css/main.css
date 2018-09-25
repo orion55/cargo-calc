@@ -311,6 +311,32 @@ div.is-collapse {
   opacity: .4;
 }
 
+.front-calc {
+  padding-left: 35px;
+}
+
+.main-calc > .column_attr {
+  display: flex;
+  position: relative;
+}
+
+.pict-calc {
+  position: absolute;
+  z-index: -1;
+  right: 35px;
+  height: 501px;
+  width: 745px;
+  margin: 0;
+  box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.17), inset 0 0 0 0 #000;
+}
+
+.pict-calc > img.img-calc {
+  width: 100%;
+  height: 100% !important;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
 @font-face {
   font-family: 'Roboto';
   font-weight: 400;
@@ -1162,6 +1188,7 @@ div.is-collapse {
   #calc-shipment .calc__head {
     flex-direction: column-reverse;
     padding-bottom: 10px;
+    height: auto;
   }
 
   #calc-shipment .calc__container {
@@ -1302,6 +1329,7 @@ div.is-collapse {
   #calc-shipment .calc__head {
     flex-direction: column-reverse;
     padding-bottom: 10px;
+    height: auto;
   }
 
   #calc-shipment .calc__container {
