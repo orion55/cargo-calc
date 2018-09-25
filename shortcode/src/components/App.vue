@@ -40,7 +40,7 @@
                                     <input type="text"
                                            placeholder="Улица" v-model="address_from.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-from') }"
-                                           name="calc__street-from" @focus="onFocus" v-validate.disable="'required'">
+                                           name="calc__street-from" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_from.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -62,7 +62,7 @@
                                     <input type="text" value=""
                                            placeholder="Улица" v-model="address_to.street"
                                            :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-to') }"
-                                           name="calc__street-to" @focus="onFocus" v-validate.disable="'required'">
+                                           name="calc__street-to" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--house"
                                            placeholder="Дом" v-model="address_to.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
@@ -180,7 +180,7 @@
                         </div>
                         <div class="calc__row calc__row--four">
                             <div class="calc__item calc__item--five">
-                                <div class="calc__desc calc__desc--time">Время подачи</div>
+                                <div class="calc__desc calc__desc--time">Когда подать</div>
                                 <multiselect v-model="time_delivery.selected" :options="time_delivery.options"
                                              label="name" track-by="id" :searchable="false"
                                              :show-labels="false" :maxHeight="200"
@@ -320,7 +320,7 @@
                     isDisabled: true
                 },
                 time_delivery: {
-                    selected: {"id": 1, "name": "Плановая"},
+                    selected: {"id": 1, "name": "Планово (в течении дня)"},
                     options: []
                 },
                 durability: {
@@ -437,6 +437,19 @@
 
                 return data;
             },
+            cargo_options: function () {
+                let data = [
+                    {id: 0, label: ''},
+                    {id: 1, label: '1 час'},
+                    {id: 2, label: '2 часа'},
+                    {id: 3, label: '3 часа'},
+                    {id: 4, label: '4 часа'},
+                    {id: 5, label: '5 часов'},
+                    {id: 6, label: '6 часов'},
+                    {id: 7, label: '7 часов'},
+                    {id: 8, label: '8 часов'}
+                ]
+            },
             price_normal: function () {
                 let priceNormal = 0;
 
@@ -473,7 +486,7 @@
                     } else if (address_from_id < 10) {
                         //расчет цены между районов внутри города
                         if (address_to_id < 10) {
-                            //доставка срочная или плановая
+                            //доставка срочная или Планово (в течении дня)
                             if (time_delivery_id === 0) {
                                 current = _.find(priceData, {'car_id': car_id, 'time_delivery_id': 0});
                             } else {
@@ -620,7 +633,7 @@
             clearData() {
                 this.loaders.selected = {id: 0, label: 'Нет'};
                 this.cargo_time.selected = {id: 1, label: '1 час'};
-                this.time_delivery.selected = {"id": 1, "name": "Плановая"};
+                this.time_delivery.selected = {"id": 1, "name": "Планово (в течении дня)"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
                 this.address_from.street = '';
@@ -651,7 +664,7 @@
             demoData() {
                 this.loaders.selected = {id: 1, label: '1'};
                 this.cargo_time.selected = {id: 1, label: '1 час'};
-                this.time_delivery.selected = {"id": 1, "name": "Плановая"};
+                this.time_delivery.selected = {"id": 1, "name": "Планово (в течении дня)"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
                 this.address_from.street = 'Республики';
