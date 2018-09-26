@@ -320,10 +320,13 @@ div.is-collapse {
   position: relative;
 }
 
-.pict-calc {
+.wrap-calc {
   position: absolute;
   z-index: -1;
   right: 35px;
+}
+
+.pict-calc {
   height: 501px;
   width: 745px;
   margin: 0;
@@ -335,6 +338,13 @@ div.is-collapse {
   height: 100% !important;
   -o-object-fit: cover;
   object-fit: cover;
+}
+
+a.btn-calc {
+  position: absolute;
+  z-index: 0;
+  right: 15px;
+  bottom: 15px;
 }
 
 @font-face {
