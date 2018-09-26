@@ -1,6 +1,6 @@
 <template>
     <form method="POST" class="calc__form">
-        <div :class="{'calc':true, 'is-collapse': cargo_form.isCollapse}" id="calc-shipment">
+        <div :class="{'calc':true, 'is-collapse': cargo_form.isCollapse}" id="calc-shipment" ref="calc-shipment">
             <div class="calc__head">
                 <div class="calc__title">Заказ грузового такси
                 </div>
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="calc__row calc__row--two">
+                        <div class="calc__row calc__row--two" ref="name_phone">
                             <div class="calc__item calc__item--three">
                                 <label for="calc__name" class="calc__label">Имя</label>
                                 <input id="calc__name" value=""
@@ -765,8 +765,18 @@
                         } else {
                             let btnСheckout = this.$refs.btnСheckout;
                             animateObj(btnСheckout, 'hvr-buzz-out');
+                            _.delay(() => {
+                                if (window.innerWidth <= 768) {
+                                    this.goto('name_phone');
+                                }
+                            }, 1000);
                         }
                     });
+            },
+            goto(refName) {
+                let element = this.$refs[refName];
+                var top = element.offsetTop;
+                window.scrollTo(0, top);
             }
         },
         watch: {

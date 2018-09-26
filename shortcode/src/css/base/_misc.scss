@@ -207,6 +207,7 @@ div.is-collapse {
 
 .front-calc {
   padding-left: 35px;
+  z-index: 100;
 }
 
 .main-calc > .column_attr {
@@ -216,7 +217,7 @@ div.is-collapse {
 
 .wrap-calc {
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   right: 35px;
 }
 
@@ -254,6 +255,15 @@ a.btn-calc {
     max-width: none;
     max-height: 510px;
   }
+  .wrap-calc {
+    display: none;
+  }
+  .front-calc {
+    padding-left: 0;
+  }
+  .main-calc > .column_attr {
+    display: block;
+  }
 }
 
 @media only screen and (max-device-width: 767px) {
@@ -268,5 +278,14 @@ a.btn-calc {
   div.is-collapse {
     max-width: none;
     max-height: 510px;
+  }
+  .wrap-calc {
+    display: none;
+  }
+  .front-calc {
+    padding-left: 0;
+  }
+  .main-calc > .column_attr {
+    display: block;
   }
 }
