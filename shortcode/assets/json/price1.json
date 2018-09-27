@@ -236,7 +236,7 @@
     {
       "time_delivery_id": 1,
       "min_time": 1,
-      "min_price": 600,
+      "min_price": 300,
       "additional_price": 390
     }
   ],
