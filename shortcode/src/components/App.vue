@@ -34,7 +34,7 @@
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--from"
-                                                 :allow-empty="false"></multiselect>
+                                                 :allow-empty="false" @open="onFocus"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text"
@@ -56,7 +56,7 @@
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--to"
-                                                 :allow-empty="false"></multiselect>
+                                                 :allow-empty="false" @open="onFocus"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value=""
@@ -440,11 +440,9 @@
                     {id: 8, label: '8 часов', $isDisabled: false}
                 ]
 
-                if (this.loaders.selected.id !== 0) {
-                    data[0].$isDisabled = true;
-                } else {
-                    data[0].$isDisabled = false;
-                }
+                data[0].$isDisabled = (this.loaders.selected.id !== 0);
+
+                data[1].$isDisabled = (this.time_delivery.selected.id === 1);
 
                 if (data[0].$isDisabled) {
                     this.cargo_time.selected = _.find(data, ['$isDisabled', false]);

@@ -96,7 +96,7 @@
     float: left;
     padding-left: 35px;
     position: absolute;
-    z-index: 30;
+    z-index: 1;
     background-color: #fff;
     font-weight: 400;
     font-family: Arial, sans-serif;
@@ -644,6 +644,7 @@
   }
   div.calc__dropdown--time {
     width: 70%;
+    min-width: 245px;
   }
   div.calc__dropdown--durability {
     width: 55%;

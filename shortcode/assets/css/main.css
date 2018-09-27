@@ -324,7 +324,7 @@ div.is-collapse {
 .wrap-calc {
   position: absolute;
   z-index: 0;
-  right: 35px;
+  right: 38px;
 }
 
 .pict-calc {
@@ -473,7 +473,7 @@ a.btn-calc {
   float: left;
   padding-left: 35px;
   position: absolute;
-  z-index: 30;
+  z-index: 1;
   background-color: #fff;
   font-weight: 400;
   font-family: Arial, sans-serif;
@@ -1042,6 +1042,7 @@ a.btn-calc {
 
 #calc-shipment div.calc__dropdown--time {
   width: 70%;
+  min-width: 245px;
 }
 
 #calc-shipment div.calc__dropdown--durability {
