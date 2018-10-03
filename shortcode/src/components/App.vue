@@ -310,7 +310,7 @@
                     isDisabled: true
                 },
                 time_delivery: {
-                    selected: {"id": 1, "name": "Планово (в течении дня)"},
+                    selected: {"id": 1, "name": "Подача в течении дня"},
                     options: []
                 },
                 durability: {
@@ -486,7 +486,7 @@
                     } else if (address_from_id < 10) {
                         //расчет цены между районов внутри города
                         if (address_to_id < 10) {
-                            //доставка срочная или Планово (в течении дня)
+                            //доставка срочная или Подача в течении дня
                             if (time_delivery_id === 0) {
                                 current = _.find(priceData, {'car_id': car_id, 'time_delivery_id': 0});
                             } else {
@@ -636,7 +636,7 @@
             clearData() {
                 this.loaders.selected = {id: 0, label: 'Нет'};
                 this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false};
-                this.time_delivery.selected = {"id": 1, "name": "Планово (в течении дня)"};
+                this.time_delivery.selected = {"id": 1, "name": "Подача в течении дня"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
                 this.address_from.street = '';
@@ -667,7 +667,7 @@
             demoData() {
                 this.loaders.selected = {id: 1, label: '1'};
                 this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false};
-                this.time_delivery.selected = {"id": 1, "name": "Планово (в течении дня)"};
+                this.time_delivery.selected = {"id": 1, "name": "Подача в течении дня"};
                 this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
                 this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
                 this.address_from.street = 'Республики';
