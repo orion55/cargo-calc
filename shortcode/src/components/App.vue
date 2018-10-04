@@ -45,7 +45,7 @@
                                            placeholder="Дом" v-model="address_from.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
                                            placeholder="Под" v-model="address_from.entrance" @focus="onFocus">
-                                    <div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>
+                                    <!--<div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>-->
                                 </div>
                             </div>
                             <div class="calc__item calc__item--two">
@@ -67,7 +67,7 @@
                                            placeholder="Дом" v-model="address_to.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
                                            placeholder="Под" v-model="address_to.entrance" @focus="onFocus">
-                                    <div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>
+                                    <!--<div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>-->
                                 </div>
                             </div>
                         </div>

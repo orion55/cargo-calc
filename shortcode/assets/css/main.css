@@ -657,10 +657,6 @@ a.btn-calc {
   font-size: 23px;
 }
 
-#calc-shipment .calc__input--street {
-  width: 205px;
-}
-
 #calc-shipment .calc__input--house {
   width: 50px;
 }
