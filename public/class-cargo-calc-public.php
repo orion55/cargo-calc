@@ -249,6 +249,7 @@ class Cargo_Calc_Public
         } else {
             wp_send_json_success('Заказ успешно зарегистрирован!');
         }
+        wp_die();
     }
 
     public function export_csv()
