@@ -96,7 +96,8 @@
                             </button>
                             <div class="calc__desc calc__desc--personal" v-else>
                                 Нажимая кнопку «Оформить заказ», вы соглашаетесь
-                                на <a href="#" class="calc__link calc__link--personal">обработку ваших персональных данных</a>
+                                на <a href="#" class="calc__link calc__link--personal">обработку ваших персональных
+                                данных</a>
                             </div>
 
                         </div>
@@ -622,9 +623,12 @@
             validateCard() {
                 let numberCard = this.card.serial;
                 numberCard = numberCard.split('-').join('');
+                numberCard = parseInt(numberCard, 10);
                 let serial = this.card_data.serial;
-                var result = serial.includes(numberCard);
-                if (result) {
+
+                let result = serial.indexOf(numberCard);
+
+                if (result != -1) {
                     animateObj(this.$refs.card, 'is-success');
                     this.discount = this.card_data.discount;
                 } else {
@@ -707,6 +711,7 @@
                 }
             },
             checkout() {
+
                 let data = {
                     action: 'cargo_add',
                     nonce: this.wp_data.nonce,
@@ -733,7 +738,8 @@
                     discount: this.discount,
                     price_result: this.price_result
                 };
-
+                // console.log(data);
+                // console.log(Qs.stringify(data));
                 this.$validator.validateAll()
                     .then((result) => {
                         if (result) {
@@ -754,7 +760,7 @@
                                     this.$refs.simplert_result.openSimplert(this.objAlertResult);
                                 })
                                 .catch((error) => {
-                                    console.log(error);
+                                    console.log(error.response);
                                     this.objAlertResult.type = 'error';
                                     this.objAlertResult.title = 'Ошибка';
                                     this.objAlertResult.message = 'Ошибка сервера';
@@ -826,9 +832,14 @@
                     let im1 = new Inputmask("99999-99999");
                     im1.mask(this.$refs.card);
 
-                    this.card_data = card_response.data;
+                    let arr_serial = card_response.data.serial;
+                    arr_serial = arr_serial.map((num) => parseInt(num, 10));
+                    arr_serial = _.uniq(arr_serial);
+                    arr_serial.sort((a, b) => a - b);
 
-//                    this.demoData();
+                    this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial};
+
+                    // this.demoData();
                     if (this.wp_data.is_full === "1") {
 //                        this.cargo_form.isDisable = false;
 //                        this.formResult = true;
