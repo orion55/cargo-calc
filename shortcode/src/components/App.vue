@@ -738,11 +738,11 @@
                     discount: this.discount,
                     price_result: this.price_result
                 };
-                // console.log(data);
-                // console.log(Qs.stringify(data));
                 this.$validator.validateAll()
                     .then((result) => {
                         if (result) {
+                            // console.log(data);
+                            // console.log(Qs.stringify(data));
                             axios.post(this.wp_data.url_ajax, Qs.stringify(data))
                                 .then((response) => {
                                     let answer = response.data;
