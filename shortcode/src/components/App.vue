@@ -622,7 +622,7 @@
             },
             validateCard() {
                 let numberCard = this.card.serial;
-                numberCard = numberCard.split('-').join('');
+                // numberCard = numberCard.split('-').join('');
                 numberCard = parseInt(numberCard, 10);
                 let serial = this.card_data.serial;
 
@@ -694,16 +694,12 @@
                 this.note.text = 'Срочно, быстро, дешево!';
                 this.contact.name = 'Милый Друг';
                 this.contact.phone = '+7 (111) 111 11 11';
-                this.card.serial = '11111-11111';
+                this.card.serial = '1111111111';
                 this.discount = 5;
-//                this.cargo_form.isDisable = false;
-//                this.formResult = false;
                 this.cargo_form.isCollapse = false;
             },
             closeForm() {
                 this.cargo_form.isCollapse = !this.cargo_form.isCollapse;
-//                this.formResult = true;
-//                this.cargo_form.isDisable = true;
             },
             onFocus() {
                 if (this.cargo_form.isCollapse) {
@@ -829,8 +825,8 @@
                     let im = new Inputmask("+7 (999) 999 99 99");
                     im.mask(this.$refs.phone);
 
-                    let im1 = new Inputmask("99999-99999");
-                    im1.mask(this.$refs.card);
+                    // let im1 = new Inputmask("99999-99999");
+                    // im1.mask(this.$refs.card);
 
                     let arr_serial = card_response.data.serial;
                     arr_serial = arr_serial.map((num) => parseInt(num, 10));
@@ -841,8 +837,6 @@
 
                     // this.demoData();
                     if (this.wp_data.is_full === "1") {
-//                        this.cargo_form.isDisable = false;
-//                        this.formResult = true;
                         this.cargo_form.isCollapse = false;
                     }
                 }))
