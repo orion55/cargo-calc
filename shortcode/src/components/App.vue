@@ -829,11 +829,13 @@
                     // im1.mask(this.$refs.card);
 
                     let arr_serial = card_response.data.serial;
+                    console.log(card_response.data.serial);
                     arr_serial = arr_serial.map((num) => parseInt(num, 10));
                     arr_serial = _.uniq(arr_serial);
                     arr_serial.sort((a, b) => a - b);
 
                     this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial};
+                    console.log(this.card_data);
 
                     // this.demoData();
                     if (this.wp_data.is_full === "1") {
