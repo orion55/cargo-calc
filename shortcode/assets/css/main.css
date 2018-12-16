@@ -1128,6 +1128,22 @@ a.btn-calc {
   text-decoration: none;
 }
 
+#calc-shipment .calc__gear-inner,
+#calc-shipment .calc__gear {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#calc-shipment .calc__gear-inner {
+  padding-top: 3px;
+}
+
+#calc-shipment .calc__gear-label {
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
 @media only screen and (min-device-width: 768px) and (max-device-width: 1280px) {
   .page {
     width: 100%;

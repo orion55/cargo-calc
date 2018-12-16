@@ -154,6 +154,15 @@
                                                  class="calc__dropdown calc__dropdown--cargo-time" :allow-empty="false"
                                                  :disabled="isDisabledCargoTime"></multiselect>
                                 </div>
+                                <div class="calc__gear-inner">
+                                    <div class="calc__gear">
+                                        <input type="checkbox" id="calc__gear-check" name="calc__gear" checked class="styled-checkbox">
+                                        <label for="calc__gear-check" class="calc__gear-label">Такелажные работы</label>
+                                    </div>
+                                    <a href="#" class="calc__gear-link" @click="openSimplert">
+                                        <i class="fas fa-info-circle calc__icon"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="calc__stage calc__stage--three">
@@ -241,7 +250,7 @@
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn--result hvr-radial-out" @click.prevent="checkout"
-                                        ref="btnСheckout">
+                                        ref="btnCheckout">
                                     Оформить заказ
                                 </button>
                             </div>
@@ -258,595 +267,594 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import _ from 'lodash';
-    import {DateTime} from 'luxon';
-    import Inputmask from 'inputmask';
-    import {TweenLite} from 'gsap';
+  import axios from 'axios'
+  import _ from 'lodash'
+  import { DateTime } from 'luxon'
+  import Inputmask from 'inputmask'
+  import { TweenLite } from 'gsap'
 
-    let Qs = require('qs');
+  let Qs = require('qs')
 
-    //простой расчет цены услуги
-    let pricePlus = (obj, durability) => {
-        let curPrice = 0;
-        if (!_.isEmpty(obj)) {
-            curPrice += obj.min_price;
-            if (durability > obj.min_time) {
-                curPrice += obj.additional_price * (durability - obj.min_time);
+  //простой расчет цены услуги
+  let pricePlus = (obj, durability) => {
+    let curPrice = 0
+    if (!_.isEmpty(obj)) {
+      curPrice += obj.min_price
+      if (durability > obj.min_time) {
+        curPrice += obj.additional_price * (durability - obj.min_time)
+      }
+    }
+    return curPrice
+  }
+
+  //добавляем анимацию к объекту
+  let animateObj = (obj, className) => {
+    obj.classList.add(className)
+
+    setTimeout(function () {
+      obj.classList.remove(className)
+    }, 1000)
+  }
+
+  export default {
+    name: 'app',
+    data () {
+      return {
+        info: {
+          data: null,
+          loading: true,
+          errored: false,
+        },
+        loaders: {
+          selected: {id: 0, label: 'Нет'},
+          options: [
+            {id: 0, label: 'Нет'},
+            {id: 1, label: '1'},
+            {id: 2, label: '2'},
+            {id: 3, label: '3'},
+            {id: 4, label: '4'}
+          ]
+        },
+        cargo_time: {
+          selected: {id: 0, label: 'Нет', $isDisabled: false},
+          isDisabled: true
+        },
+        time_delivery: {
+          selected: {'id': 1, 'name': 'Подача в течении дня'},
+          options: []
+        },
+        durability: {
+          selected: {id: 1, label: '1 час', $isDisabled: false}
+        },
+        address_from: {
+          selected: {'id': 1, 'name': 'Центральный р-н'},
+          street: '',
+          house: '',
+          entrance: ''
+        },
+        address_to: {
+          selected: {'id': 1, 'name': 'Центральный р-н'},
+          street: '',
+          house: '',
+          entrance: ''
+        },
+        address: {
+          options: [{
+            place: 'г. Тольятти',
+            area: []
+          },
+            {
+              place: 'Пригород',
+              area: []
             }
+          ]
+        },
+        car: {
+          selected: {
+            'id': 0,
+            'name': 'Ларгус/пикап',
+            'picture': 'assets/img/car/car01.jpg',
+            'size': '1,7м * 1,2м * 1м',
+            'carrying': '700 кг',
+            'desc': 'подходит для загородного переезда, перевозки стройматериалов'
+          },
+          options: []
+        },
+        calendar: {
+          datetime: null
+        },
+        note: {
+          visibility: false,
+          text: ''
+        },
+        objAlert: {
+          title: '',
+          message: '',
+          type: 'info',
+          customCloseBtnClass: 'btn btn--modal',
+          customCloseBtnText: 'Ok'
+        },
+        objAlertResult: {
+          title: '',
+          message: '',
+          type: '',
+          customCloseBtnClass: 'btn btn--modal',
+          customCloseBtnText: 'Ok'
+        },
+        contact: {
+          name: '',
+          phone: ''
+        },
+        card: {
+          serial: ''
+        },
+        formResult: false,
+        discount: 0,
+        card_data: null,
+        tweened_price_normal: 0,
+        cargo_form: {
+          isCollapse: true,
+          isDisable: false
         }
-        return curPrice;
-    }
+      }
+    },
+    computed: {
+      wp_data: function () {
+        return window.wp_data
+      },
+      durability_options: function () {
+        //блокируем пункты выпадающего списка в зависимости от типа машины, времени подачи и адреса подачи
+        let data = [
+          {id: 1, label: '1 час', $isDisabled: false},
+          {id: 2, label: '2 часа', $isDisabled: false},
+          {id: 3, label: '3 часа', $isDisabled: false},
+          {id: 4, label: '4 часа', $isDisabled: false},
+          {id: 5, label: '5 часов', $isDisabled: false},
+          {id: 6, label: '6 часов', $isDisabled: false},
+          {id: 7, label: '7 часов', $isDisabled: false},
+          {id: 8, label: '8 часов', $isDisabled: false}
+        ]
 
-    //добавляем анимацию к объекту
-    let animateObj = (obj, className) => {
-        obj.classList.add(className);
+        let car_id = this.car.selected.id
+        let time_delivery_id = this.time_delivery.selected.id
+        let address_to_id = this.address_to.selected.id
 
-        setTimeout(function () {
-            obj.classList.remove(className);
-        }, 1000);
-    }
+        if (car_id <= 2 && time_delivery_id === 1 && address_to_id < 10) {
+          data[0].$isDisabled = true
+        } else if (car_id === 3) {
+          data[0].$isDisabled = true
+        } else if (car_id === 4 || car_id === 5) {
+          data[0].$isDisabled = true
+          data[1].$isDisabled = true
+        } else if (address_to_id >= 10) {
+          data[0].$isDisabled = true
+        }
 
-    export default {
-        name: 'app',
-        data() {
-            return {
-                info: {
-                    data: null,
-                    loading: true,
-                    errored: false,
-                },
-                loaders: {
-                    selected: {id: 0, label: 'Нет'},
-                    options: [
-                        {id: 0, label: 'Нет'},
-                        {id: 1, label: '1'},
-                        {id: 2, label: '2'},
-                        {id: 3, label: '3'},
-                        {id: 4, label: '4'}
-                    ]
-                },
-                cargo_time: {
-                    selected: {id: 0, label: 'Нет', $isDisabled: false},
-                    isDisabled: true
-                },
-                time_delivery: {
-                    selected: {"id": 1, "name": "Подача в течении дня"},
-                    options: []
-                },
-                durability: {
-                    selected: {id: 1, label: '1 час', $isDisabled: false}
-                },
-                address_from: {
-                    selected: {"id": 1, "name": "Центральный р-н"},
-                    street: '',
-                    house: '',
-                    entrance: ''
-                },
-                address_to: {
-                    selected: {"id": 1, "name": "Центральный р-н"},
-                    street: '',
-                    house: '',
-                    entrance: ''
-                },
-                address: {
-                    options: [{
-                        place: 'г. Тольятти',
-                        area: []
-                    },
-                        {
-                            place: 'Пригород',
-                            area: []
-                        }
-                    ]
-                },
-                car: {
-                    selected: {
-                        "id": 0,
-                        "name": "Ларгус/пикап",
-                        "picture": "assets/img/car/car01.jpg",
-                        "size": "1,7м * 1,2м * 1м",
-                        "carrying": "700 кг",
-                        "desc": "подходит для загородного переезда, перевозки стройматериалов"
-                    },
-                    options: []
-                },
-                calendar: {
-                    datetime: null
-                },
-                note: {
-                    visibility: false,
-                    text: ''
-                },
-                objAlert: {
-                    title: '',
-                    message: '',
-                    type: 'info',
-                    customCloseBtnClass: 'btn btn--modal',
-                    customCloseBtnText: 'Ok'
-                },
-                objAlertResult: {
-                    title: '',
-                    message: '',
-                    type: '',
-                    customCloseBtnClass: 'btn btn--modal',
-                    customCloseBtnText: 'Ok'
-                },
-                contact: {
-                    name: '',
-                    phone: ''
-                },
-                card: {
-                    serial: ''
-                },
-                formResult: false,
-                discount: 0,
-                card_data: null,
-                tweened_price_normal: 0,
-                cargo_form: {
-                    isCollapse: true,
-                    isDisable: false
-                }
+        //если уже установлен заблокированный элемент, меняем на первый за ним незаблокированный
+        if (data[this.durability.selected.id - 1].$isDisabled) {
+          this.durability.selected = _.find(data, ['$isDisabled', false])
+        }
+
+        return data
+      },
+      cargo_options: function () {
+        let data = [
+          {id: 0, label: 'Нет', $isDisabled: false},
+          {id: 1, label: '1 час', $isDisabled: false},
+          {id: 2, label: '2 часа', $isDisabled: false},
+          {id: 3, label: '3 часа', $isDisabled: false},
+          {id: 4, label: '4 часа', $isDisabled: false},
+          {id: 5, label: '5 часов', $isDisabled: false},
+          {id: 6, label: '6 часов', $isDisabled: false},
+          {id: 7, label: '7 часов', $isDisabled: false},
+          {id: 8, label: '8 часов', $isDisabled: false}
+        ]
+
+        data[0].$isDisabled = (this.loaders.selected.id !== 0)
+
+        data[1].$isDisabled = (this.time_delivery.selected.id === 1)
+
+        if (data[0].$isDisabled) {
+          this.cargo_time.selected = _.find(data, ['$isDisabled', false])
+        }
+
+        return data
+      },
+      price_normal: function () {
+        let priceNormal = 0
+
+        //текущие адреса
+        let address_from_id = this.address_from.selected.id
+        let address_to_id = this.address_to.selected.id
+
+        //текущий автомобиль
+        let car_id = this.car.selected.id
+
+        //грузчики
+        let loaders_id = this.loaders.selected.id
+        let cargo_time_id = this.cargo_time.selected.id
+
+        //время подачи
+        let time_delivery_id = this.time_delivery.selected.id
+
+        //длительность заказа
+        let durability_id = this.durability.selected.id
+
+        if (!_.isEmpty(this.info.data)) {
+          //коллекция цен
+          let priceData = this.info.data.price
+
+          //коллекция цен грузчиков
+          let priceLoader = this.info.data.price_loader
+
+          let currentPrice = 0, current = {}, current1 = {}
+
+          if (car_id >= 3 && car_id <= 5) {
+            current = _.find(priceData, {'car_id': car_id})
+            currentPrice += pricePlus(current, durability_id)
+          } else if (address_from_id < 10) {
+            //расчет цены между районов внутри города
+            if (address_to_id < 10) {
+              //доставка срочная или Подача в течении дня
+              if (time_delivery_id === 0) {
+                current = _.find(priceData, {'car_id': car_id, 'time_delivery_id': 0})
+              } else {
+                current = _.find(priceData, {
+                  'car_id': car_id,
+                  'time_delivery_id': 1,
+                  'address_from': address_from_id,
+                  'address_to': address_to_id
+                })
+              }
+            } else {
+              //расчет город - пригород
+              current = _.find(priceData, {
+                'car_id': car_id,
+                'time_delivery_id': 1,
+                'address_to': address_to_id
+              })
+
             }
-        },
-        computed: {
-            wp_data: function () {
-                return window.wp_data;
-            },
-            durability_options: function () {
-                //блокируем пункты выпадающего списка в зависимости от типа машины, времени подачи и адреса подачи
-                let data = [
-                    {id: 1, label: '1 час', $isDisabled: false},
-                    {id: 2, label: '2 часа', $isDisabled: false},
-                    {id: 3, label: '3 часа', $isDisabled: false},
-                    {id: 4, label: '4 часа', $isDisabled: false},
-                    {id: 5, label: '5 часов', $isDisabled: false},
-                    {id: 6, label: '6 часов', $isDisabled: false},
-                    {id: 7, label: '7 часов', $isDisabled: false},
-                    {id: 8, label: '8 часов', $isDisabled: false}
-                ];
 
-                let car_id = this.car.selected.id;
-                let time_delivery_id = this.time_delivery.selected.id;
-                let address_to_id = this.address_to.selected.id;
+            currentPrice += pricePlus(current, durability_id)
 
-                if (car_id <= 2 && time_delivery_id === 1 && address_to_id < 10) {
-                    data[0].$isDisabled = true;
-                } else if (car_id === 3) {
-                    data[0].$isDisabled = true;
-                } else if (car_id === 4 || car_id === 5) {
-                    data[0].$isDisabled = true;
-                    data[1].$isDisabled = true;
-                } else if (address_to_id >= 10) {
-                    data[0].$isDisabled = true;
+          } else {
+            // расчет пригород - город
+            if (address_to_id < 10) {
+              current = _.find(priceData, {
+                'car_id': car_id,
+                'time_delivery_id': 1,
+                'address_to': address_from_id
+              })
+
+              currentPrice += pricePlus(current, durability_id)
+
+            } else {
+              //расчет пригород - пригород
+              current = _.find(priceData, {
+                'car_id': car_id,
+                'time_delivery_id': 1,
+                'address_to': address_from_id
+              })
+              current1 = _.find(priceData, {
+                'car_id': car_id,
+                'time_delivery_id': 1,
+                'address_to': address_to_id
+              })
+
+              if (!_.isEmpty(current) && !_.isEmpty(current1)) {
+                currentPrice += current.min_price
+                currentPrice += current1.min_price
+
+                if (durability_id > current.min_time) {
+                  currentPrice += current.additional_price * (durability_id - current.min_time)
                 }
-
-                //если уже установлен заблокированный элемент, меняем на первый за ним незаблокированный
-                if (data[this.durability.selected.id - 1].$isDisabled) {
-                    this.durability.selected = _.find(data, ['$isDisabled', false]);
-                }
-
-                return data;
-            },
-            cargo_options: function () {
-                let data = [
-                    {id: 0, label: 'Нет', $isDisabled: false},
-                    {id: 1, label: '1 час', $isDisabled: false},
-                    {id: 2, label: '2 часа', $isDisabled: false},
-                    {id: 3, label: '3 часа', $isDisabled: false},
-                    {id: 4, label: '4 часа', $isDisabled: false},
-                    {id: 5, label: '5 часов', $isDisabled: false},
-                    {id: 6, label: '6 часов', $isDisabled: false},
-                    {id: 7, label: '7 часов', $isDisabled: false},
-                    {id: 8, label: '8 часов', $isDisabled: false}
-                ]
-
-                data[0].$isDisabled = (this.loaders.selected.id !== 0);
-
-                data[1].$isDisabled = (this.time_delivery.selected.id === 1);
-
-                if (data[0].$isDisabled) {
-                    this.cargo_time.selected = _.find(data, ['$isDisabled', false]);
-                }
-
-                return data;
-            },
-            price_normal: function () {
-                let priceNormal = 0;
-
-                //текущие адреса
-                let address_from_id = this.address_from.selected.id;
-                let address_to_id = this.address_to.selected.id;
-
-                //текущий автомобиль
-                let car_id = this.car.selected.id;
-
-                //грузчики
-                let loaders_id = this.loaders.selected.id;
-                let cargo_time_id = this.cargo_time.selected.id;
-
-                //время подачи
-                let time_delivery_id = this.time_delivery.selected.id;
-
-                //длительность заказа
-                let durability_id = this.durability.selected.id;
-
-
-                if (!_.isEmpty(this.info.data)) {
-                    //коллекция цен
-                    let priceData = this.info.data.price;
-
-                    //коллекция цен грузчиков
-                    let priceLoader = this.info.data.price_loader;
-
-                    let currentPrice = 0, current = {}, current1 = {};
-
-                    if (car_id >= 3 && car_id <= 5) {
-                        current = _.find(priceData, {'car_id': car_id});
-                        currentPrice += pricePlus(current, durability_id);
-                    } else if (address_from_id < 10) {
-                        //расчет цены между районов внутри города
-                        if (address_to_id < 10) {
-                            //доставка срочная или Подача в течении дня
-                            if (time_delivery_id === 0) {
-                                current = _.find(priceData, {'car_id': car_id, 'time_delivery_id': 0});
-                            } else {
-                                current = _.find(priceData, {
-                                    'car_id': car_id,
-                                    'time_delivery_id': 1,
-                                    'address_from': address_from_id,
-                                    'address_to': address_to_id
-                                });
-                            }
-                        } else {
-                            //расчет город - пригород
-                            current = _.find(priceData, {
-                                'car_id': car_id,
-                                'time_delivery_id': 1,
-                                'address_to': address_to_id
-                            });
-
-                        }
-
-                        currentPrice += pricePlus(current, durability_id);
-
-                    } else {
-                        // расчет пригород - город
-                        if (address_to_id < 10) {
-                            current = _.find(priceData, {
-                                'car_id': car_id,
-                                'time_delivery_id': 1,
-                                'address_to': address_from_id
-                            });
-
-                            currentPrice += pricePlus(current, durability_id);
-
-                        } else {
-                            //расчет пригород - пригород
-                            current = _.find(priceData, {
-                                'car_id': car_id,
-                                'time_delivery_id': 1,
-                                'address_to': address_from_id
-                            });
-                            current1 = _.find(priceData, {
-                                'car_id': car_id,
-                                'time_delivery_id': 1,
-                                'address_to': address_to_id
-                            });
-
-                            if (!_.isEmpty(current) && !_.isEmpty(current1)) {
-                                currentPrice += current.min_price;
-                                currentPrice += current1.min_price;
-
-                                if (durability_id > current.min_time) {
-                                    currentPrice += current.additional_price * (durability_id - current.min_time);
-                                }
-                            }
-                        }
-                    }
-                    priceNormal += currentPrice;
-
-                    let loaders__price = 0;
-                    if (loaders_id !== 0) {
-                        if (time_delivery_id === 0) {
-                            current = _.find(priceLoader, {'time_delivery_id': 0});
-                            if (!_.isEmpty(current)) {
-                                loaders__price = current.min_price * cargo_time_id * loaders_id;
-                            }
-                        } else {
-                            current = _.find(priceLoader, {'time_delivery_id': 1});
-
-                            if (!_.isEmpty(current)) {
-                                loaders__price += current.min_price * loaders_id;
-
-                                if (cargo_time_id > current.min_time) {
-                                    loaders__price += current.additional_price * (cargo_time_id - current.min_time) * loaders_id;
-                                }
-                            }
-                        }
-                    }
-
-                    priceNormal += loaders__price;
-                }
-                return priceNormal;
-
-            },
-            economy: function () {
-                return Math.round(this.price_normal * this.discount / 100);
-            },
-            price_result: function () {
-                return this.price_normal - this.economy;
-            },
-            animated_price_result: function () {
-                return this.tweened_price_normal.toFixed(0);
-            },
-            isDisabledCargoTime: function () {
-                if (typeof this.loaders.selected.id !== 'undefined') {
-                    if (this.loaders.selected.id === 0) {
-                        this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false};
-                    }
-                    return this.loaders.selected.id === 0;
-                }
+              }
             }
-        },
-        methods: {
-            inverseShowNote: function () {
-                this.note.visibility = !this.note.visibility;
-            },
-            openSimplert: function () {
-                this.objAlert.title = this.car.selected.name;
-                this.objAlert.message = '<div class="calc__modal">' +
-                    '<div class="calc__modal-desc">' + this.car.selected.desc + '</div>' +
-                    '<div class="calc__modal-charater">' +
-                    '<div class="calc__modal-text">Габаритные размеры</div>' +
-                    '<div class="calc__modal-info">' + this.car.selected.size + '</div>' +
-                    '<div class="calc__modal-text">Грузоподъемность</div>' +
-                    '<div class="calc__modal-info">до ' + this.car.selected.carrying + '</div>' +
-                    '</div></div>';
-                this.$refs.simplert.openSimplert(this.objAlert);
-            },
-            validateContact() {
-                this.$validator.validateAll()
-                    .then((result) => {
-                        if (result) {
+          }
+          priceNormal += currentPrice
+
+          let loaders__price = 0
+          if (loaders_id !== 0) {
+            if (time_delivery_id === 0) {
+              current = _.find(priceLoader, {'time_delivery_id': 0})
+              if (!_.isEmpty(current)) {
+                loaders__price = current.min_price * cargo_time_id * loaders_id
+              }
+            } else {
+              current = _.find(priceLoader, {'time_delivery_id': 1})
+
+              if (!_.isEmpty(current)) {
+                loaders__price += current.min_price * loaders_id
+
+                if (cargo_time_id > current.min_time) {
+                  loaders__price += current.additional_price * (cargo_time_id - current.min_time) * loaders_id
+                }
+              }
+            }
+          }
+
+          priceNormal += loaders__price
+        }
+        return priceNormal
+
+      },
+      economy: function () {
+        return Math.round(this.price_normal * this.discount / 100)
+      },
+      price_result: function () {
+        return this.price_normal - this.economy
+      },
+      animated_price_result: function () {
+        return this.tweened_price_normal.toFixed(0)
+      },
+      isDisabledCargoTime: function () {
+        if (typeof this.loaders.selected.id !== 'undefined') {
+          if (this.loaders.selected.id === 0) {
+            this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false}
+          }
+          return this.loaders.selected.id === 0
+        }
+      }
+    },
+    methods: {
+      inverseShowNote: function () {
+        this.note.visibility = !this.note.visibility
+      },
+      openSimplert: function () {
+        this.objAlert.title = this.car.selected.name
+        this.objAlert.message = '<div class="calc__modal">' +
+          '<div class="calc__modal-desc">' + this.car.selected.desc + '</div>' +
+          '<div class="calc__modal-charater">' +
+          '<div class="calc__modal-text">Габаритные размеры</div>' +
+          '<div class="calc__modal-info">' + this.car.selected.size + '</div>' +
+          '<div class="calc__modal-text">Грузоподъемность</div>' +
+          '<div class="calc__modal-info">до ' + this.car.selected.carrying + '</div>' +
+          '</div></div>'
+        this.$refs.simplert.openSimplert(this.objAlert)
+      },
+      validateContact () {
+        this.$validator.validateAll()
+          .then((result) => {
+            if (result) {
 //                            this.formResult = false;
 //                            this.cargo_form.isDisable = false;
-                            this.cargo_form.isCollapse = false;
-                            return;
-                        }
+              this.cargo_form.isCollapse = false
+              return
+            }
 
-                        let btnContinue = this.$refs.btnContinue;
-                        animateObj(btnContinue, 'hvr-buzz-out');
+            let btnContinue = this.$refs.btnContinue
+            animateObj(btnContinue, 'hvr-buzz-out')
 //                        this.formResult = true;
-                    });
-            },
-            validateCard() {
-                let numberCard = this.card.serial;
-                // numberCard = numberCard.split('-').join('');
-                numberCard = parseInt(numberCard, 10);
-                let serial = this.card_data.serial;
+          })
+      },
+      validateCard () {
+        let numberCard = this.card.serial
+        // numberCard = numberCard.split('-').join('');
+        numberCard = parseInt(numberCard, 10)
+        let serial = this.card_data.serial
 
-                let result = serial.indexOf(numberCard);
+        let result = serial.indexOf(numberCard)
 
-                if (result != -1) {
-                    animateObj(this.$refs.card, 'is-success');
-                    this.discount = this.card_data.discount;
-                } else {
-                    this.discount = 0;
-                    animateObj(this.$refs.card, 'is-danger');
-                    animateObj(this.$refs.btnCheck, 'hvr-buzz-out');
-                }
-            },
-            clearData() {
-                this.loaders.selected = {id: 0, label: 'Нет'};
-                this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false};
-                this.time_delivery.selected = {"id": 1, "name": "Подача в течении дня"};
-                this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
-                this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
-                this.address_from.street = '';
-                this.address_from.house = '';
-                this.address_from.entrance = '';
-                this.address_to.selected = {"id": 1, "name": "Центральный р-н"};
-                this.address_to.street = '';
-                this.address_to.house = '';
-                this.address_to.entrance = '';
-                this.car.selected = {
-                    "id": 0,
-                    "name": "Ларгус/пикап",
-                    "picture": "assets/img/car/car01.jpg",
-                    "size": "1,7м * 1,2м * 1м",
-                    "carrying": "700 кг",
-                    "desc": "подходит для загородного переезда, перевозки стройматериалов"
-                };
-                this.calendar.datetime = DateTime.local().toISO();
-                this.note.visibility = false;
-                this.note.text = '';
-                this.contact.name = '';
-                this.contact.phone = '';
-                this.card.serial = '';
-                this.discount = 0;
+        if (result !== -1) {
+          animateObj(this.$refs.card, 'is-success')
+          this.discount = this.card_data.discount
+        } else {
+          this.discount = 0
+          animateObj(this.$refs.card, 'is-danger')
+          animateObj(this.$refs.btnCheck, 'hvr-buzz-out')
+        }
+      },
+      clearData () {
+        this.loaders.selected = {id: 0, label: 'Нет'}
+        this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false}
+        this.time_delivery.selected = {'id': 1, 'name': 'Подача в течении дня'}
+        this.durability.selected = {id: 1, label: '1 час', $isDisabled: false}
+        this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
+        this.address_from.street = ''
+        this.address_from.house = ''
+        this.address_from.entrance = ''
+        this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
+        this.address_to.street = ''
+        this.address_to.house = ''
+        this.address_to.entrance = ''
+        this.car.selected = {
+          'id': 0,
+          'name': 'Ларгус/пикап',
+          'picture': 'assets/img/car/car01.jpg',
+          'size': '1,7м * 1,2м * 1м',
+          'carrying': '700 кг',
+          'desc': 'подходит для загородного переезда, перевозки стройматериалов'
+        }
+        this.calendar.datetime = DateTime.local().toISO()
+        this.note.visibility = false
+        this.note.text = ''
+        this.contact.name = ''
+        this.contact.phone = ''
+        this.card.serial = ''
+        this.discount = 0
 //                this.cargo_form.isDisable = true;
 //                this.formResult = true;
-            },
-            demoData() {
-                this.loaders.selected = {id: 1, label: '1'};
-                this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false};
-                this.time_delivery.selected = {"id": 1, "name": "Подача в течении дня"};
-                this.durability.selected = {id: 1, label: '1 час', $isDisabled: false};
-                this.address_from.selected = {"id": 1, "name": "Центральный р-н"};
-                this.address_from.street = 'Республики';
-                this.address_from.house = '1';
-                this.address_from.entrance = 'а';
-                this.address_to.selected = {"id": 1, "name": "Центральный р-н"};
-                this.address_to.street = 'Республики';
-                this.address_to.house = '2';
-                this.address_to.entrance = 'б';
-                this.car.selected = {
-                    "id": 0,
-                    "name": "Ларгус/пикап",
-                    "picture": "assets/img/car/car01.jpg",
-                    "size": "1,7м * 1,2м * 1м",
-                    "carrying": "700 кг",
-                    "desc": "подходит для загородного переезда, перевозки стройматериалов"
-                };
-                this.calendar.datetime = DateTime.local().toISO();
-                this.note.visibility = false;
-                this.note.text = 'Срочно, быстро, дешево!';
-                this.contact.name = 'Милый Друг';
-                this.contact.phone = '+7 (111) 111 11 11';
-                this.card.serial = '1111111111';
-                this.discount = 5;
-                this.cargo_form.isCollapse = false;
-            },
-            closeForm() {
-                this.cargo_form.isCollapse = !this.cargo_form.isCollapse;
-            },
-            onFocus() {
-                if (this.cargo_form.isCollapse) {
-                    this.cargo_form.isCollapse = false;
-                }
-            },
-            checkout() {
-
-                let data = {
-                    action: 'cargo_add',
-                    nonce: this.wp_data.nonce,
-                    loaders: this.loaders.selected.label,
-                    cargo_time: this.cargo_time.selected.label,
-                    time_delivery: this.time_delivery.selected.name,
-                    durability: this.durability.selected.label,
-                    address_from: this.address_from.selected.name,
-                    address_from_street: this.address_from.street,
-                    address_from_house: this.address_from.house,
-                    address_from_entrance: this.address_from.entrance,
-                    address_to: this.address_to.selected.name,
-                    address_to_street: this.address_to.street,
-                    address_to_house: this.address_to.house,
-                    address_to_entrance: this.address_to.entrance,
-                    car: this.car.selected.name,
-                    calendar: this.calendar.datetime,
-                    note: this.note.text,
-                    contact_name: this.contact.name,
-                    contact_phone: this.contact.phone,
-                    card_serial: this.card.serial,
-                    price_normal: this.price_normal,
-                    economy: this.economy,
-                    discount: this.discount,
-                    price_result: this.price_result
-                };
-                this.$validator.validateAll()
-                    .then((result) => {
-                        if (result) {
-                            // console.log(data);
-                            // console.log(Qs.stringify(data));
-                            axios.post(this.wp_data.url_ajax, Qs.stringify(data))
-                                .then((response) => {
-                                    let answer = response.data;
-                                    if (answer.success) {
-                                        this.objAlertResult.type = 'success';
-                                        this.objAlertResult.title = answer.data;
-                                    } else {
-                                        this.objAlertResult.type = 'error';
-                                        this.objAlertResult.title = 'Ошибка';
-                                        this.objAlertResult.message = '';
-                                        answer.data.forEach((element) => {
-                                            this.objAlertResult.message += element + '<br />';
-                                        });
-                                    }
-                                    this.$refs.simplert_result.openSimplert(this.objAlertResult);
-                                })
-                                .catch((error) => {
-                                    console.log(error.response);
-                                    this.objAlertResult.type = 'error';
-                                    this.objAlertResult.title = 'Ошибка';
-                                    this.objAlertResult.message = 'Ошибка сервера';
-                                    this.$refs.simplert_result.openSimplert(this.objAlertResult);
-                                });
-                        } else {
-                            let btnСheckout = this.$refs.btnСheckout;
-                            animateObj(btnСheckout, 'hvr-buzz-out');
-                            _.delay(() => {
-                                if (window.innerWidth <= 768) {
-                                    this.goto('name_phone');
-                                }
-                            }, 1000);
-                        }
-                    });
-            },
-            goto(refName) {
-                let element = this.$refs[refName];
-                var top = element.offsetTop;
-                window.scrollTo(0, top);
-            }
-        },
-        watch: {
-            price_result: function (newValue) {
-                TweenLite.to(this.$data, 1, {tweened_price_normal: newValue});
-            }
-        },
-        mounted() {
-            axios
-                .all([axios.get(wp_data.plugin_dir_url + 'assets/json/price1.json'),
-                    axios.get(wp_data.plugin_dir_url + 'assets/json/card.json')])
-                .then(axios.spread((response, card_response) => {
-                    this.info.data = response.data;
-
-                    //Заполняем пункты назначения
-                    let filterArray = _.filter(this.info.data.metadata.area, (item) => {
-                        return item.id < 10;
-                    });
-                    _.forEach(filterArray, (item) => {
-                        this.address.options[0].area.push(item);
-                    });
-                    filterArray = _.filter(this.info.data.metadata.area, (item) => {
-                        return item.id >= 10;
-                    });
-                    filterArray = _.sortBy(filterArray, [(item) => {
-                        return item.name;
-                    }]);
-                    _.forEach(filterArray, (item) => {
-                        this.address.options[1].area.push(item);
-                    });
-
-                    //Заполняем список автомобилей
-                    _.forEach(this.info.data.metadata.car, (item) => {
-                        this.car.options.push(item);
-                    });
-
-                    //Заполняем время подачи
-                    _.forEach(this.info.data.metadata.time_delivery, (item) => {
-                        this.time_delivery.options.push(item);
-                    });
-
-                    //устанавливаем время
-                    this.calendar.datetime = DateTime.local().toISO();
-
-                    //устанавливаем маску телефона
-                    let im = new Inputmask("+7 (999) 999 99 99");
-                    im.mask(this.$refs.phone);
-
-                    // let im1 = new Inputmask("99999-99999");
-                    // im1.mask(this.$refs.card);
-
-                    let arr_serial = card_response.data.serial;
-                    console.log(card_response.data.serial);
-                    arr_serial = arr_serial.map((num) => parseInt(num, 10));
-                    arr_serial = _.uniq(arr_serial);
-                    arr_serial.sort((a, b) => a - b);
-
-                    this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial};
-                    console.log(this.card_data);
-
-                    // this.demoData();
-                    if (this.wp_data.is_full === "1") {
-                        this.cargo_form.isCollapse = false;
-                    }
-                }))
-                .catch(error => {
-                    console.log(error);
-                    this.info.errored = true;
-                })
-                .finally(() => (this.info.loading = false));
+      },
+      demoData () {
+        this.loaders.selected = {id: 1, label: '1'}
+        this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false}
+        this.time_delivery.selected = {'id': 1, 'name': 'Подача в течении дня'}
+        this.durability.selected = {id: 1, label: '1 час', $isDisabled: false}
+        this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
+        this.address_from.street = 'Республики'
+        this.address_from.house = '1'
+        this.address_from.entrance = 'а'
+        this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
+        this.address_to.street = 'Республики'
+        this.address_to.house = '2'
+        this.address_to.entrance = 'б'
+        this.car.selected = {
+          'id': 0,
+          'name': 'Ларгус/пикап',
+          'picture': 'assets/img/car/car01.jpg',
+          'size': '1,7м * 1,2м * 1м',
+          'carrying': '700 кг',
+          'desc': 'подходит для загородного переезда, перевозки стройматериалов'
         }
+        this.calendar.datetime = DateTime.local().toISO()
+        this.note.visibility = false
+        this.note.text = 'Срочно, быстро, дешево!'
+        this.contact.name = 'Милый Друг'
+        this.contact.phone = '+7 (111) 111 11 11'
+        this.card.serial = '1111111111'
+        this.discount = 5
+        this.cargo_form.isCollapse = false
+      },
+      closeForm () {
+        this.cargo_form.isCollapse = !this.cargo_form.isCollapse
+      },
+      onFocus () {
+        if (this.cargo_form.isCollapse) {
+          this.cargo_form.isCollapse = false
+        }
+      },
+      checkout () {
+
+        let data = {
+          action: 'cargo_add',
+          nonce: this.wp_data.nonce,
+          loaders: this.loaders.selected.label,
+          cargo_time: this.cargo_time.selected.label,
+          time_delivery: this.time_delivery.selected.name,
+          durability: this.durability.selected.label,
+          address_from: this.address_from.selected.name,
+          address_from_street: this.address_from.street,
+          address_from_house: this.address_from.house,
+          address_from_entrance: this.address_from.entrance,
+          address_to: this.address_to.selected.name,
+          address_to_street: this.address_to.street,
+          address_to_house: this.address_to.house,
+          address_to_entrance: this.address_to.entrance,
+          car: this.car.selected.name,
+          calendar: this.calendar.datetime,
+          note: this.note.text,
+          contact_name: this.contact.name,
+          contact_phone: this.contact.phone,
+          card_serial: this.card.serial,
+          price_normal: this.price_normal,
+          economy: this.economy,
+          discount: this.discount,
+          price_result: this.price_result
+        }
+        this.$validator.validateAll()
+          .then((result) => {
+            if (result) {
+              // console.log(data);
+              // console.log(Qs.stringify(data));
+              axios.post(this.wp_data.url_ajax, Qs.stringify(data))
+                .then((response) => {
+                  let answer = response.data
+                  if (answer.success) {
+                    this.objAlertResult.type = 'success'
+                    this.objAlertResult.title = answer.data
+                  } else {
+                    this.objAlertResult.type = 'error'
+                    this.objAlertResult.title = 'Ошибка'
+                    this.objAlertResult.message = ''
+                    answer.data.forEach((element) => {
+                      this.objAlertResult.message += element + '<br />'
+                    })
+                  }
+                  this.$refs.simplert_result.openSimplert(this.objAlertResult)
+                })
+                .catch((error) => {
+                  // console.log(error.response)
+                  this.objAlertResult.type = 'error'
+                  this.objAlertResult.title = 'Ошибка'
+                  this.objAlertResult.message = 'Ошибка сервера'
+                  this.$refs.simplert_result.openSimplert(this.objAlertResult)
+                })
+            } else {
+              let btnCheckout = this.$refs.btnCheckout
+              animateObj(btnCheckout, 'hvr-buzz-out')
+              _.delay(() => {
+                if (window.innerWidth <= 768) {
+                  this.goto('name_phone')
+                }
+              }, 1000)
+            }
+          })
+      },
+      goto (refName) {
+        let element = this.$refs[refName]
+        let top = element.offsetTop
+        window.scrollTo(0, top)
+      }
+    },
+    watch: {
+      price_result: function (newValue) {
+        TweenLite.to(this.$data, 1, {tweened_price_normal: newValue})
+      }
+    },
+    mounted () {
+      axios
+        .all([axios.get(wp_data.plugin_dir_url + 'assets/json/price1.json'),
+          axios.get(wp_data.plugin_dir_url + 'assets/json/card.json')])
+        .then(axios.spread((response, card_response) => {
+          this.info.data = response.data
+
+          //Заполняем пункты назначения
+          let filterArray = _.filter(this.info.data.metadata.area, (item) => {
+            return item.id < 10
+          })
+          _.forEach(filterArray, (item) => {
+            this.address.options[0].area.push(item)
+          })
+          filterArray = _.filter(this.info.data.metadata.area, (item) => {
+            return item.id >= 10
+          })
+          filterArray = _.sortBy(filterArray, [(item) => {
+            return item.name
+          }])
+          _.forEach(filterArray, (item) => {
+            this.address.options[1].area.push(item)
+          })
+
+          //Заполняем список автомобилей
+          _.forEach(this.info.data.metadata.car, (item) => {
+            this.car.options.push(item)
+          })
+
+          //Заполняем время подачи
+          _.forEach(this.info.data.metadata.time_delivery, (item) => {
+            this.time_delivery.options.push(item)
+          })
+
+          //устанавливаем время
+          this.calendar.datetime = DateTime.local().toISO()
+
+          //устанавливаем маску телефона
+          let im = new Inputmask('+7 (999) 999 99 99')
+          im.mask(this.$refs.phone)
+
+          // let im1 = new Inputmask("99999-99999");
+          // im1.mask(this.$refs.card);
+
+          let arr_serial = card_response.data.serial
+          // console.log(card_response.data.serial)
+          arr_serial = arr_serial.map((num) => parseInt(num, 10))
+          arr_serial = _.uniq(arr_serial)
+          arr_serial.sort((a, b) => a - b)
+
+          this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial}
+          // console.log(this.card_data)
+
+          // this.demoData();
+          if (this.wp_data.is_full === '1') {
+            this.cargo_form.isCollapse = false
+          }
+        }))
+        .catch(error => {
+          console.log(error)
+          this.info.errored = true
+        })
+        .finally(() => (this.info.loading = false))
     }
+  }
 </script>
