@@ -156,9 +156,15 @@
                                 </div>
                                 <div class="calc__gear-inner">
                                     <div class="calc__gear">
-                                        <input type="checkbox" id="calc__gear-check" name="calc__gear" checked class="styled-checkbox">
+                                        <input type="checkbox" id="calc__gear-check" name="calc__gear" checked
+                                               class="styled-checkbox">
                                         <label for="calc__gear-check" class="calc__gear-label">Такелажные работы</label>
                                     </div>
+                                    <label class="control control-checkbox">
+                                        First checkbox
+                                        <input type="checkbox" checked="checked"/>
+                                        <div class="control_indicator"></div>
+                                    </label>
                                     <a href="#" class="calc__gear-link" @click="openSimplert">
                                         <i class="fas fa-info-circle calc__icon"></i>
                                     </a>
