@@ -3,7 +3,7 @@ import App from '../components/App.vue'
 import Datetime from 'vue-datetime'
 import Multiselect from 'vue-multiselect'
 import Simplert from 'vue2-simplert'
-import VeeValidate, { Validator } from 'vee-validate'
+import VeeValidate from 'vee-validate'
 
 Vue.component('multiselect', Multiselect)
 Vue.use(Datetime)

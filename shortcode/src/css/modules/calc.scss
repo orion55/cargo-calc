@@ -75,17 +75,17 @@
   }
 
   .calc__stage--three {
-    padding-bottom: 40px;
+    padding-bottom: 30px;
     z-index: 0;
   }
 
   .calc__row--one {
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     border-bottom: 1px solid #d9d9d9;
   }
 
   .calc__row--two {
-    padding-top: 20px;
+    padding-top: 10px;
   }
 
   .calc__row--three {
@@ -184,7 +184,7 @@
   }
 
   .calc__box--car {
-    margin-bottom: 29px;
+    margin-bottom: 14px;
   }
 
   .calc__box-select {
@@ -196,7 +196,7 @@
   }
 
   .calc__item--one {
-    padding-bottom: 25px;
+    padding-bottom: 15px;
     padding-top: 20px;
   }
 
@@ -427,7 +427,7 @@
   }
 
   .calc__desc--client {
-    padding-bottom: 18px;
+    padding-bottom: 6px;
   }
 
   .calc__input--number {
@@ -715,17 +715,17 @@
       text-decoration: none;
     }
   }
-  .calc__gear-inner, .calc__gear {
+  .calc__gear-inner {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-  .calc__gear-inner {
-    padding-top: 3px;
+    padding-top: 5px;
   }
   .calc__gear-label {
-    margin-bottom: 0;
-    font-weight: 500;
+    padding-right: 8px;
+  }
+  .calc__intercity {
+    padding-top: 8px;
   }
 }
 
@@ -781,7 +781,7 @@
       padding-bottom: 0;
     }
     .calc__box--car {
-      margin-bottom: 30px;
+      margin-bottom: 14px;
     }
     .calc__wrapper {
       margin: 0 auto;
@@ -799,7 +799,7 @@
       padding-bottom: 0;
     }
     .calc__desc--client {
-      padding-bottom: 14px;
+      padding-bottom: 6px;
     }
     .calc__desc {
       padding-bottom: 10px;
@@ -902,7 +902,7 @@
       padding-bottom: 0;
     }
     .calc__box--car {
-      margin-bottom: 30px;
+      margin-bottom: 14px;
     }
     .calc__wrapper {
       margin: 0 auto;
@@ -920,7 +920,7 @@
       padding-bottom: 0;
     }
     .calc__desc--client {
-      padding-bottom: 14px;
+      padding-bottom: 6px;
     }
     .calc__desc {
       padding-bottom: 10px;

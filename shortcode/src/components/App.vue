@@ -45,7 +45,6 @@
                                            placeholder="Дом" v-model="address_from.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
                                            placeholder="Под" v-model="address_from.entrance" @focus="onFocus">
-                                    <!--<div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>-->
                                 </div>
                             </div>
                             <div class="calc__item calc__item--two">
@@ -67,8 +66,15 @@
                                            placeholder="Дом" v-model="address_to.house" @focus="onFocus">
                                     <input type="text" value="" class="calc__input calc__input--entrance"
                                            placeholder="Под" v-model="address_to.entrance" @focus="onFocus">
-                                    <!--<div class="calc__ic"><i class="fas fa-map-marker-alt calc__icon"></i></div>-->
                                 </div>
+                            </div>
+                            <div class="calc__intercity">
+                                <label class="control control-checkbox calc__intercity-label">
+                                    Междугородние перевозки
+                                    <input type="checkbox" v-model="intercityFlag"
+                                           @change="fillDestinations"/>
+                                    <div class="control_indicator"></div>
+                                </label>
                             </div>
                         </div>
                         <div class="calc__row calc__row--two" ref="name_phone">
@@ -155,14 +161,9 @@
                                                  :disabled="isDisabledCargoTime"></multiselect>
                                 </div>
                                 <div class="calc__gear-inner">
-                                    <div class="calc__gear">
-                                        <input type="checkbox" id="calc__gear-check" name="calc__gear" checked
-                                               class="styled-checkbox">
-                                        <label for="calc__gear-check" class="calc__gear-label">Такелажные работы</label>
-                                    </div>
-                                    <label class="control control-checkbox">
-                                        First checkbox
-                                        <input type="checkbox" checked="checked"/>
+                                    <label class="control control-checkbox calc__gear-label">
+                                        Такелажные работы
+                                        <input type="checkbox" v-model="riggingFlag"/>
                                         <div class="control_indicator"></div>
                                     </label>
                                     <a href="#" class="calc__gear-link" @click="openSimplert">
@@ -333,27 +334,19 @@
           selected: {id: 1, label: '1 час', $isDisabled: false}
         },
         address_from: {
-          selected: {'id': 1, 'name': 'Центральный р-н'},
+          selected: {},
           street: '',
           house: '',
           entrance: ''
         },
         address_to: {
-          selected: {'id': 1, 'name': 'Центральный р-н'},
+          selected: {},
           street: '',
           house: '',
           entrance: ''
         },
         address: {
-          options: [{
-            place: 'г. Тольятти',
-            area: []
-          },
-            {
-              place: 'Пригород',
-              area: []
-            }
-          ]
+          options: []
         },
         car: {
           selected: {
@@ -401,7 +394,9 @@
         cargo_form: {
           isCollapse: true,
           isDisable: false
-        }
+        },
+        intercityFlag: false,
+        riggingFlag: false
       }
     },
     computed: {
@@ -521,9 +516,7 @@
               })
 
             }
-
             currentPrice += pricePlus(current, durability_id)
-
           } else {
             // расчет пригород - город
             if (address_to_id < 10) {
@@ -532,9 +525,7 @@
                 'time_delivery_id': 1,
                 'address_to': address_from_id
               })
-
               currentPrice += pricePlus(current, durability_id)
-
             } else {
               //расчет пригород - пригород
               current = _.find(priceData, {
@@ -623,20 +614,16 @@
         this.$validator.validateAll()
           .then((result) => {
             if (result) {
-//                            this.formResult = false;
-//                            this.cargo_form.isDisable = false;
               this.cargo_form.isCollapse = false
               return
             }
 
             let btnContinue = this.$refs.btnContinue
             animateObj(btnContinue, 'hvr-buzz-out')
-//                        this.formResult = true;
           })
       },
       validateCard () {
         let numberCard = this.card.serial
-        // numberCard = numberCard.split('-').join('');
         numberCard = parseInt(numberCard, 10)
         let serial = this.card_data.serial
 
@@ -679,19 +666,19 @@
         this.contact.phone = ''
         this.card.serial = ''
         this.discount = 0
-//                this.cargo_form.isDisable = true;
-//                this.formResult = true;
+        this.intercityFlag = false
+        this.riggingFlag = false
       },
       demoData () {
         this.loaders.selected = {id: 1, label: '1'}
         this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false}
         this.time_delivery.selected = {'id': 1, 'name': 'Подача в течении дня'}
         this.durability.selected = {id: 1, label: '1 час', $isDisabled: false}
-        this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
+        // this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
         this.address_from.street = 'Республики'
         this.address_from.house = '1'
         this.address_from.entrance = 'а'
-        this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
+        // this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
         this.address_to.street = 'Республики'
         this.address_to.house = '2'
         this.address_to.entrance = 'б'
@@ -711,6 +698,8 @@
         this.card.serial = '1111111111'
         this.discount = 5
         this.cargo_form.isCollapse = false
+        this.intercityFlag = false
+        this.riggingFlag = false
       },
       closeForm () {
         this.cargo_form.isCollapse = !this.cargo_form.isCollapse
@@ -721,7 +710,6 @@
         }
       },
       checkout () {
-
         let data = {
           action: 'cargo_add',
           nonce: this.wp_data.nonce,
@@ -751,8 +739,6 @@
         this.$validator.validateAll()
           .then((result) => {
             if (result) {
-              // console.log(data);
-              // console.log(Qs.stringify(data));
               axios.post(this.wp_data.url_ajax, Qs.stringify(data))
                 .then((response) => {
                   let answer = response.data
@@ -770,7 +756,6 @@
                   this.$refs.simplert_result.openSimplert(this.objAlertResult)
                 })
                 .catch((error) => {
-                  // console.log(error.response)
                   this.objAlertResult.type = 'error'
                   this.objAlertResult.title = 'Ошибка'
                   this.objAlertResult.message = 'Ошибка сервера'
@@ -791,6 +776,57 @@
         let element = this.$refs[refName]
         let top = element.offsetTop
         window.scrollTo(0, top)
+      },
+      fillDestinations () {
+        //Заполняем пункты назначения
+
+        //если не установлен флаг междугородние перевозки
+        if (!this.intercityFlag) {
+
+          this.address.options = [{
+            place: 'г. Тольятти',
+            area: []
+          }, {
+            place: 'Пригород',
+            area: []
+          }]
+
+          let filterArray = _.filter(this.info.data.metadata.area, (item) => {
+            return item.id < 10
+          })
+          _.forEach(filterArray, (item) => {
+            this.address.options[0].area.push(item)
+          })
+          filterArray = _.filter(this.info.data.metadata.area, (item) => {
+            return item.id >= 10 && item.id < 100
+          })
+          filterArray = _.sortBy(filterArray, [(item) => {
+            return item.name
+          }])
+          _.forEach(filterArray, (item) => {
+            this.address.options[1].area.push(item)
+          })
+
+          this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
+          this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
+        } else {
+          this.address.options = [{
+            place: 'Города',
+            area: []
+          }]
+          let filterArray = _.filter(this.info.data.metadata.area, (item) => {
+            return item.id >= 100
+          })
+          filterArray = _.sortBy(filterArray, [(item) => {
+            return item.name
+          }])
+          _.forEach(filterArray, (item) => {
+            this.address.options[0].area.push(item)
+          })
+
+          this.address_from.selected = {'id': 999, 'name': 'Тольятти'}
+          this.address_to.selected = {'id': 123, 'name': 'Москва'}
+        }
       }
     },
     watch: {
@@ -806,21 +842,7 @@
           this.info.data = response.data
 
           //Заполняем пункты назначения
-          let filterArray = _.filter(this.info.data.metadata.area, (item) => {
-            return item.id < 10
-          })
-          _.forEach(filterArray, (item) => {
-            this.address.options[0].area.push(item)
-          })
-          filterArray = _.filter(this.info.data.metadata.area, (item) => {
-            return item.id >= 10
-          })
-          filterArray = _.sortBy(filterArray, [(item) => {
-            return item.name
-          }])
-          _.forEach(filterArray, (item) => {
-            this.address.options[1].area.push(item)
-          })
+          this.fillDestinations()
 
           //Заполняем список автомобилей
           _.forEach(this.info.data.metadata.car, (item) => {
@@ -839,9 +861,6 @@
           let im = new Inputmask('+7 (999) 999 99 99')
           im.mask(this.$refs.phone)
 
-          // let im1 = new Inputmask("99999-99999");
-          // im1.mask(this.$refs.card);
-
           let arr_serial = card_response.data.serial
           // console.log(card_response.data.serial)
           arr_serial = arr_serial.map((num) => parseInt(num, 10))
@@ -849,9 +868,8 @@
           arr_serial.sort((a, b) => a - b)
 
           this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial}
-          // console.log(this.card_data)
 
-          // this.demoData();
+          this.demoData()
           if (this.wp_data.is_full === '1') {
             this.cargo_form.isCollapse = false
           }
