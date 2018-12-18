@@ -34,7 +34,8 @@
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--from"
-                                                 :allow-empty="false" @open="onFocus"></multiselect>
+                                                 :allow-empty="false" @open="onFocus" @select="onSelect"
+                                                 ref="address_from"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text"
@@ -55,7 +56,7 @@
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--to"
-                                                 :allow-empty="false" @open="onFocus"></multiselect>
+                                                 :allow-empty="false" @open="onFocus" ref="address_to"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value=""
@@ -707,6 +708,15 @@
       onFocus () {
         if (this.cargo_form.isCollapse) {
           this.cargo_form.isCollapse = false
+        }
+      },
+      onSelect (value) {
+        if (this.intercityFlag) {
+          let element = this.address_to
+          console.log(element)
+          if (element.selected.id !== 999){
+            element.selected = {'id': 999, 'name': 'Тольятти'}
+          }
         }
       },
       checkout () {
