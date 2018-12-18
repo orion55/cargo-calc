@@ -329,7 +329,7 @@
           isDisabled: true
         },
         time_delivery: {
-          selected: {'id': 1, 'name': 'Подача в течении дня'},
+          selected: {},
           options: []
         },
         durability: {
@@ -457,6 +457,7 @@
         return data
       },
       price_normal: function () {
+
         let priceNormal = 0
 
         //текущие адреса
@@ -485,9 +486,12 @@
 
           let currentPrice = 0, current = {}, current1 = {}
 
+          //"тяжелые" автомобили не зависят от срочности, но это не междугородние рейсы
           if (car_id >= 3 && car_id <= 5) {
-            current = _.find(priceData, {'car_id': car_id})
-            currentPrice += pricePlus(current, durability_id)
+            if (address_to_id < 100) {
+              current = _.find(priceData, {'car_id': car_id})
+              currentPrice += pricePlus(current, durability_id)
+            }
           } else if (address_from_id < 10) {
             //расчет цены между районов внутри города
             if (address_to_id < 10) {
@@ -502,17 +506,16 @@
                   'address_to': address_to_id
                 })
               }
-            } else {
+            } else if (address_to_id < 100) {
               //расчет город - пригород
               current = _.find(priceData, {
                 'car_id': car_id,
                 'time_delivery_id': 1,
                 'address_to': address_to_id
               })
-
             }
             currentPrice += pricePlus(current, durability_id)
-          } else {
+          } else if (address_from_id < 100) {
             // расчет пригород - город
             if (address_to_id < 10) {
               current = _.find(priceData, {
@@ -521,7 +524,7 @@
                 'address_to': address_from_id
               })
               currentPrice += pricePlus(current, durability_id)
-            } else {
+            } else if (address_to_id < 100) {
               //расчет пригород - пригород
               current = _.find(priceData, {
                 'car_id': car_id,
@@ -646,14 +649,7 @@
         this.address_to.street = ''
         this.address_to.house = ''
         this.address_to.entrance = ''
-        this.car.selected = {
-          'id': 0,
-          'name': 'Ларгус/пикап',
-          'picture': 'assets/img/car/car01.jpg',
-          'size': '1,7м * 1,2м * 1м',
-          'carrying': '700 кг',
-          'desc': 'подходит для загородного переезда, перевозки стройматериалов'
-        }
+        this.car.selected = this.car.options[0]
         this.calendar.datetime = DateTime.local().toISO()
         this.note.visibility = false
         this.note.text = ''
@@ -663,6 +659,9 @@
         this.discount = 0
         this.intercityFlag = false
         this.riggingFlag = false
+        _.forEach(this.car.options, (item) => {
+          item.$isDisabled = false
+        })
       },
       demoData () {
         this.loaders.selected = {id: 1, label: '1'}
@@ -677,14 +676,7 @@
         this.address_to.street = 'Республики'
         this.address_to.house = '2'
         this.address_to.entrance = 'б'
-        this.car.selected = {
-          'id': 0,
-          'name': 'Ларгус/пикап',
-          'picture': 'assets/img/car/car01.jpg',
-          'size': '1,7м * 1,2м * 1м',
-          'carrying': '700 кг',
-          'desc': 'подходит для загородного переезда, перевозки стройматериалов'
-        }
+        this.car.selected = this.car.options[0]
         this.calendar.datetime = DateTime.local().toISO()
         this.note.visibility = false
         this.note.text = 'Срочно, быстро, дешево!'
@@ -781,10 +773,8 @@
       },
       fillDestinations () {
         //Заполняем пункты назначения
-
         //если не установлен флаг междугородние перевозки
         if (!this.intercityFlag) {
-
           this.address.options = [{
             place: 'г. Тольятти',
             area: []
@@ -812,9 +802,14 @@
           this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
           this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
 
-          _.forEach(this.car.options, (item) => {
-            item.$isDisabled = false
-          })
+          if (!(_.isEmpty(this.car.options))) {
+            _.forEach(this.car.options, (item) => {
+              item.$isDisabled = false
+            })
+          }
+          if (!(_.isEmpty(this.time_delivery.options))) {
+            this.time_delivery.options[0].$isDisabled = false
+          }
         } else {
           this.address.options = [{
             place: 'Города',
@@ -839,6 +834,11 @@
             }
           })
           this.car.selected = this.car.options[2]
+
+          if (!(_.isEmpty(this.time_delivery.options))) {
+            this.time_delivery.options[0].$isDisabled = true
+            this.time_delivery.selected = this.time_delivery.options[1]
+          }
         }
       }
     },
@@ -854,21 +854,22 @@
         .then(axios.spread((response, card_response) => {
           this.info.data = response.data
 
-          //Заполняем пункты назначения
-          this.fillDestinations()
-
           //Заполняем список автомобилей
           _.forEach(this.info.data.metadata.car, (item) => {
             item.$isDisabled = false
             this.car.options.push(item)
           })
-
           this.car.selected = this.car.options[0]
 
           //Заполняем время подачи
           _.forEach(this.info.data.metadata.time_delivery, (item) => {
+            item.$isDisabled = false
             this.time_delivery.options.push(item)
           })
+          this.time_delivery.selected = this.time_delivery.options[1]
+
+          //Заполняем пункты назначения
+          this.fillDestinations()
 
           //устанавливаем время
           this.calendar.datetime = DateTime.local().toISO()

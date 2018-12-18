@@ -63,7 +63,7 @@ exports.default = {
         isDisabled: true
       },
       time_delivery: {
-        selected: { 'id': 1, 'name': 'Подача в течении дня' },
+        selected: {},
         options: []
       },
       durability: {
@@ -171,6 +171,7 @@ exports.default = {
       return data;
     },
     price_normal: function price_normal() {
+
       var priceNormal = 0;
 
       var address_from_id = this.address_from.selected.id;
@@ -195,8 +196,10 @@ exports.default = {
             current1 = {};
 
         if (car_id >= 3 && car_id <= 5) {
-          current = _lodash2.default.find(priceData, { 'car_id': car_id });
-          currentPrice += pricePlus(current, durability_id);
+          if (address_to_id < 100) {
+            current = _lodash2.default.find(priceData, { 'car_id': car_id });
+            currentPrice += pricePlus(current, durability_id);
+          }
         } else if (address_from_id < 10) {
           if (address_to_id < 10) {
             if (time_delivery_id === 0) {
@@ -209,7 +212,7 @@ exports.default = {
                 'address_to': address_to_id
               });
             }
-          } else {
+          } else if (address_to_id < 100) {
             current = _lodash2.default.find(priceData, {
               'car_id': car_id,
               'time_delivery_id': 1,
@@ -217,7 +220,7 @@ exports.default = {
             });
           }
           currentPrice += pricePlus(current, durability_id);
-        } else {
+        } else if (address_from_id < 100) {
           if (address_to_id < 10) {
             current = _lodash2.default.find(priceData, {
               'car_id': car_id,
@@ -225,7 +228,7 @@ exports.default = {
               'address_to': address_from_id
             });
             currentPrice += pricePlus(current, durability_id);
-          } else {
+          } else if (address_to_id < 100) {
             current = _lodash2.default.find(priceData, {
               'car_id': car_id,
               'time_delivery_id': 1,
@@ -342,14 +345,7 @@ exports.default = {
       this.address_to.street = '';
       this.address_to.house = '';
       this.address_to.entrance = '';
-      this.car.selected = {
-        'id': 0,
-        'name': 'Ларгус/пикап',
-        'picture': 'assets/img/car/car01.jpg',
-        'size': '1,7м * 1,2м * 1м',
-        'carrying': '700 кг',
-        'desc': 'подходит для загородного переезда, перевозки стройматериалов'
-      };
+      this.car.selected = this.car.options[0];
       this.calendar.datetime = _luxon.DateTime.local().toISO();
       this.note.visibility = false;
       this.note.text = '';
@@ -359,6 +355,9 @@ exports.default = {
       this.discount = 0;
       this.intercityFlag = false;
       this.riggingFlag = false;
+      _lodash2.default.forEach(this.car.options, function (item) {
+        item.$isDisabled = false;
+      });
     },
     demoData: function demoData() {
       this.loaders.selected = { id: 1, label: '1' };
@@ -373,14 +372,7 @@ exports.default = {
       this.address_to.street = 'Республики';
       this.address_to.house = '2';
       this.address_to.entrance = 'б';
-      this.car.selected = {
-        'id': 0,
-        'name': 'Ларгус/пикап',
-        'picture': 'assets/img/car/car01.jpg',
-        'size': '1,7м * 1,2м * 1м',
-        'carrying': '700 кг',
-        'desc': 'подходит для загородного переезда, перевозки стройматериалов'
-      };
+      this.car.selected = this.car.options[0];
       this.calendar.datetime = _luxon.DateTime.local().toISO();
       this.note.visibility = false;
       this.note.text = 'Срочно, быстро, дешево!';
@@ -478,7 +470,6 @@ exports.default = {
       var _this3 = this;
 
       if (!this.intercityFlag) {
-
         this.address.options = [{
           place: 'г. Тольятти',
           area: []
@@ -506,9 +497,14 @@ exports.default = {
         this.address_from.selected = { 'id': 1, 'name': 'Центральный р-н' };
         this.address_to.selected = { 'id': 1, 'name': 'Центральный р-н' };
 
-        _lodash2.default.forEach(this.car.options, function (item) {
-          item.$isDisabled = false;
-        });
+        if (!_lodash2.default.isEmpty(this.car.options)) {
+          _lodash2.default.forEach(this.car.options, function (item) {
+            item.$isDisabled = false;
+          });
+        }
+        if (!_lodash2.default.isEmpty(this.time_delivery.options)) {
+          this.time_delivery.options[0].$isDisabled = false;
+        }
       } else {
         this.address.options = [{
           place: 'Города',
@@ -533,6 +529,11 @@ exports.default = {
           }
         });
         this.car.selected = this.car.options[2];
+
+        if (!_lodash2.default.isEmpty(this.time_delivery.options)) {
+          this.time_delivery.options[0].$isDisabled = true;
+          this.time_delivery.selected = this.time_delivery.options[1];
+        }
       }
     }
   },
@@ -547,18 +548,19 @@ exports.default = {
     _axios2.default.all([_axios2.default.get(wp_data.plugin_dir_url + 'assets/json/price1.json'), _axios2.default.get(wp_data.plugin_dir_url + 'assets/json/card.json')]).then(_axios2.default.spread(function (response, card_response) {
       _this4.info.data = response.data;
 
-      _this4.fillDestinations();
-
       _lodash2.default.forEach(_this4.info.data.metadata.car, function (item) {
         item.$isDisabled = false;
         _this4.car.options.push(item);
       });
-
       _this4.car.selected = _this4.car.options[0];
 
       _lodash2.default.forEach(_this4.info.data.metadata.time_delivery, function (item) {
+        item.$isDisabled = false;
         _this4.time_delivery.options.push(item);
       });
+      _this4.time_delivery.selected = _this4.time_delivery.options[1];
+
+      _this4.fillDestinations();
 
       _this4.calendar.datetime = _luxon.DateTime.local().toISO();
 
