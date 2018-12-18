@@ -649,7 +649,9 @@
         this.address_to.street = ''
         this.address_to.house = ''
         this.address_to.entrance = ''
-        this.car.selected = this.car.options[0]
+        if (!(_.isEmpty(this.car.options))) {
+          this.car.selected = this.car.options[0]
+        }
         this.calendar.datetime = DateTime.local().toISO()
         this.note.visibility = false
         this.note.text = ''
@@ -676,7 +678,7 @@
         this.address_to.street = 'Республики'
         this.address_to.house = '2'
         this.address_to.entrance = 'б'
-        this.car.selected = this.car.options[0]
+        // this.car.selected = this.car.options[0]
         this.calendar.datetime = DateTime.local().toISO()
         this.note.visibility = false
         this.note.text = 'Срочно, быстро, дешево!'
