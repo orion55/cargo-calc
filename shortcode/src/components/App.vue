@@ -34,7 +34,7 @@
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--from"
-                                                 :allow-empty="false" @open="onFocus" @select="onSelect"
+                                                 :allow-empty="false" @open="onFocus" @select="onSelect(address_to)"
                                                  ref="address_from"></multiselect>
                                 </div>
                                 <div class="calc__address">
@@ -56,7 +56,8 @@
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--to"
-                                                 :allow-empty="false" @open="onFocus" ref="address_to"></multiselect>
+                                                 :allow-empty="false" @open="onFocus" ref="address_to"
+                                                 @select="onSelect(address_from)"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value=""
@@ -350,14 +351,7 @@
           options: []
         },
         car: {
-          selected: {
-            'id': 0,
-            'name': 'Ларгус/пикап',
-            'picture': 'assets/img/car/car01.jpg',
-            'size': '1,7м * 1,2м * 1м',
-            'carrying': '700 кг',
-            'desc': 'подходит для загородного переезда, перевозки стройматериалов'
-          },
+          selected: {},
           options: []
         },
         calendar: {
@@ -710,11 +704,9 @@
           this.cargo_form.isCollapse = false
         }
       },
-      onSelect (value) {
+      onSelect (element) {
         if (this.intercityFlag) {
-          let element = this.address_to
-          console.log(element)
-          if (element.selected.id !== 999){
+          if (element.selected.id !== 999) {
             element.selected = {'id': 999, 'name': 'Тольятти'}
           }
         }
@@ -819,6 +811,10 @@
 
           this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
           this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
+
+          _.forEach(this.car.options, (item) => {
+            item.$isDisabled = false
+          })
         } else {
           this.address.options = [{
             place: 'Города',
@@ -836,6 +832,13 @@
 
           this.address_from.selected = {'id': 999, 'name': 'Тольятти'}
           this.address_to.selected = {'id': 123, 'name': 'Москва'}
+
+          _.forEach(this.car.options, (item) => {
+            if (item.id !== 2 && item.id !== 3) {
+              item.$isDisabled = true
+            }
+          })
+          this.car.selected = this.car.options[2]
         }
       }
     },
@@ -856,8 +859,11 @@
 
           //Заполняем список автомобилей
           _.forEach(this.info.data.metadata.car, (item) => {
+            item.$isDisabled = false
             this.car.options.push(item)
           })
+
+          this.car.selected = this.car.options[0]
 
           //Заполняем время подачи
           _.forEach(this.info.data.metadata.time_delivery, (item) => {
@@ -879,7 +885,7 @@
 
           this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial}
 
-          this.demoData()
+          // this.demoData()
           if (this.wp_data.is_full === '1') {
             this.cargo_form.isCollapse = false
           }
