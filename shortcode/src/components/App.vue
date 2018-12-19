@@ -20,7 +20,8 @@
                 <div class="calc__one">
                     <div class="calc__block">
                         <div class="calc__stage calc__stage--one">
-                            <div class="calc__caption calc__caption--one"><span class="calc__wide">Шаг 1:</span> Маршрут
+                            <div class="calc__caption calc__caption--one"><span class="calc__wide">Шаг 1:</span>
+                                Маршрут
                                 и
                                 контакты
                             </div>
@@ -34,7 +35,7 @@
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--from"
-                                                 :allow-empty="false" @open="onFocus" @select="onSelect(address_to)"
+                                                 :allow-empty="false" @open="onFocus"
                                                  ref="address_from"></multiselect>
                                 </div>
                                 <div class="calc__address">
@@ -56,8 +57,8 @@
                                                  :show-labels="false" :maxHeight="250"
                                                  group-values="area" group-label="place"
                                                  class="calc__dropdown calc__dropdown--to"
-                                                 :allow-empty="false" @open="onFocus" ref="address_to"
-                                                 @select="onSelect(address_from)"></multiselect>
+                                                 :allow-empty="false" @open="onFocus"
+                                                 ref="address_to"></multiselect>
                                 </div>
                                 <div class="calc__address">
                                     <input type="text" value=""
@@ -114,7 +115,8 @@
                 <div :class="{'calc__two': true, 'is-disable': cargo_form.isDisable}">
                     <div class="calc__block">
                         <div class="calc__stage calc__stage--two">
-                            <div class="calc__caption calc__caption--two"><span class="calc__wide">Шаг 2:</span> Подбор
+                            <div class="calc__caption calc__caption--two"><span class="calc__wide">Шаг 2:</span>
+                                Подбор
                                 машины
                             </div>
                         </div>
@@ -136,7 +138,8 @@
                                                  label="name" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="270"
                                                  :option-height="58"
-                                                 class="calc__dropdown calc__dropdown--selectbox" :allow-empty="false">
+                                                 class="calc__dropdown calc__dropdown--selectbox"
+                                                 :allow-empty="false">
                                         <template slot="option" slot-scope="props">
                                             <div class="item-down">
                                                 <img :src="wp_data.plugin_dir_url + props.option.picture"
@@ -159,7 +162,8 @@
                                     <multiselect v-model="cargo_time.selected" :options="cargo_options"
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
-                                                 class="calc__dropdown calc__dropdown--cargo-time" :allow-empty="false"
+                                                 class="calc__dropdown calc__dropdown--cargo-time"
+                                                 :allow-empty="false"
                                                  :disabled="isDisabledCargoTime"></multiselect>
                                 </div>
                                 <div class="calc__gear-inner">
@@ -183,7 +187,8 @@
                         <div class="calc__box calc__box--client">
                             <div class="calc__desc calc__desc--client">Номер карты постоянного клиента</div>
                             <input class="calc__input calc__input--number" ref="card" v-model="card.serial">
-                            <button type="button" class="btn btn--client" ref="btnCheck" @click.prevent="validateCard">
+                            <button type="button" class="btn btn--client" ref="btnCheck"
+                                    @click.prevent="validateCard">
                                 Проверить
                             </button>
                         </div>
@@ -192,7 +197,8 @@
                 <div :class="{'calc__three': true, 'is-disable': cargo_form.isDisable}">
                     <div class="calc__block calc__block--three">
                         <div class="calc__stage calc__stage--four">
-                            <div class="calc__caption calc__caption--four"><span class="calc__wide">Шаг 4:</span> Время
+                            <div class="calc__caption calc__caption--four"><span class="calc__wide">Шаг 4:</span>
+                                Время
                                 и
                                 длительность
                             </div>
@@ -208,7 +214,8 @@
                             </div>
                             <div class="calc__item calc__item--six">
                                 <i class="far fa-calendar-alt calc__icon"></i>
-                                <datetime type="datetime" v-model="calendar.datetime" class='calc__input--datepicker'
+                                <datetime type="datetime" v-model="calendar.datetime"
+                                          class='calc__input--datepicker'
                                           :phrases="{ok: 'Ok', cancel: 'Выход'}" :minute-step="10"
                                           :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
                                           value-zone="Europe/Samara" :value="calendar.datetime"
@@ -220,7 +227,7 @@
                                              label="label" track-by="id" :searchable="false"
                                              :show-labels="false" :maxHeight="200"
                                              class="calc__dropdown calc__dropdown--durability"
-                                             :allow-empty="false"></multiselect>
+                                             :allow-empty="false" :disabled="intercityFlag"></multiselect>
                             </div>
                             <div class="calc__item calc__item--eight">
                                 <a href="#" class="calc__link--plus" @click.prevent="inverseShowNote">
@@ -258,7 +265,8 @@
                                                 class="fas fa-ruble-sign  calc__result-rub"></i></span>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn--result hvr-radial-out" @click.prevent="checkout"
+                                <button type="button" class="btn btn--result hvr-radial-out"
+                                        @click.prevent="checkout"
                                         ref="btnCheckout">
                                     Оформить заказ
                                 </button>
@@ -698,13 +706,13 @@
           this.cargo_form.isCollapse = false
         }
       },
-      onSelect (element) {
+      /*onSelect (element) {
         if (this.intercityFlag) {
           if (element.selected.id !== 999) {
             element.selected = {'id': 999, 'name': 'Тольятти'}
           }
         }
-      },
+      },*/
       checkout () {
         let data = {
           action: 'cargo_add',
