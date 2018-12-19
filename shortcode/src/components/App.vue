@@ -928,7 +928,7 @@
           // console.log(this.loading)
           this.info.loading = false
           // this.loading = false
-          // console.log(this.loading)
+          console.log(this.loading)
         })
     }
   }
