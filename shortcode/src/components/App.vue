@@ -1,6 +1,13 @@
 <template>
+    <!--    <div>
+            <div v-if="loading">
+                <div class="loader"></div>
+                <h1>1111111111</h1>
+            </div>
+            <div v-else>-->
     <form method="POST" class="calc__form">
-        <div :class="{'calc':true, 'is-collapse': cargo_form.isCollapse}" id="calc-shipment" ref="calc-shipment">
+        <div :class="{'calc':true, 'is-collapse': cargo_form.isCollapse}" id="calc-shipment"
+             ref="calc-shipment">
             <div class="calc__head">
                 <div class="calc__title">Заказ грузового такси
                 </div>
@@ -11,7 +18,8 @@
                         <span class="calc__link--text">Очистить</span>
                     </a>
                     <a href="#"
-                       class="calc__link--close hvr-pop" v-if="!cargo_form.isCollapse" @click.prevent="closeForm">
+                       class="calc__link--close hvr-pop" v-if="!cargo_form.isCollapse"
+                       @click.prevent="closeForm">
                         <i class="fas fa-times-circle"></i>
                     </a>
                 </div>
@@ -105,7 +113,8 @@
                             </button>
                             <div class="calc__desc calc__desc--personal" v-else>
                                 Нажимая кнопку «Оформить заказ», вы соглашаетесь
-                                на <a href="#" class="calc__link calc__link--personal">обработку ваших персональных
+                                на <a href="#" class="calc__link calc__link--personal">обработку ваших
+                                персональных
                                 данных</a>
                             </div>
 
@@ -179,7 +188,8 @@
                             </div>
                         </div>
                         <div class="calc__stage calc__stage--three">
-                            <div class="calc__caption calc__caption--three"><span class="calc__wide">Шаг 3:</span>
+                            <div class="calc__caption calc__caption--three"><span
+                                    class="calc__wide">Шаг 3:</span>
                                 получения
                                 скидки
                             </div>
@@ -197,7 +207,8 @@
                 <div :class="{'calc__three': true, 'is-disable': cargo_form.isDisable}">
                     <div class="calc__block calc__block--three">
                         <div class="calc__stage calc__stage--four">
-                            <div class="calc__caption calc__caption--four"><span class="calc__wide">Шаг 4:</span>
+                            <div class="calc__caption calc__caption--four"><span
+                                    class="calc__wide">Шаг 4:</span>
                                 Время
                                 и
                                 длительность
@@ -240,8 +251,10 @@
                             <div class="calc__price">
                                 <div class="calc__item calc__item--nine">
                                     <span class="calc__price-text">Обычная цена</span>
-                                    <span class="calc__price-number" id="calc__price-number">{{price_normal}}</span>
-                                    <span class="calc__rub"><i class="fas fa-ruble-sign calc__price-rub"></i></span>
+                                    <span class="calc__price-number"
+                                          id="calc__price-number">{{price_normal}}</span>
+                                    <span class="calc__rub"><i
+                                            class="fas fa-ruble-sign calc__price-rub"></i></span>
                                 </div>
                                 <div class="calc__item calc__item--ten">
                                     <div class="calc__box-discount">
@@ -251,7 +264,8 @@
                                         <span class="calc__discount-percent">%</span>
                                     </div>
                                     <div class="calc__box-discount-price">
-                                        <span class="calc__discount-sum" id="calc__discount-sum">{{economy}}</span>
+                                                <span class="calc__discount-sum"
+                                                      id="calc__discount-sum">{{economy}}</span>
                                         <span class="calc__rub"><i
                                                 class="fas fa-ruble-sign calc__discount-rub"></i></span>
                                     </div>
@@ -281,6 +295,8 @@
             </simplert>
         </div>
     </form>
+    <!--</div>
+</div>-->
 </template>
 
 <script>
@@ -399,7 +415,8 @@
           isDisable: false
         },
         intercityFlag: false,
-        riggingFlag: false
+        riggingFlag: false,
+        loading: false
       }
     },
     computed: {
@@ -858,6 +875,7 @@
       }
     },
     mounted () {
+      this.loading = true
       axios
         .all([axios.get(wp_data.plugin_dir_url + 'assets/json/price1.json'),
           axios.get(wp_data.plugin_dir_url + 'assets/json/card.json')])
@@ -902,10 +920,16 @@
           }
         }))
         .catch(error => {
+          this.loading = false
           console.log(error)
           this.info.errored = true
         })
-        .finally(() => (this.info.loading = false))
+        .finally(() => {
+          // console.log(this.loading)
+          this.info.loading = false
+          // this.loading = false
+          // console.log(this.loading)
+        })
     }
   }
 </script>
