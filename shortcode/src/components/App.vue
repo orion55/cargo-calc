@@ -179,7 +179,7 @@
                                             <input type="checkbox" v-model="riggingFlag"/>
                                             <div class="control_indicator"></div>
                                         </label>
-                                        <a href="#" class="calc__gear-link" @click="openSimplert">
+                                        <a href="#" class="calc__gear-link" @click="openRigging">
                                             <i class="fas fa-info-circle calc__icon"></i>
                                         </a>
                                     </div>
@@ -278,9 +278,9 @@
                                         </div>
                                     </div>
                                     <button type="button" class="btn btn--result hvr-radial-out"
-                                            @click.prevent="btnCheckout.funct"
+                                            @click.prevent="buttonCheckout.funct"
                                             ref="btnCheckout">
-                                        {{btnCheckout.title}}
+                                        {{buttonCheckout.title}}
                                     </button>
                                 </div>
                             </div>
@@ -290,6 +290,8 @@
                 <simplert :useRadius="true" :useIcon="true" ref="simplert">
                 </simplert>
                 <simplert :useRadius="true" :useIcon="true" ref="simplert_result">
+                </simplert>
+                <simplert :useRadius="true" :useIcon="true" ref="simplert_manager">
                 </simplert>
             </div>
         </div>
@@ -414,7 +416,7 @@
         intercityFlag: false,
         riggingFlag: false,
         loading: true,
-        btnCheckout: {
+        buttonCheckout: {
           title: 'Оформить заказ',
           funct: this.checkout
         }
@@ -512,6 +514,8 @@
 
           let currentPrice = 0, current = {}, current1 = {}
 
+          this.changeBtn(true)
+
           //"тяжелые" автомобили не зависят от срочности, но это не междугородние рейсы
           if (car_id >= 3 && car_id <= 5) {
             if (address_to_id < 100 && address_from_id < 100) {
@@ -575,7 +579,9 @@
           }
           if (address_from_id >= 100 && address_to_id >= 100) {
             //расчет межгород
-            if (address_from_id === 999 || address_to_id === 999) {
+            if (address_from_id === 999 && address_to_id === 999) {
+              this.changeBtn(false)
+            } else if (address_from_id === 999 || address_to_id === 999) {
               let address_dest = address_from_id === 999 ? address_to_id : address_from_id
 
               current = _.find(priceData, {
@@ -583,9 +589,7 @@
                 'address_to': address_dest
               })
               currentPrice += current.price
-              this.changeBtn(true)
             } else {
-              console.log('Позвоните менеджеру!')
               this.changeBtn(false)
             }
           }
@@ -880,11 +884,24 @@
       },
       changeBtn (flag) {
         if (flag) {
-          this.btnCheckout.title = 'Оформить заказ'
-          this.btnCheckout.funct = this.checkout
+          this.buttonCheckout.title = 'Оформить заказ'
+          this.buttonCheckout.funct = this.checkout
         } else {
-          this.btnCheckout.title = 'Позвоните менеджеру'
+          this.buttonCheckout.title = 'Позвоните менеджеру'
+          this.buttonCheckout.funct = this.callManager
+          let btnCheckout = this.$refs.btnCheckout
+          animateObj(btnCheckout, 'hvr-buzz-out')
         }
+      },
+      callManager () {
+        this.objAlert.title = ''
+        this.objAlert.message = 'К сожалению, выбранного направления пока нет, но мы постоянно расширяем список наших маршрутов.<br><br>Позвоните нашему менеджеру по телефонам<br><a href="tel:+78482249060">+7 (8482) 24-90-60</a> <a href="tel:+78003506720">+7 800 350-67-20</a> <br>и узнайте возможно оно уже появилось.'
+        this.$refs.simplert_manager.openSimplert(this.objAlert)
+      },
+      openRigging () {
+        this.objAlert.title = 'Такелажные работы'
+        this.objAlert.message = 'это комплекс мер, направленных на поднятие разнообразных грузов с целью их погрузки\\выгрузки.<br><br>Например, нужно перевести оборудования промышленного назначения, огромные резервуары, банкоматы, сейфы, серверы, контейнеры, пианино и всё, что от 100 кг и больше'
+        this.$refs.simplert.openSimplert(this.objAlert)
       }
     },
     watch: {
