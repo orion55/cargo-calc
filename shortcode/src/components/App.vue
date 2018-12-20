@@ -278,9 +278,9 @@
                                         </div>
                                     </div>
                                     <button type="button" class="btn btn--result hvr-radial-out"
-                                            @click.prevent="checkout"
+                                            @click.prevent="btnCheckout.funct"
                                             ref="btnCheckout">
-                                        Оформить заказ
+                                        {{btnCheckout.title}}
                                     </button>
                                 </div>
                             </div>
@@ -413,7 +413,11 @@
         },
         intercityFlag: false,
         riggingFlag: false,
-        loading: true
+        loading: true,
+        btnCheckout: {
+          title: 'Оформить заказ',
+          funct: this.checkout
+        }
       }
     },
     computed: {
@@ -579,8 +583,10 @@
                 'address_to': address_dest
               })
               currentPrice += current.price
+              this.changeBtn(true)
             } else {
               console.log('Позвоните менеджеру!')
+              this.changeBtn(false)
             }
           }
           priceNormal += currentPrice
@@ -870,6 +876,14 @@
             this.time_delivery.options[0].$isDisabled = true
             this.time_delivery.selected = this.time_delivery.options[1]
           }
+        }
+      },
+      changeBtn (flag) {
+        if (flag) {
+          this.btnCheckout.title = 'Оформить заказ'
+          this.btnCheckout.funct = this.checkout
+        } else {
+          this.btnCheckout.title = 'Позвоните менеджеру'
         }
       }
     },
