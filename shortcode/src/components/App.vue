@@ -443,20 +443,39 @@
         let time_delivery_id = this.time_delivery.selected.id
         let address_to_id = this.address_to.selected.id
 
-        if (car_id <= 2 && time_delivery_id === 1 && address_to_id < 10) {
-          data[0].$isDisabled = true
-        } else if (car_id === 3) {
-          data[0].$isDisabled = true
-        } else if (car_id === 4 || car_id === 5) {
-          data[0].$isDisabled = true
-          data[1].$isDisabled = true
-        } else if (address_to_id >= 10) {
-          data[0].$isDisabled = true
-        }
+        /* if (car_id <= 2 && time_delivery_id === 1 && address_to_id < 10) {
+           data[0].$isDisabled = true
+         } else if (car_id === 3) {
+           data[0].$isDisabled = true
+         } else if (car_id === 4 || car_id === 5) {
+           data[0].$isDisabled = true
+           data[1].$isDisabled = true
+         } else if (address_to_id >= 10) {
+           data[0].$isDisabled = true
+         }*/
 
-        //если уже установлен заблокированный элемент, меняем на первый за ним незаблокированный
-        if (data[this.durability.selected.id - 1].$isDisabled) {
-          this.durability.selected = _.find(data, ['$isDisabled', false])
+        if (!_.isEmpty(this.info.data)) {
+          let priceData = this.info.data.price
+          let current = _.find(priceData, {
+            'car_id': car_id,
+            'time_delivery_id': time_delivery_id,
+            'address_to': address_to_id
+          })
+          if (!_.isEmpty(current) && 'min_time' in current) {
+            let minTime = +current.min_time - 1
+            if (minTime > 0) {
+              let part = _.filter(data, (item) => {
+                return item.id <= minTime
+              })
+              _.forEach(part, (item) => {
+                item.$isDisabled = true
+              })
+            }
+            //если уже установлен заблокированный элемент, меняем на первый за ним незаблокированный
+            if (data[this.durability.selected.id - 1].$isDisabled) {
+              this.durability.selected = _.find(data, ['$isDisabled', false])
+            }
+          }
         }
 
         return data
