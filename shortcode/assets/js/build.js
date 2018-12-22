@@ -499,7 +499,6 @@ exports.default = {
       };
       this.$validator.validateAll().then(function (result) {
         if (result) {
-          console.log(Qs.stringify(data));
           _axios2.default.post(_this2.wp_data.url_ajax, Qs.stringify(data)).then(function (response) {
             var answer = response.data;
             if (answer.success) {
@@ -655,8 +654,6 @@ exports.default = {
       });
 
       _this4.card_data = { discount: parseInt(card_response.data.discount, 10), serial: arr_serial };
-
-      _this4.demoData();
 
       if (_this4.wp_data.is_full === '1') {
         _this4.cargo_form.isCollapse = false;

@@ -831,7 +831,6 @@
         this.$validator.validateAll()
           .then((result) => {
             if (result) {
-              console.log(Qs.stringify(data))
               axios.post(this.wp_data.url_ajax, Qs.stringify(data))
                 .then((response) => {
                   let answer = response.data
@@ -991,7 +990,7 @@
 
           this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial}
 
-          this.demoData()
+          // this.demoData()
 
           if (this.wp_data.is_full === '1') {
             this.cargo_form.isCollapse = false
