@@ -825,11 +825,13 @@
           price_normal: this.price_normal,
           economy: this.economy,
           discount: this.discount,
-          price_result: this.price_result
+          price_result: this.price_result,
+          rigging: this.riggingFlag ? 'yes' : 'no'
         }
         this.$validator.validateAll()
           .then((result) => {
             if (result) {
+              console.log(Qs.stringify(data))
               axios.post(this.wp_data.url_ajax, Qs.stringify(data))
                 .then((response) => {
                   let answer = response.data
@@ -904,9 +906,6 @@
               item.$isDisabled = false
             })
           }
-          /*if (!(_.isEmpty(this.time_delivery.options))) {
-            this.time_delivery.options[0].$isDisabled = false
-          }*/
         } else {
           this.address.options = [{
             place: 'Города',
@@ -931,11 +930,6 @@
             }
           })
           this.car.selected = this.car.options[2]
-
-          /*if (!(_.isEmpty(this.time_delivery.options))) {
-            this.time_delivery.options[0].$isDisabled = true
-            this.time_delivery.selected = this.time_delivery.options[1]
-          }*/
         }
       },
       changeBtn (flag) {
@@ -979,13 +973,6 @@
           })
           this.car.selected = this.car.options[0]
 
-          //Заполняем время подачи
-          /*_.forEach(this.info.data.metadata.time_delivery, (item) => {
-            item.$isDisabled = false
-            this.time_delivery.options.push(item)
-          })
-          this.time_delivery.selected = this.time_delivery.options[1]*/
-
           //Заполняем пункты назначения
           this.fillDestinations()
 
@@ -1004,7 +991,8 @@
 
           this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial}
 
-          // this.demoData()
+          this.demoData()
+
           if (this.wp_data.is_full === '1') {
             this.cargo_form.isCollapse = false
           }

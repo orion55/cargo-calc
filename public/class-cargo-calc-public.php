@@ -134,6 +134,8 @@ class Cargo_Calc_Public
                 $message .= "<tr style='background: #eee;'><td><strong>Тип подачи:</strong> </td><td>" . $info['time_delivery'] . "</td></tr>";
                 $message .= "<tr><td><strong>Время подачи:</strong> </td><td>" . $info['calendar'] . "</td></tr>";
                 $message .= "<tr><td><strong>Длительность заказа:</strong> </td><td>" . $info['durability'] . "</td></tr>";
+                $rigg = $info['rigging'] == "yes" ? "Есть" : "Нет";
+                $message .= "<tr><td><strong>Такелажные работы:</strong> </td><td>" . $rigg . "</td></tr>";
                 $message .= "<tr><td><strong>Примечание:</strong> </td><td>" . $info['note'] . "</td></tr>";
 
                 $message .= "<tr style='background: #eee;'><td><strong>Машина:</strong> </td><td>" . $info['car'] . "</td></tr>";
@@ -194,6 +196,7 @@ class Cargo_Calc_Public
                 update_post_meta($post_id, '_car', $info['car']);
                 update_post_meta($post_id, '_loaders', $info['loaders']);
                 update_post_meta($post_id, '_cargo_time', $info['cargo_time']);
+                update_post_meta($post_id, '_rigging', $info['rigging']);
 
                 update_post_meta($post_id, '_price_normal', $info['price_normal']);
                 update_post_meta($post_id, '_discount', $info['discount']);
@@ -233,6 +236,7 @@ class Cargo_Calc_Public
         $info['durability'] = sanitize_text_field($_POST['durability']);
         $info['economy'] = intval($_POST['economy']);
         $info['loaders'] = sanitize_text_field($_POST['loaders']);
+        $info['rigging'] = sanitize_textarea_field($_POST['rigging']);
         $info['note'] = sanitize_textarea_field($_POST['note']);
         $info['price_normal'] = intval($_POST['price_normal']);
         $info['price_result'] = intval($_POST['price_result']);
@@ -301,7 +305,7 @@ class Cargo_Calc_Public
 
             $titles = ['Имя', 'Телефон', 'Номер карты', 'Откуда(район)', 'Улица', 'Дом', 'Подъезд',
                 'Куда(район)', 'Улица', 'Дом', 'Подъезд', 'Тип подачи', 'Время подачи', 'Длительность заказа', 'Примечание',
-                'Машина', 'Грузчики', 'Время работы грузчиков', 'Обычная цена',
+                'Машина', 'Грузчики', 'Время работы грузчиков', 'Такелажные работы', 'Обычная цена',
                 'Размер скидки %', 'Сумма скидки', 'Итого со скидкой', 'Время заявки'];
             array_push($out, $titles);
 
@@ -337,6 +341,7 @@ class Cargo_Calc_Public
                         $meta->_car,
                         $meta->_loaders,
                         $meta->_cargo_time,
+                        $meta->_rigging,
 
                         $meta->_price_normal,
                         $meta->_discount,

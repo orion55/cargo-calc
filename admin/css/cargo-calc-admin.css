@@ -33,3 +33,8 @@
 #form-note {
     padding-left: 20px;
 }
+
+.rigging-checkbox {
+    display: flex;
+    align-items: center;
+}

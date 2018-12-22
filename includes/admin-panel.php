@@ -67,14 +67,17 @@ function crb_attach_theme_options()
 
                 Field::make('text', 'time_delivery', 'Тип подачи')
                     ->set_attribute('type', 'text')
-                    ->set_width(33),
+                    ->set_width(25),
                 Field::make('date_time', 'calendar', 'Время подачи')
                     ->set_storage_format("d.m.Y H:i")
                     ->set_input_format('d.m.Y H:i', 'd.m.Y H:i')
-                    ->set_width(33),
+                    ->set_width(25),
                 Field::make('text', 'durability', 'Длительность заказа')
                     ->set_attribute('type', 'text')
-                    ->set_width(33),
+                    ->set_width(25),
+                Field::make('checkbox', 'rigging', 'Такелажные работы')
+                    ->set_width(25)
+                    ->set_classes('rigging-checkbox'),
 
                 Field::make('textarea', 'note', 'Примечание')
                     ->set_rows(2)
