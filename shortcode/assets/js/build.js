@@ -229,7 +229,7 @@ exports.default = {
 
       var car_id = this.car.selected.id;
 
-      var loaders_id = this.loaders.selected.id;
+      var loaders_id = +this.loaders.selected.id;
       var cargo_time_id = this.cargo_time.selected.id;
 
       var time_delivery_id = this.time_delivery.selected.id;
@@ -323,20 +323,12 @@ exports.default = {
         var type_work_id = this.typeWork;
 
         if (loaders_id !== 0) {
-          if (time_delivery_id === 0) {
-            current = _lodash2.default.find(priceLoader, { 'time_delivery_id': 0, 'type_work_id': type_work_id });
-            if (!_lodash2.default.isEmpty(current)) {
-              loaders__price = current.min_price * cargo_time_id * loaders_id;
-            }
-          } else {
-            current = _lodash2.default.find(priceLoader, { 'time_delivery_id': 1, 'type_work_id': type_work_id });
-
-            if (!_lodash2.default.isEmpty(current)) {
-              loaders__price += current.min_price * loaders_id;
-
-              if (cargo_time_id > current.min_time) {
-                loaders__price += current.additional_price * (cargo_time_id - current.min_time) * loaders_id;
-              }
+          current = _lodash2.default.find(priceLoader, { 'time_delivery_id': time_delivery_id, 'type_work_id': type_work_id });
+          if (!_lodash2.default.isEmpty(current)) {
+            loaders__price = current.min_price * loaders_id;
+            var delta = cargo_time_id - current.min_time;
+            if (delta > 0) {
+              loaders__price += current.additional_price * delta * loaders_id;
             }
           }
         }
@@ -352,7 +344,7 @@ exports.default = {
 
       if (this.riggingFlag) {
         type_work_id = 2;
-      } else if (address_from_id >= 10 && address_from_id < 100 && address_to_id >= 10 && address_to_id < 100) {
+      } else if (address_from_id >= 10 && address_from_id < 100 || address_to_id >= 10 && address_to_id < 100) {
         type_work_id = 1;
       }
       return type_work_id;

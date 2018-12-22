@@ -544,7 +544,7 @@
         let car_id = this.car.selected.id
 
         //грузчики
-        let loaders_id = this.loaders.selected.id
+        let loaders_id = +this.loaders.selected.id
         let cargo_time_id = this.cargo_time.selected.id
 
         //время подачи
@@ -647,20 +647,12 @@
           let type_work_id = this.typeWork
 
           if (loaders_id !== 0) {
-            if (time_delivery_id === 0) {
-              current = _.find(priceLoader, {'time_delivery_id': 0, 'type_work_id': type_work_id})
-              if (!_.isEmpty(current)) {
-                loaders__price = current.min_price * cargo_time_id * loaders_id
-              }
-            } else {
-              current = _.find(priceLoader, {'time_delivery_id': 1, 'type_work_id': type_work_id})
-
-              if (!_.isEmpty(current)) {
-                loaders__price += current.min_price * loaders_id
-
-                if (cargo_time_id > current.min_time) {
-                  loaders__price += current.additional_price * (cargo_time_id - current.min_time) * loaders_id
-                }
+            current = _.find(priceLoader, {'time_delivery_id': time_delivery_id, 'type_work_id': type_work_id})
+            if (!_.isEmpty(current)) {
+              loaders__price = current.min_price * loaders_id
+              let delta = cargo_time_id - current.min_time
+              if (delta > 0) {
+                loaders__price += current.additional_price * delta * loaders_id
               }
             }
           }
@@ -678,7 +670,7 @@
 
         if (this.riggingFlag) {
           type_work_id = 2
-        } else if (address_from_id >= 10 && address_from_id < 100 && address_to_id >= 10 && address_to_id < 100) {
+        } else if ((address_from_id >= 10 && address_from_id < 100) || (address_to_id >= 10 && address_to_id < 100)) {
           //если адреса из пригорода, но не такелаж, то грузчики - пригород
           type_work_id = 1
         }
