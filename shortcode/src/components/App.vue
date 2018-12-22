@@ -215,8 +215,8 @@
                             <div class="calc__row calc__row--four">
                                 <div class="calc__item calc__item--five">
                                     <div class="calc__desc calc__desc--time">Когда подать</div>
-                                    <multiselect v-model="time_delivery.selected" :options="time_delivery.options"
-                                                 label="name" track-by="id" :searchable="false"
+                                    <multiselect v-model="time_delivery.selected" :options="time_delivery_options"
+                                                 label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
                                                  class="calc__dropdown calc__dropdown--time"
                                                  :allow-empty="false"></multiselect>
@@ -352,8 +352,7 @@
           isDisabled: true
         },
         time_delivery: {
-          selected: {},
-          options: []
+          selected: {}
         },
         durability: {
           selected: {id: 1, label: '1 час', $isDisabled: false}
@@ -443,17 +442,6 @@
         let time_delivery_id = this.time_delivery.selected.id
         let address_to_id = this.address_to.selected.id
 
-        /* if (car_id <= 2 && time_delivery_id === 1 && address_to_id < 10) {
-           data[0].$isDisabled = true
-         } else if (car_id === 3) {
-           data[0].$isDisabled = true
-         } else if (car_id === 4 || car_id === 5) {
-           data[0].$isDisabled = true
-           data[1].$isDisabled = true
-         } else if (address_to_id >= 10) {
-           data[0].$isDisabled = true
-         }*/
-
         if (!_.isEmpty(this.info.data)) {
           let priceData = this.info.data.price
           let current = _.find(priceData, {
@@ -492,15 +480,56 @@
           {id: 7, label: '7 часов', $isDisabled: false},
           {id: 8, label: '8 часов', $isDisabled: false}
         ]
+        let time_delivery_id = this.time_delivery.selected.id
+        if (!_.isEmpty(this.info.data)) {
+          let priceLoader = this.info.data.price_loader
+          let type_work_id = this.typeWork
 
-        data[0].$isDisabled = (this.loaders.selected.id !== 0)
-
-        data[1].$isDisabled = (this.time_delivery.selected.id === 1)
-
-        if (data[0].$isDisabled) {
-          this.cargo_time.selected = _.find(data, ['$isDisabled', false])
+          let current = _.find(priceLoader, {
+            'time_delivery_id': time_delivery_id,
+            'type_work_id': type_work_id
+          })
+          if (!_.isEmpty(current) && 'min_time' in current) {
+            let minTime = +current.min_time - 1
+            if (minTime > 0) {
+              let part = _.filter(data, (item) => {
+                return item.id <= minTime
+              })
+              _.forEach(part, (item) => {
+                item.$isDisabled = true
+              })
+            }
+            //если уже установлен заблокированный элемент, меняем на первый за ним незаблокированный
+            if (data[this.cargo_time.selected.id].$isDisabled) {
+              this.cargo_time.selected = _.find(data, ['$isDisabled', false])
+            }
+          }
+        }
+        return data
+      },
+      time_delivery_options: function () {
+        //Когда подать
+        let data = [
+          {id: 0, label: 'Срочно (30-90 минут)', $isDisabled: false},
+          {id: 1, label: 'Подача в течении дня', $isDisabled: false}
+        ]
+        //запускаем первый раз?
+        if (_.isEmpty(this.time_delivery.selected)) {
+          this.time_delivery.selected = data[1]
         }
 
+        let address_from_id = this.address_from.selected.id
+        let address_to_id = this.address_to.selected.id
+
+        if (this.riggingFlag) {
+          data[0].$isDisabled = true
+        } else if (address_from_id >= 10 || address_to_id >= 10) {
+          data[0].$isDisabled = true
+        }
+
+        if (data[0].$isDisabled) {
+          this.time_delivery.selected = data[1]
+        }
         return data
       },
       price_normal: function () {
@@ -615,14 +644,16 @@
           priceNormal += currentPrice
 
           let loaders__price = 0
+          let type_work_id = this.typeWork
+
           if (loaders_id !== 0) {
             if (time_delivery_id === 0) {
-              current = _.find(priceLoader, {'time_delivery_id': 0})
+              current = _.find(priceLoader, {'time_delivery_id': 0, 'type_work_id': type_work_id})
               if (!_.isEmpty(current)) {
                 loaders__price = current.min_price * cargo_time_id * loaders_id
               }
             } else {
-              current = _.find(priceLoader, {'time_delivery_id': 1})
+              current = _.find(priceLoader, {'time_delivery_id': 1, 'type_work_id': type_work_id})
 
               if (!_.isEmpty(current)) {
                 loaders__price += current.min_price * loaders_id
@@ -638,6 +669,20 @@
         }
         return priceNormal
 
+      },
+      typeWork: function () {
+        //возращает тип работы для грузчиков: город, пригород, такелаж
+        let type_work_id = 0
+        let address_from_id = this.address_from.selected.id
+        let address_to_id = this.address_to.selected.id
+
+        if (this.riggingFlag) {
+          type_work_id = 2
+        } else if (address_from_id >= 10 && address_from_id < 100 && address_to_id >= 10 && address_to_id < 100) {
+          //если адреса из пригорода, но не такелаж, то грузчики - пригород
+          type_work_id = 1
+        }
+        return type_work_id
       },
       economy: function () {
         return Math.round(this.price_normal * this.discount / 100)
@@ -867,9 +912,9 @@
               item.$isDisabled = false
             })
           }
-          if (!(_.isEmpty(this.time_delivery.options))) {
+          /*if (!(_.isEmpty(this.time_delivery.options))) {
             this.time_delivery.options[0].$isDisabled = false
-          }
+          }*/
         } else {
           this.address.options = [{
             place: 'Города',
@@ -895,10 +940,10 @@
           })
           this.car.selected = this.car.options[2]
 
-          if (!(_.isEmpty(this.time_delivery.options))) {
+          /*if (!(_.isEmpty(this.time_delivery.options))) {
             this.time_delivery.options[0].$isDisabled = true
             this.time_delivery.selected = this.time_delivery.options[1]
-          }
+          }*/
         }
       },
       changeBtn (flag) {
@@ -943,11 +988,11 @@
           this.car.selected = this.car.options[0]
 
           //Заполняем время подачи
-          _.forEach(this.info.data.metadata.time_delivery, (item) => {
+          /*_.forEach(this.info.data.metadata.time_delivery, (item) => {
             item.$isDisabled = false
             this.time_delivery.options.push(item)
           })
-          this.time_delivery.selected = this.time_delivery.options[1]
+          this.time_delivery.selected = this.time_delivery.options[1]*/
 
           //Заполняем пункты назначения
           this.fillDestinations()
