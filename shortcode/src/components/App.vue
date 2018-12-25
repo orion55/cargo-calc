@@ -250,7 +250,14 @@
                                     <div class="calc__item calc__item--nine">
                                         <span class="calc__price-text">Обычная цена</span>
                                         <span class="calc__price-number"
-                                              id="calc__price-number">{{price_normal}}</span>
+                                              id="calc__price-number">{{price_normal_common}}</span>
+                                        <span class="calc__rub"><i
+                                                class="fas fa-ruble-sign calc__price-rub"></i></span>
+                                    </div>
+                                    <div class="calc__item calc__item--nine">
+                                        <span class="calc__price-text">Грузчики</span>
+                                        <span class="calc__price-number"
+                                              id="calc__price-movers">{{price_movers}}</span>
                                         <span class="calc__rub"><i
                                                 class="fas fa-ruble-sign calc__price-rub"></i></span>
                                     </div>
@@ -532,7 +539,7 @@
         }
         return data
       },
-      price_normal: function () {
+      price_normal_common: function () {
 
         let priceNormal = 0
 
@@ -542,10 +549,6 @@
 
         //текущий автомобиль
         let car_id = this.car.selected.id
-
-        //грузчики
-        let loaders_id = +this.loaders.selected.id
-        let cargo_time_id = this.cargo_time.selected.id
 
         //время подачи
         let time_delivery_id = this.time_delivery.selected.id
@@ -642,12 +645,27 @@
             }
           }
           priceNormal += currentPrice
+        }
+        return priceNormal
 
-          let loaders__price = 0
+      },
+      price_normal: function () {
+        return this.price_normal_common + this.price_movers
+      },
+      price_movers: function () {
+        let loaders__price = 0
+        if (!_.isEmpty(this.info.data)) {
           let type_work_id = this.typeWork
+          //коллекция цен грузчиков
+          let priceLoader = this.info.data.price_loader
+          //грузчики
+          let loaders_id = +this.loaders.selected.id
+          let cargo_time_id = this.cargo_time.selected.id
+          //время подачи
+          let time_delivery_id = this.time_delivery.selected.id
 
           if (loaders_id !== 0) {
-            current = _.find(priceLoader, {'time_delivery_id': time_delivery_id, 'type_work_id': type_work_id})
+            let current = _.find(priceLoader, {'time_delivery_id': time_delivery_id, 'type_work_id': type_work_id})
             if (!_.isEmpty(current)) {
               loaders__price = current.min_price * loaders_id
               let delta = cargo_time_id - current.min_time
@@ -656,11 +674,8 @@
               }
             }
           }
-
-          priceNormal += loaders__price
         }
-        return priceNormal
-
+        return loaders__price
       },
       typeWork: function () {
         //возращает тип работы для грузчиков: город, пригород, такелаж
