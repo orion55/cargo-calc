@@ -10,7 +10,7 @@
  * Plugin Name:       Сargo сalc
  * Plugin URI:        cargo-calc
  * Description:       Калькулятор по расчету стоимости услуг грузового такси
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Oleg Grebenev
  * Author URI:        http://portfolio.infoblog72.ru
  * License:           GPL-2.0+
