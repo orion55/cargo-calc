@@ -3,7 +3,7 @@
 /**
  *
  * @link              http://portfolio.infoblog72.ru
- * @since             1.0.0
+ * @since             1.1.0
  * @package           Cargo_Calc
  *
  * @wordpress-plugin
