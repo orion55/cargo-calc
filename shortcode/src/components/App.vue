@@ -451,11 +451,19 @@
 
         if (!_.isEmpty(this.info.data)) {
           let priceData = this.info.data.price
-          let current = _.find(priceData, {
-            'car_id': car_id,
-            'time_delivery_id': time_delivery_id,
-            'address_to': address_to_id
-          })
+          let current = {}
+          if (time_delivery_id === 0) {
+            current = _.find(priceData, {
+              'car_id': car_id,
+              'time_delivery_id': time_delivery_id
+            })
+          } else if (time_delivery_id === 1) {
+            current = _.find(priceData, {
+              'car_id': car_id,
+              'time_delivery_id': time_delivery_id,
+              'address_to': address_to_id
+            })
+          }
           if (!_.isEmpty(current) && 'min_time' in current) {
             let minTime = +current.min_time - 1
             if (minTime > 0) {

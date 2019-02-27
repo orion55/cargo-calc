@@ -82,14 +82,14 @@ gulp.task('fonts', function () {
 gulp.task('deploy-ftp', function () {
 
   var conn = ftp.create({
-    host: 'grol55wy.beget.tech',
-    user: 'grol55wy_master',
-    password: 'grol55wy_master',
+    host: 'masterlg.beget.tech',
+    user: 'masterlg',
+    password: 'dSmFMsvD',
     parallel: 10,
     log: gutil.log
   })
 
-  const path = '/public_html/wp-content/plugins/cargo-calc/shortcode/assets/'
+  const path = '/master-gruzov.ru/public_html/wp-content/plugins/cargo-calc/shortcode/assets/'
 
   var globs = [
     '../assets/' + subfolder + '/**'
