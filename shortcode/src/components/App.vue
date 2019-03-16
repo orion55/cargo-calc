@@ -26,7 +26,8 @@
                     <div class="calc__one">
                         <div class="calc__block">
                             <div class="calc__stage calc__stage--one">
-                                <div class="calc__caption calc__caption--one"><span class="calc__wide">Шаг 1:</span>
+                                <div class="calc__caption calc__caption--one"><span
+                                        class="calc__wide">Шаг 1:</span>
                                     Маршрут
                                     и
                                     контакты
@@ -36,7 +37,8 @@
                                 <div class="calc__item calc__item--one">
                                     <div class="calc__box-select">
                                         <div class="calc__desc">Откуда</div>
-                                        <multiselect v-model="address_from.selected" :options="address.options"
+                                        <multiselect v-model="address_from.selected"
+                                                     :options="address.options"
                                                      label="name" track-by="id" :searchable="false"
                                                      :show-labels="false" :maxHeight="250"
                                                      group-values="area" group-label="place"
@@ -49,16 +51,21 @@
                                                placeholder="Улица" v-model="address_from.street"
                                                :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-from') }"
                                                name="calc__street-from" @focus="onFocus">
-                                        <input type="text" value="" class="calc__input calc__input--house"
-                                               placeholder="Дом" v-model="address_from.house" @focus="onFocus">
-                                        <input type="text" value="" class="calc__input calc__input--entrance"
-                                               placeholder="Под" v-model="address_from.entrance" @focus="onFocus">
+                                        <input type="text" value=""
+                                               class="calc__input calc__input--house"
+                                               placeholder="Дом" v-model="address_from.house"
+                                               @focus="onFocus">
+                                        <input type="text" value=""
+                                               class="calc__input calc__input--entrance"
+                                               placeholder="Под" v-model="address_from.entrance"
+                                               @focus="onFocus">
                                     </div>
                                 </div>
                                 <div class="calc__item calc__item--two">
                                     <div class="calc__box-select">
                                         <div class="calc__desc">Куда</div>
-                                        <multiselect v-model="address_to.selected" :options="address.options"
+                                        <multiselect v-model="address_to.selected"
+                                                     :options="address.options"
                                                      label="name" track-by="id" :searchable="false"
                                                      :show-labels="false" :maxHeight="250"
                                                      group-values="area" group-label="place"
@@ -71,10 +78,14 @@
                                                placeholder="Улица" v-model="address_to.street"
                                                :class="{'calc__input': true, 'calc__input--street': true, 'is-danger': errors.has('calc__street-to') }"
                                                name="calc__street-to" @focus="onFocus">
-                                        <input type="text" value="" class="calc__input calc__input--house"
-                                               placeholder="Дом" v-model="address_to.house" @focus="onFocus">
-                                        <input type="text" value="" class="calc__input calc__input--entrance"
-                                               placeholder="Под" v-model="address_to.entrance" @focus="onFocus">
+                                        <input type="text" value=""
+                                               class="calc__input calc__input--house"
+                                               placeholder="Дом" v-model="address_to.house"
+                                               @focus="onFocus">
+                                        <input type="text" value=""
+                                               class="calc__input calc__input--entrance"
+                                               placeholder="Под" v-model="address_to.entrance"
+                                               @focus="onFocus">
                                     </div>
                                 </div>
                                 <div class="calc__intercity">
@@ -100,18 +111,22 @@
                                     <label for="calc__phone" class="calc__label">Телефон</label>
                                     <input id="calc__phone"
                                            :class="{'calc__input': true, 'calc__input--phone': true, 'is-danger': errors.has('calc__phone') }"
-                                           placeholder="Ваш номер" v-model="contact.phone" ref="phone"
-                                           v-validate.disable="'required'" name="calc__phone" @focus="onFocus">
+                                           placeholder="Ваш номер" v-model="contact.phone"
+                                           ref="phone"
+                                           v-validate.disable="'required'" name="calc__phone"
+                                           @focus="onFocus">
                                 </div>
                             </div>
                             <div class="calc__row calc__row--three">
-                                <button type="button" class="btn" @click.prevent="validateContact" ref="btnContinue"
+                                <button type="button" class="btn" @click.prevent="validateContact"
+                                        ref="btnContinue"
                                         v-if="formResult">
                                     Продолжить
                                 </button>
                                 <div class="calc__desc calc__desc--personal" v-else>
                                     Нажимая кнопку «Оформить заказ», вы соглашаетесь
-                                    на <a href="#" class="calc__link calc__link--personal">обработку ваших
+                                    на <a href="#" class="calc__link calc__link--personal">обработку
+                                    ваших
                                     персональных
                                     данных</a>
                                 </div>
@@ -122,7 +137,8 @@
                     <div :class="{'calc__two': true, 'is-disable': cargo_form.isDisable}">
                         <div class="calc__block">
                             <div class="calc__stage calc__stage--two">
-                                <div class="calc__caption calc__caption--two"><span class="calc__wide">Шаг 2:</span>
+                                <div class="calc__caption calc__caption--two"><span
+                                        class="calc__wide">Шаг 2:</span>
                                     Подбор
                                     машины
                                 </div>
@@ -150,8 +166,11 @@
                                             <template slot="option" slot-scope="props">
                                                 <div class="item-down">
                                                     <img :src="wp_data.plugin_dir_url + props.option.picture"
-                                                         class="item-down--img" :alt="props.option.name"/>
-                                                    <div class="item-down--text">{{ props.option.name }}</div>
+                                                         class="item-down--img"
+                                                         :alt="props.option.name"/>
+                                                    <div class="item-down--text">{{
+                                                        props.option.name }}
+                                                    </div>
                                                 </div>
                                             </template>
                                         </multiselect>
@@ -160,13 +179,17 @@
                                 <div class="calc__holder">
                                     <div class="calc__inner">
                                         <div class="calc__desc calc__desc--cargo">Грузчики</div>
-                                        <multiselect v-model="loaders.selected" :options="loaders.options"
+                                        <multiselect v-model="loaders.selected"
+                                                     :options="loaders.options"
                                                      label="label" track-by="id" :searchable="false"
                                                      :show-labels="false" :maxHeight="200"
                                                      class="calc__dropdown calc__dropdown--loaders"
                                                      :allow-empty="false"></multiselect>
-                                        <div class="calc__desc calc__desc--cargo-time">Время работы</div>
-                                        <multiselect v-model="cargo_time.selected" :options="cargo_options"
+                                        <div class="calc__desc calc__desc--cargo-time">Время
+                                            работы
+                                        </div>
+                                        <multiselect v-model="cargo_time.selected"
+                                                     :options="cargo_options"
                                                      label="label" track-by="id" :searchable="false"
                                                      :show-labels="false" :maxHeight="200"
                                                      class="calc__dropdown calc__dropdown--cargo-time"
@@ -193,8 +216,11 @@
                                 </div>
                             </div>
                             <div class="calc__box calc__box--client">
-                                <div class="calc__desc calc__desc--client">Номер карты постоянного клиента</div>
-                                <input class="calc__input calc__input--number" ref="card" v-model="card.serial">
+                                <div class="calc__desc calc__desc--client">Номер карты постоянного
+                                    клиента
+                                </div>
+                                <input class="calc__input calc__input--number" ref="card"
+                                       v-model="card.serial">
                                 <button type="button" class="btn btn--client" ref="btnCheck"
                                         @click.prevent="validateCard">
                                     Проверить
@@ -215,7 +241,8 @@
                             <div class="calc__row calc__row--four">
                                 <div class="calc__item calc__item--five">
                                     <div class="calc__desc calc__desc--time">Когда подать</div>
-                                    <multiselect v-model="time_delivery.selected" :options="time_delivery_options"
+                                    <multiselect v-model="time_delivery.selected"
+                                                 :options="time_delivery_options"
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
                                                  class="calc__dropdown calc__dropdown--time"
@@ -225,26 +252,33 @@
                                     <i class="far fa-calendar-alt calc__icon"></i>
                                     <datetime type="datetime" v-model="calendar.datetime"
                                               class='calc__input--datepicker'
-                                              :phrases="{ok: 'Ok', cancel: 'Выход'}" :minute-step="10"
+                                              :phrases="{ok: 'Ok', cancel: 'Выход'}"
+                                              :minute-step="10"
                                               :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
                                               value-zone="Europe/Samara" :value="calendar.datetime"
                                     ></datetime>
                                 </div>
                                 <div class="calc__item calc__item--seven">
-                                    <div class="calc__desc calc__desc--durability">Длительность заказа</div>
-                                    <multiselect v-model="durability.selected" :options="durability_options"
+                                    <div class="calc__desc calc__desc--durability">Длительность
+                                        заказа
+                                    </div>
+                                    <multiselect v-model="durability.selected"
+                                                 :options="durability_options"
                                                  label="label" track-by="id" :searchable="false"
                                                  :show-labels="false" :maxHeight="200"
                                                  class="calc__dropdown calc__dropdown--durability"
-                                                 :allow-empty="false" :disabled="intercityFlag"></multiselect>
+                                                 :allow-empty="false"
+                                                 :disabled="intercityFlag"></multiselect>
                                 </div>
                                 <div class="calc__item calc__item--eight">
-                                    <a href="#" class="calc__link--plus" @click.prevent="inverseShowNote">
+                                    <a href="#" class="calc__link--plus"
+                                       @click.prevent="inverseShowNote">
                                         <i class="fas fa-plus calc__icon calc__plus"></i>
                                         <span class="calc__desc calc__desc--plus">Примечание к заказу</span>
                                     </a>
                                     <textarea class='calc__input calc__input--note'
-                                              v-show="note.visibility" v-model="note.text"></textarea>
+                                              v-show="note.visibility"
+                                              v-model="note.text"></textarea>
                                 </div>
                                 <div class="calc__price">
                                     <div class="calc__item calc__item--nine">
@@ -345,71 +379,97 @@
           errored: false,
         },
         loaders: {
-          selected: {id: 0, label: 'Нет'},
+          selected: {
+            id: 0,
+            label: 'Нет',
+          },
           options: [
-            {id: 0, label: 'Нет'},
-            {id: 1, label: '1'},
-            {id: 2, label: '2'},
-            {id: 3, label: '3'},
-            {id: 4, label: '4'}
-          ]
+            {
+              id: 0,
+              label: 'Нет',
+            },
+            {
+              id: 1,
+              label: '1',
+            },
+            {
+              id: 2,
+              label: '2',
+            },
+            {
+              id: 3,
+              label: '3',
+            },
+            {
+              id: 4,
+              label: '4',
+            },
+          ],
         },
         cargo_time: {
-          selected: {id: 0, label: 'Нет', $isDisabled: false},
-          isDisabled: true
+          selected: {
+            id: 0,
+            label: 'Нет',
+            $isDisabled: false,
+          },
+          isDisabled: true,
         },
         time_delivery: {
-          selected: {}
+          selected: {},
         },
         durability: {
-          selected: {id: 1, label: '1 час', $isDisabled: false}
+          selected: {
+            id: 1,
+            label: '1 час',
+            $isDisabled: false,
+          },
         },
         address_from: {
           selected: {},
           street: '',
           house: '',
-          entrance: ''
+          entrance: '',
         },
         address_to: {
           selected: {},
           street: '',
           house: '',
-          entrance: ''
+          entrance: '',
         },
         address: {
-          options: []
+          options: [],
         },
         car: {
           selected: {},
-          options: []
+          options: [],
         },
         calendar: {
-          datetime: null
+          datetime: null,
         },
         note: {
           visibility: false,
-          text: ''
+          text: '',
         },
         objAlert: {
           title: '',
           message: '',
           type: 'info',
           customCloseBtnClass: 'btn btn--modal',
-          customCloseBtnText: 'Ok'
+          customCloseBtnText: 'Ok',
         },
         objAlertResult: {
           title: '',
           message: '',
           type: '',
           customCloseBtnClass: 'btn btn--modal',
-          customCloseBtnText: 'Ok'
+          customCloseBtnText: 'Ok',
         },
         contact: {
           name: '',
-          phone: ''
+          phone: '',
         },
         card: {
-          serial: ''
+          serial: '',
         },
         formResult: false,
         discount: 0,
@@ -417,15 +477,15 @@
         tweened_price_normal: 0,
         cargo_form: {
           isCollapse: true,
-          isDisable: false
+          isDisable: false,
         },
         intercityFlag: false,
         riggingFlag: false,
         loading: true,
         buttonCheckout: {
           title: 'Оформить заказ',
-          funct: this.checkout
-        }
+          funct: this.checkout,
+        },
       }
     },
     computed: {
@@ -435,14 +495,46 @@
       durability_options: function () {
         //блокируем пункты выпадающего списка в зависимости от типа машины, времени подачи и адреса подачи
         let data = [
-          {id: 1, label: '1 час', $isDisabled: false},
-          {id: 2, label: '2 часа', $isDisabled: false},
-          {id: 3, label: '3 часа', $isDisabled: false},
-          {id: 4, label: '4 часа', $isDisabled: false},
-          {id: 5, label: '5 часов', $isDisabled: false},
-          {id: 6, label: '6 часов', $isDisabled: false},
-          {id: 7, label: '7 часов', $isDisabled: false},
-          {id: 8, label: '8 часов', $isDisabled: false}
+          {
+            id: 1,
+            label: '1 час',
+            $isDisabled: false,
+          },
+          {
+            id: 2,
+            label: '2 часа',
+            $isDisabled: false,
+          },
+          {
+            id: 3,
+            label: '3 часа',
+            $isDisabled: false,
+          },
+          {
+            id: 4,
+            label: '4 часа',
+            $isDisabled: false,
+          },
+          {
+            id: 5,
+            label: '5 часов',
+            $isDisabled: false,
+          },
+          {
+            id: 6,
+            label: '6 часов',
+            $isDisabled: false,
+          },
+          {
+            id: 7,
+            label: '7 часов',
+            $isDisabled: false,
+          },
+          {
+            id: 8,
+            label: '8 часов',
+            $isDisabled: false,
+          },
         ]
 
         let car_id = this.car.selected.id
@@ -455,13 +547,13 @@
           if (time_delivery_id === 0) {
             current = _.find(priceData, {
               'car_id': car_id,
-              'time_delivery_id': time_delivery_id
+              'time_delivery_id': time_delivery_id,
             })
           } else if (time_delivery_id === 1) {
             current = _.find(priceData, {
               'car_id': car_id,
               'time_delivery_id': time_delivery_id,
-              'address_to': address_to_id
+              'address_to': address_to_id,
             })
           }
           if (!_.isEmpty(current) && 'min_time' in current) {
@@ -485,15 +577,51 @@
       },
       cargo_options: function () {
         let data = [
-          {id: 0, label: 'Нет', $isDisabled: false},
-          {id: 1, label: '1 час', $isDisabled: false},
-          {id: 2, label: '2 часа', $isDisabled: false},
-          {id: 3, label: '3 часа', $isDisabled: false},
-          {id: 4, label: '4 часа', $isDisabled: false},
-          {id: 5, label: '5 часов', $isDisabled: false},
-          {id: 6, label: '6 часов', $isDisabled: false},
-          {id: 7, label: '7 часов', $isDisabled: false},
-          {id: 8, label: '8 часов', $isDisabled: false}
+          {
+            id: 0,
+            label: 'Нет',
+            $isDisabled: false,
+          },
+          {
+            id: 1,
+            label: '1 час',
+            $isDisabled: false,
+          },
+          {
+            id: 2,
+            label: '2 часа',
+            $isDisabled: false,
+          },
+          {
+            id: 3,
+            label: '3 часа',
+            $isDisabled: false,
+          },
+          {
+            id: 4,
+            label: '4 часа',
+            $isDisabled: false,
+          },
+          {
+            id: 5,
+            label: '5 часов',
+            $isDisabled: false,
+          },
+          {
+            id: 6,
+            label: '6 часов',
+            $isDisabled: false,
+          },
+          {
+            id: 7,
+            label: '7 часов',
+            $isDisabled: false,
+          },
+          {
+            id: 8,
+            label: '8 часов',
+            $isDisabled: false,
+          },
         ]
         let time_delivery_id = this.time_delivery.selected.id
         if (!_.isEmpty(this.info.data)) {
@@ -502,7 +630,7 @@
 
           let current = _.find(priceLoader, {
             'time_delivery_id': time_delivery_id,
-            'type_work_id': type_work_id
+            'type_work_id': type_work_id,
           })
           if (!_.isEmpty(current) && 'min_time' in current) {
             let minTime = +current.min_time - 1
@@ -525,8 +653,16 @@
       time_delivery_options: function () {
         //Когда подать
         let data = [
-          {id: 0, label: 'Срочно (30-90 минут)', $isDisabled: false},
-          {id: 1, label: 'Подача в течении дня', $isDisabled: false}
+          {
+            id: 0,
+            label: 'Срочно (30-90 минут)',
+            $isDisabled: false,
+          },
+          {
+            id: 1,
+            label: 'Подача в течении дня',
+            $isDisabled: false,
+          },
         ]
         //запускаем первый раз?
         if (_.isEmpty(this.time_delivery.selected)) {
@@ -586,13 +722,18 @@
             if (address_to_id < 10) {
               //доставка срочная или Подача в течении дня
               if (time_delivery_id === 0) {
-                current = _.find(priceData, {'car_id': car_id, 'time_delivery_id': 0})
+                current = _.find(
+                  priceData,
+                  {
+                    'car_id': car_id,
+                    'time_delivery_id': 0,
+                  })
               } else {
                 current = _.find(priceData, {
                   'car_id': car_id,
                   'time_delivery_id': 1,
                   'address_from': address_from_id,
-                  'address_to': address_to_id
+                  'address_to': address_to_id,
                 })
               }
             } else if (address_to_id < 100) {
@@ -600,7 +741,7 @@
               current = _.find(priceData, {
                 'car_id': car_id,
                 'time_delivery_id': 1,
-                'address_to': address_to_id
+                'address_to': address_to_id,
               })
             }
             currentPrice += pricePlus(current, durability_id)
@@ -610,7 +751,7 @@
               current = _.find(priceData, {
                 'car_id': car_id,
                 'time_delivery_id': 1,
-                'address_to': address_from_id
+                'address_to': address_from_id,
               })
               currentPrice += pricePlus(current, durability_id)
             } else if (address_to_id < 100) {
@@ -618,12 +759,12 @@
               current = _.find(priceData, {
                 'car_id': car_id,
                 'time_delivery_id': 1,
-                'address_to': address_from_id
+                'address_to': address_from_id,
               })
               current1 = _.find(priceData, {
                 'car_id': car_id,
                 'time_delivery_id': 1,
-                'address_to': address_to_id
+                'address_to': address_to_id,
               })
 
               if (!_.isEmpty(current) && !_.isEmpty(current1)) {
@@ -645,7 +786,7 @@
 
               current = _.find(priceData, {
                 'car_id': car_id,
-                'address_to': address_dest
+                'address_to': address_dest,
               })
               currentPrice += current.price
             } else {
@@ -673,7 +814,12 @@
           let time_delivery_id = this.time_delivery.selected.id
 
           if (loaders_id !== 0) {
-            let current = _.find(priceLoader, {'time_delivery_id': time_delivery_id, 'type_work_id': type_work_id})
+            let current = _.find(
+              priceLoader,
+              {
+                'time_delivery_id': time_delivery_id,
+                'type_work_id': type_work_id,
+              })
             if (!_.isEmpty(current)) {
               loaders__price = current.min_price * loaders_id
               let delta = cargo_time_id - current.min_time
@@ -711,11 +857,15 @@
       isDisabledCargoTime: function () {
         if (typeof this.loaders.selected.id !== 'undefined') {
           if (this.loaders.selected.id === 0) {
-            this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false}
+            this.cargo_time.selected = {
+              id: 0,
+              label: 'Нет',
+              $isDisabled: false,
+            }
           }
           return this.loaders.selected.id === 0
         }
-      }
+      },
     },
     methods: {
       inverseShowNote: function () {
@@ -762,15 +912,35 @@
         }
       },
       clearData () {
-        this.loaders.selected = {id: 0, label: 'Нет'}
-        this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false}
-        this.time_delivery.selected = {'id': 1, 'name': 'Подача в течении дня'}
-        this.durability.selected = {id: 1, label: '1 час', $isDisabled: false}
-        this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
+        this.loaders.selected = {
+          id: 0,
+          label: 'Нет',
+        }
+        this.cargo_time.selected = {
+          id: 0,
+          label: 'Нет',
+          $isDisabled: false,
+        }
+        this.time_delivery.selected = {
+          'id': 1,
+          'name': 'Подача в течении дня',
+        }
+        this.durability.selected = {
+          id: 1,
+          label: '1 час',
+          $isDisabled: false,
+        }
+        this.address_from.selected = {
+          'id': 1,
+          'name': 'Центральный р-н',
+        }
         this.address_from.street = ''
         this.address_from.house = ''
         this.address_from.entrance = ''
-        this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
+        this.address_to.selected = {
+          'id': 1,
+          'name': 'Центральный р-н',
+        }
         this.address_to.street = ''
         this.address_to.house = ''
         this.address_to.entrance = ''
@@ -791,10 +961,24 @@
         })
       },
       demoData () {
-        this.loaders.selected = {id: 1, label: '1'}
-        this.cargo_time.selected = {id: 0, label: 'Нет', $isDisabled: false}
-        this.time_delivery.selected = {'id': 1, 'name': 'Подача в течении дня'}
-        this.durability.selected = {id: 1, label: '1 час', $isDisabled: false}
+        this.loaders.selected = {
+          id: 1,
+          label: '1',
+        }
+        this.cargo_time.selected = {
+          id: 0,
+          label: 'Нет',
+          $isDisabled: false,
+        }
+        this.time_delivery.selected = {
+          'id': 1,
+          'name': 'Подача в течении дня',
+        }
+        this.durability.selected = {
+          id: 1,
+          label: '1 час',
+          $isDisabled: false,
+        }
         // this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
         this.address_from.street = 'Республики'
         this.address_from.house = '1'
@@ -849,11 +1033,14 @@
           economy: this.economy,
           discount: this.discount,
           price_result: this.price_result,
-          rigging: this.riggingFlag ? 'yes' : 'no'
+          rigging: this.riggingFlag ? 'yes' : 'no',
         }
         this.$validator.validateAll()
           .then((result) => {
             if (result) {
+              if (typeof window.yaCounter48348167 !== 'undefined') {
+                window.yaCounter48348167.reachGoal('checkout')
+              }
               axios.post(this.wp_data.url_ajax, Qs.stringify(data))
                 .then((response) => {
                   let answer = response.data
@@ -898,10 +1085,10 @@
         if (!this.intercityFlag) {
           this.address.options = [{
             place: 'г. Тольятти',
-            area: []
+            area: [],
           }, {
             place: 'Пригород',
-            area: []
+            area: [],
           }]
 
           let filterArray = _.filter(this.info.data.metadata.area, (item) => {
@@ -920,8 +1107,14 @@
             this.address.options[1].area.push(item)
           })
 
-          this.address_from.selected = {'id': 1, 'name': 'Центральный р-н'}
-          this.address_to.selected = {'id': 1, 'name': 'Центральный р-н'}
+          this.address_from.selected = {
+            'id': 1,
+            'name': 'Центральный р-н',
+          }
+          this.address_to.selected = {
+            'id': 1,
+            'name': 'Центральный р-н',
+          }
 
           if (!(_.isEmpty(this.car.options))) {
             _.forEach(this.car.options, (item) => {
@@ -931,7 +1124,7 @@
         } else {
           this.address.options = [{
             place: 'Города',
-            area: []
+            area: [],
           }]
           let filterArray = _.filter(this.info.data.metadata.area, (item) => {
             return item.id >= 100
@@ -943,8 +1136,14 @@
             this.address.options[0].area.push(item)
           })
 
-          this.address_from.selected = {'id': 999, 'name': 'Тольятти'}
-          this.address_to.selected = {'id': 123, 'name': 'Москва'}
+          this.address_from.selected = {
+            'id': 999,
+            'name': 'Тольятти',
+          }
+          this.address_to.selected = {
+            'id': 123,
+            'name': 'Москва',
+          }
 
           _.forEach(this.car.options, (item) => {
             if (item.id !== 2 && item.id !== 3) {
@@ -974,12 +1173,12 @@
         this.objAlert.title = 'Такелажные работы'
         this.objAlert.message = 'это комплекс мер, направленных на поднятие разнообразных грузов с целью их погрузки\\выгрузки.<br><br>Например, нужно перевести оборудования промышленного назначения, огромные резервуары, банкоматы, сейфы, серверы, контейнеры, пианино и всё, что от 100 кг и больше'
         this.$refs.simplert.openSimplert(this.objAlert)
-      }
+      },
     },
     watch: {
       price_result: function (newValue) {
         TweenLite.to(this.$data, 1, {tweened_price_normal: newValue})
-      }
+      },
     },
     mounted () {
       axios
@@ -1011,7 +1210,10 @@
           arr_serial = _.uniq(arr_serial)
           arr_serial.sort((a, b) => a - b)
 
-          this.card_data = {discount: parseInt(card_response.data.discount, 10), serial: arr_serial}
+          this.card_data = {
+            discount: parseInt(card_response.data.discount, 10),
+            serial: arr_serial,
+          }
 
           // this.demoData()
 
@@ -1032,6 +1234,6 @@
             this.loading = false
           }, 500)
         })
-    }
+    },
   }
 </script>
