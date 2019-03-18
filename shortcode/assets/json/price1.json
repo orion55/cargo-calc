@@ -392,21 +392,21 @@
       "time_delivery_id": 0,
       "car_id": 0,
       "min_time": 2,
-      "min_price": 590,
+      "min_price": 1170,
       "additional_price": 580
     },
     {
       "time_delivery_id": 0,
       "car_id": 1,
       "min_time": 2,
-      "min_price": 690,
+      "min_price": 1370,
       "additional_price": 680
     },
     {
       "time_delivery_id": 0,
       "car_id": 2,
       "min_time": 2,
-      "min_price": 690,
+      "min_price": 1370,
       "additional_price": 680
     },
     {
